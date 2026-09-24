@@ -1,0 +1,39 @@
+.candidate-form-page {
+    width: 100%;
+    height: auto;
+    /* justify-self: center; */
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.candidate-form-page .form-page {
+    width: 300px;
+    height: 100%;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+    box-sizing: border-box; /* Prevents padding from breaking the 300px width */
+    text-align: left;
+}
+
+.candidate-form-page .form-page label{
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+}
+
+/* ADD THIS RULE BELOW TO FIX THE STACKING */
+.candidate-form-page .form-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Adds clean spacing between each row */
+}
+
+/* Optional: Makes inputs look clean and span full width */
+.candidate-form-page .form-page input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px;
+}
