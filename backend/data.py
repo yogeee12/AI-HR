@@ -12,8 +12,7 @@ company = {
         {
             "job_title": "Python Developer",
 
-            "job_description":
-                "Develop backend applications and APIs using Python.",
+            "job_description": "Develop backend applications and APIs using Python.",
 
             "active_employees": 3
         },
@@ -21,8 +20,7 @@ company = {
         {
             "job_title": "Java Developer",
 
-            "job_description":
-                "Develop and maintain Java backend applications.",
+            "job_description": "Develop and maintain Java backend applications.",
 
             "active_employees": 4
         },
