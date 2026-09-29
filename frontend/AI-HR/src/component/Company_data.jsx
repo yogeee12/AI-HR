@@ -18,7 +18,7 @@ function Company_data(){
     const [projectDescription, setProjectDescription] = useState("")
     let addProject = 1;
 
-    const handelSubmit = (e) => {
+    const handelSubmit = async (e) => {
         e.preventDefault();
 
         const  companyDetail = {
@@ -27,13 +27,23 @@ function Company_data(){
             industry : industry,
             number_of_jobs : addJobField,
             job_field : jobField,
-            jobDescription : jobDescription,           
+            jobDescription : jobDescription,
             number_of_projects : addProject,
             project_name : projectName,
             project_description : projectDescription  
         }
 
-        console.log(companyDetail)
+        const response = await fetch("http://127.0.0.1:8000/company-details",{
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(companyDetail)
+        });
+        
+        const data = await response.json();
+        console.log(data)
+    
     }
 
     return (

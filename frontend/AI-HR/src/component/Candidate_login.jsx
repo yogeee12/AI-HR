@@ -7,12 +7,12 @@ function CandidateLogin(){
     const [summary, setSummary] = useState("");
     const [candidateEmail, setCandidateEmail] = useState('');
     const [jobRole, setJobRole] = useState('');
-    const [expeirence, setExpeirence] = useState(0);
-    const [experineceDescription, setExpeirenceDescription] = useState("");
+    const [experience, setexperience] = useState(0);
+    const [experineceDescription, setexperienceDescription] = useState("");
     const [skills, setSkills] = useState("");
 
 
-    const handelSubmit = (e) => {
+    const handelSubmit = async (e) => {
         e.preventDefault();
         
         const candidate = {
@@ -20,13 +20,21 @@ function CandidateLogin(){
             email : candidateEmail,
             summary : summary,
             job_role : jobRole,
-            expeirence_years : expeirence,
-            expeirence_description : experineceDescription,
+            experience_years : experience,
+            experience_description : experineceDescription,
             skills : skills 
         }
 
-        console.log(candidate)
-    
+        const response = await fetch("http://127.0.0.1:8000/candidate",{
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(candidate)
+        });
+        
+        const data = await response.json();
+        console.log(data)
     }
     
     return(
@@ -53,15 +61,15 @@ function CandidateLogin(){
                         placeholder="Job Role" value={jobRole} 
                         onChange={(e) => setJobRole(e.target.value)}/>
 
-                    <label htmlFor="candidate-expeirence" className="candidate-expeirence-label">Expeirence</label>
-                        <input type="number" name="candidate-expeirence-desc" className="candidate-expeirence-desc-input" 
-                        placeholder="Expeirence" value={expeirence} 
-                        onChange={(e) => setExpeirence(Number(e.target.value))}/>
+                    <label htmlFor="candidate-experience" className="candidate-experience-label">experience</label>
+                        <input type="number" name="candidate-experience-desc" className="candidate-experience-desc-input" 
+                        placeholder="experience" value={experience} 
+                        onChange={(e) => setexperience(Number(e.target.value))}/>
 
-                    <label htmlFor="candidate-expeirence-desc" className="candidate-expeirence-desc-label">Expeirence Description</label>
-                        <textarea name="candidate-expeirence-desc" className="candidate-expeirence-desc-input" 
+                    <label htmlFor="candidate-experience-desc" className="candidate-experience-desc-label">experience Description</label>
+                        <textarea name="candidate-experience-desc" className="candidate-experience-desc-input" 
                         placeholder="Description" value={experineceDescription} 
-                        onChange={(e) => setExpeirenceDescription(e.target.value)}/>
+                        onChange={(e) => setexperienceDescription(e.target.value)}/>
 
                     <label htmlFor="candidate-skills" className="candidate-skills-label">Skills</label>
                         <input type="text" name="candidate-skills" className="candidate-skills-input" 
