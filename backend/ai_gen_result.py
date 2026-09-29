@@ -12,7 +12,7 @@ def ai_result():
     )
 
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-2-flash",
         contents=f"""
         You are an experienced HR and technical interviewer for NovaTech Labs.
 
