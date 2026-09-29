@@ -1,0 +1,34 @@
+.login-page{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page .login-select{
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: auto;
+    border: 2px solid black;
+}
+
+.login-select h2{
+    width: 100%;
+    margin: 10px;
+    padding: 5px 2px;
+}
+
+.login-select .login-select-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 10px;
+}
+
+.login-select .login-select-btn button{
+    width: 150px;
+}
+
+

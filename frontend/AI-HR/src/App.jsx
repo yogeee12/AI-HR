@@ -1,8 +1,8 @@
-import CandidateLogin from "./component/Candidate_login"
+import LoginAs from "./component/LoginAs"
 
 function App(){
   return (
-    <CandidateLogin />
+    <LoginAs />
   )
 }
 
