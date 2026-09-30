@@ -60,3 +60,13 @@ def all_companies():
         company["_id"] = str(company["_id"])
 
     return companies
+
+@app.get("/candidate")
+def get_candidate():
+    
+    user = list(candidates_collections.find())
+    
+    for candidate in user:
+        candidate["_id"] = str(candidate["_id"])
+        
+    return user
