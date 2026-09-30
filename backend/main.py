@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ai_gen_result import analyze_candidate
+from database import candidates_collections, companies_collections
 
 app = FastAPI()
 
@@ -21,18 +22,23 @@ def home():
 def receive_candidate(candidate : dict):
     print(candidate)
     
+    result = candidates_collections.insert_one(candidate)
+    
     return {
         "message" : "Candidate recevied",
-        "candidate" : candidate
+        "candidate" : candidate,
+        "candidate_id" : str(result.inserted_id)
     }
     
 @app.post("/company-details")
 def receive_company_detail(companyDetail : dict):
     print(companyDetail)
     
+    result = companies_collections.insert_one(companyDetail)
     return {
         "message" : "Company Detail Received",
-        "Company" : companyDetail
+        "Company" : companyDetail,
+        "company_id" : str(result.inserted_id)
     }
     
 @app.post("/analyze")
@@ -44,3 +50,13 @@ def analyze(data : dict):
     result = analyze_candidate(company=company, candidate=candidate)
     
     return result 
+
+@app.get("/companies")
+def all_companies():
+    
+    companies = list(companies_collections.find())
+
+    for company in companies:
+        company["_id"] = str(company["_id"])
+
+    return companies
