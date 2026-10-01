@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from google import genai
 import json
+from prompt import RESP
 
 load_dotenv()
 def analyze_candidate(company, candidate):
@@ -18,20 +19,14 @@ def analyze_candidate(company, candidate):
         Analyze whether the candidate is suitable for the company's available
         job/project based on the information provided.
 
+        {RESP}
+        
         COMPANY INFORMATION:
         {company}
 
         CANDIDATE INFORMATION:
         {candidate}
 
-        Return ONLY valid JSON in this format:
-
-        {{
-            "eligibility": "ELIGIBLE or NOT_ELIGIBLE",
-            "matched_project": "project name or null",
-            "matched_role": "role name or null",
-            "reason": "short explanation"
-        }}
         """
         )
 
