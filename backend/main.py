@@ -41,11 +41,11 @@ def receive_company_detail(companyDetail : dict):
         "company_id" : str(result.inserted_id)
     }
     
-@app.post("/analyze")
-def analyze(data : dict):
+@app.get("/analyze")
+def analyze():
     
-    company = data["company"]
-    candidate = data["candidate"]
+    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
+    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
     
     result = analyze_candidate(company=company, candidate=candidate)
     
