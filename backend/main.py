@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ai_gen_result import analyze_candidate
 from database import candidates_collections, companies_collections
+from data_extract import get_questions
 
 app = FastAPI()
 
@@ -48,8 +49,8 @@ def analyze():
     candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
     
     result = analyze_candidate(company=company, candidate=candidate)
-    
-    return result 
+    questions = get_questions(result)
+    return questions
 
 @app.get("/companies")
 def all_companies():
