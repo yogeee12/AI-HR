@@ -11,7 +11,7 @@ def analyze_candidate(company, candidate):
     )
 
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-3.1-flash-lite",
         contents=f"""
         You are an experienced HR and technical interviewer.
 
@@ -36,6 +36,6 @@ def analyze_candidate(company, candidate):
         )
 
     str_data = response.text
-    # data = json.loads(str_data)
+    data = json.loads(str_data)
 
-    return str_data
+    return data
