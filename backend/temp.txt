@@ -1,0 +1,59 @@
+{
+  "questions": [
+    {
+      "question_id": "q1",
+      "question": "In FastAPI, which decorator is used to define a path operation for a GET request?",
+      "options": [
+        "@app.post('/')",
+        "@app.get('/')",
+        "@app.put('/')",
+        "@app.delete('/')"
+      ],
+      "correct_option": 1
+    },
+    {
+      "question_id": "q2",
+      "question": "Which of the following is the standard library used to interact with PostgreSQL databases in a Python application?",
+      "options": [
+        "psycopg2",
+        "mysql-connector",
+        "sqlite3",
+        "mongodb-client"
+      ],
+      "correct_option": 0
+    },
+    {
+      "question_id": "q3",
+      "question": "What is the primary purpose of a REST API status code 404?",
+      "options": [
+        "The request was successful",
+        "The server encountered an internal error",
+        "The requested resource could not be found",
+        "The request is forbidden"
+      ],
+      "correct_option": 2
+    },
+    {
+      "question_id": "q4",
+      "question": "In Python, which keyword is used to handle asynchronous functions introduced in FastAPI?",
+      "options": [
+        "sync",
+        "thread",
+        "process",
+        "async"
+      ],
+      "correct_option": 3
+    },
+    {
+      "question_id": "q5",
+      "question": "Which SQL command is used to retrieve data from a PostgreSQL table?",
+      "options": [
+        "SELECT",
+        "UPDATE",
+        "INSERT",
+        "DELETE"
+      ],
+      "correct_option": 0
+    }
+  ]
+}
