@@ -19,3 +19,12 @@ export async function getCandidates(){
 
     return res.json()
 }
+
+export async function getAnalysis() {
+    const res = await fetch(`${API}/analyze`)
+
+    if(!res.ok){
+        throw new Error("Failed to fetch data!!")
+    }
+    return res.json()
+}
