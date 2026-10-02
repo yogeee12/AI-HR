@@ -1,12 +1,12 @@
 import LoginAs from "./component/LoginAs"
-import AiGen from "./component/AiGen"
+import Questions from "./component/Questions"
 
 function App(){
 
   return (
     <div>
     <LoginAs />
-    <AiGen />
+    <Questions />
     </div>
   )
 }
