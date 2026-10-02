@@ -57,3 +57,96 @@
     }
   ]
 }
+
+questions api data ::
+[
+  {
+    "question_id": "q1",
+    "question": "What is the primary purpose of the `async` and `await` keywords in Python, commonly used in frameworks like FastAPI?",
+    "option_1": "To define synchronous functions that run in parallel.",
+    "option_2": "To enable asynchronous programming, allowing non-blocking I/O operations.",
+    "option_3": "To declare a function as a generator.",
+    "option_4": "To handle exceptions in asynchronous code."
+  },
+  {
+    "question_id": "q2",
+    "question": "In FastAPI, how do you define a path parameter in a route, such as retrieving an item by its ID?",
+    "option_1": "`@app.get(\"/items?item_id={item_id}\")`",
+    "option_2": "`@app.get(\"/items/{item_id}\")`",
+    "option_3": "`@app.get(\"/items/:item_id\")`",
+    "option_4": "`@app.get(\"/items/\u003Citem_id\u003E\")`"
+  },
+  {
+    "question_id": "q3",
+    "question": "Which SQL command is used to retrieve data from one or more tables in PostgreSQL?",
+    "option_1": "`INSERT`",
+    "option_2": "`UPDATE`",
+    "option_3": "`SELECT`",
+    "option_4": "`DELETE`"
+  },
+  {
+    "question_id": "q4",
+    "question": "Which HTTP method is typically used to create a new resource on a server in a RESTful API?",
+    "option_1": "`GET`",
+    "option_2": "`PUT`",
+    "option_3": "`POST`",
+    "option_4": "`DELETE`"
+  },
+  {
+    "question_id": "q5",
+    "question": "What is the primary role of Pydantic in a FastAPI application?",
+    "option_1": "To handle database migrations.",
+    "option_2": "To define request body schemas and perform data validation.",
+    "option_3": "To manage asynchronous tasks.",
+    "option_4": "To serve static files."
+  }
+]
+
+questions data with questions id :
+[
+  {
+    "q1": {
+      "question": "How do you define a path parameter in a FastAPI GET endpoint that retrieves an item by its ID?",
+      "option_1": "@app.get(\"/items/{item_id}\")",
+      "option_2": "@app.get(\"/items/id={item_id}\")",
+      "option_3": "@app.get(\"/items/?item_id\")",
+      "option_4": "@app.get(\"/items/\u003Citem_id\u003E\")"
+    }
+  },
+  {
+    "q2": {
+      "question": "In FastAPI, which library is commonly used to define request body schemas and perform automatic data validation?",
+      "option_1": "Requests",
+      "option_2": "Pydantic",
+      "option_3": "SQLAlchemy",
+      "option_4": "Django REST Framework"
+    }
+  },
+  {
+    "q3": {
+      "question": "Which SQL command is used to retrieve all columns from a table named `transactions` in PostgreSQL?",
+      "option_1": "GET * FROM transactions;",
+      "option_2": "SELECT ALL FROM transactions;",
+      "option_3": "SELECT * FROM transactions;",
+      "option_4": "FETCH all FROM transactions;"
+    }
+  },
+  {
+    "q4": {
+      "question": "Which HTTP method is typically used to completely replace an existing resource with new data in a RESTful API?",
+      "option_1": "GET",
+      "option_2": "POST",
+      "option_3": "PATCH",
+      "option_4": "PUT"
+    }
+  },
+  {
+    "q5": {
+      "question": "What is the primary purpose of using a Python virtual environment (e.g., `venv`) in a project?",
+      "option_1": "To speed up code execution.",
+      "option_2": "To isolate project dependencies from other projects.",
+      "option_3": "To deploy the application to a server.",
+      "option_4": "To compile Python code into an executable."
+    }
+  }
+]
