@@ -31,7 +31,6 @@ def analyze_candidate(company, candidate):
         )
 
     str_data = response.text
-    # print(str_data)
     str_data = str_data.replace("```json", "").replace("```", "").strip()
     data = json.loads(str_data)
 
