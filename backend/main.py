@@ -42,7 +42,7 @@ def receive_company_detail(companyDetail : dict):
         "company_id" : str(result.inserted_id)
     }
     
-@app.get("/analyze")
+@app.get("/questions")
 def analyze():
     
     company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
@@ -71,3 +71,9 @@ def get_candidate():
         candidate["_id"] = str(candidate["_id"])
         
     return user
+
+@app.post("/answers")
+def get_answers(answers: dict):
+    answer = answers
+    print(answer)
+    return answer
