@@ -1,5 +1,6 @@
 import { useState } from "react"
 import "../styles/candidate_form.css"
+import { handelSubmit } from "../services/api"
 
 function Company_data(){
 
@@ -18,38 +19,22 @@ function Company_data(){
     const [projectDescription, setProjectDescription] = useState("")
     let addProject = 1;
 
-    const handelSubmit = async (e) => {
-        e.preventDefault();
-
-        const  companyDetail = {
-            company_name : companyName,
-            company_description : companyDescription,
-            industry : industry,
-            number_of_jobs : addJobField,
-            job_field : jobField,
-            jobDescription : jobDescription,
-            number_of_projects : addProject,
-            project_name : projectName,
-            project_description : projectDescription  
-        }
-
-        const response = await fetch("http://127.0.0.1:8000/company-details",{
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify(companyDetail)
-        });
-        
-        const data = await response.json();
-        console.log(data)
-    
+    const  companyDetail = {
+        company_name : companyName,
+        company_description : companyDescription,
+        industry : industry,
+        number_of_jobs : addJobField,
+        job_field : jobField,
+        jobDescription : jobDescription,
+        number_of_projects : addProject,
+        project_name : projectName,
+        project_description : projectDescription  
     }
 
     return (
         <div className="company-data-page data-form-page">
             <div className="form-page">
-                <form action="" method="post" onSubmit={handelSubmit}>
+                <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:companyDetail, endpoint:"company-details"})}>
                     {/* Company detail */}
                     <label htmlFor="company-name" className="company-name-label">Company Name</label>
                     <input type="text" name="company-name" className="company-name-input" value={companyName} onChange={(e) => setCompanName(e.target.value)}/>

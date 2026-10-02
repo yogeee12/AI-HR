@@ -1,5 +1,6 @@
 import { useState } from "react"
 import "../styles/candidate_form.css"
+import { handelSubmit } from "../services/api";
 
 function CandidateLogin(){
 
@@ -12,35 +13,20 @@ function CandidateLogin(){
     const [skills, setSkills] = useState("");
 
 
-    const handelSubmit = async (e) => {
-        e.preventDefault();
-        
-        const candidate = {
-            name : candidatename,
-            email : candidateEmail,
-            summary : summary,
-            job_role : jobRole,
-            experience_years : experience,
-            experience_description : experineceDescription,
-            skills : skills 
-        }
-
-        const response = await fetch("http://127.0.0.1:8000/candidate",{
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify(candidate)
-        });
-        
-        const data = await response.json();
-        console.log(data)
+    const candidate = {
+        name : candidatename,
+        email : candidateEmail,
+        summary : summary,
+        job_role : jobRole,
+        experience_years : experience,
+        experience_description : experineceDescription,
+        skills : skills 
     }
     
     return(
         <div className="candidate-form-page data-form-page">
             <div className="form-page">
-                <form action="" method="post" onSubmit={handelSubmit}>
+                <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:candidate, endpoint:"candidate"})}>
                     <label htmlFor="candidate-name" className="candidate-name-label">Name</label>
                         <input type="text" name="candidate-name" className="candidate-name-input" 
                         placeholder="Full Name" value={candidatename} 
