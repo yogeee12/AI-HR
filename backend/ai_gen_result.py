@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 import json
 from prompt import RESP
+from data_extract import get_questions, get_answers
 
 load_dotenv()
 def analyze_candidate(company, candidate):
@@ -34,4 +35,8 @@ def analyze_candidate(company, candidate):
     str_data = str_data.replace("```json", "").replace("```", "").strip()
     data = json.loads(str_data)
 
-    return data
+    return {
+        "data" : data,
+        "get_questions" : get_questions(data),
+        "get_answers" : get_answers(data)
+    }
