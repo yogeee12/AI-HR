@@ -150,3 +150,32 @@ questions data with questions id :
     }
   }
 ]
+
+get_answers data :
+[
+  {
+    'question_id': 'q1', 
+    'question': 'In Python, which of the following methods is used to safely retrieve a value from a dictionary without raising a KeyError if the key does not exist?', 
+    'correct_option': 0
+  }, 
+  {
+    'question_id': 'q2', 
+    'question': 'In FastAPI, how do you define a path parameter in a route decorator?', 
+    'correct_option': 1
+  }, 
+  {
+    'question_id': 'q3', 
+    'question': 'Which SQL clause is used to filter the results of a GROUP BY query based on a specified condition?', 
+    'correct_option': 2
+  }, 
+  {
+    'question_id': 'q4', 
+    'question': 'Which HTTP method is typically used to update an existing resource completely or replace it in a RESTful API?', 
+    'correct_option': 3
+  }, 
+  {
+    'question_id': 'q5', 
+    'question': 'Which library does FastAPI natively use for data validation and settings management via Python type hints?', 
+    'correct_option': 0
+  }
+]
