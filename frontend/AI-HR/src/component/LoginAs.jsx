@@ -1,6 +1,6 @@
 import { useState } from "react"
-import CandidateLogin from "./Candidate_login";
-import Company_data from "./Company_data";
+import CandidateLogin from "./candidate/Candidate_login";
+import Company_data from "./Companies/Company_data";
 import "../styles/LoginAs.css"
 function LoginAs(){
 
