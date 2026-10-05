@@ -1,5 +1,6 @@
 const API = "http://127.0.0.1:8000";
 
+// getCompany company data from backend
 export async function getCompanies(){
     const res = await fetch(`${API}/companies`);
 
@@ -10,7 +11,8 @@ export async function getCompanies(){
     return res.json();
 }
 
-export async function getCandidates(){
+// fetch candidtae data from backend
+export async function getCandidate(){
     const res = await  fetch(`${API}/candidate`);
 
     if (!res.ok){
@@ -20,6 +22,7 @@ export async function getCandidates(){
     return res.json()
 }
 
+// fetch questions from backend
 export async function getQuestions(){
     const res = await fetch(`${API}/questions`)
 
@@ -30,6 +33,7 @@ export async function getQuestions(){
     return res.json()
 }
 
+// Handel form submission for every page
 export async function handelSubmit({e, data, endpoint}){
     e.preventDefault();
 
