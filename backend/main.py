@@ -64,20 +64,16 @@ def analyze():
 @app.get("/companies")
 def all_companies():
     
-    companies = list(companies_collections.find())
-
-    for company in companies:
-        company["_id"] = str(company["_id"])
-
-    return companies
+    # companies = list(companies_collections.find())
+    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
+    company["_id"] = str(company["_id"])
+    return company
 
 # send candidate data to react
 @app.get("/candidate")
 def get_candidate():
     
-    user = list(candidates_collections.find())
-    
-    for candidate in user:
-        candidate["_id"] = str(candidate["_id"])
+    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
+    candidate["_id"] = str(candidate["_id"])
         
-    return user
+    return candidate
