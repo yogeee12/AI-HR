@@ -16,6 +16,7 @@ function LoginAs(){
         password : password,
         role : loginAs === "User" ? "candidate" : "company",
     }
+
     return(
         <div className="login-page-container">
             {!showLogin &&
@@ -33,7 +34,7 @@ function LoginAs(){
                 }}>Company</button>
                 </div>
             </div>
-            <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:loginData, endPoint:"login-as"})}>
+            <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:loginData, endpoint:"login-as"})}>
                 <label htmlFor="email" className="email-label">Email</label>
                 <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password" className="password-label">Password</label>
