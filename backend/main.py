@@ -21,8 +21,6 @@ def home():
 # get candidate sign up detail and save in db
 @app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
-    print(candidate)
-    
     result = accounts_collections.insert_one(candidate)
     
     return {
@@ -104,3 +102,33 @@ def get_candidate():
     candidate["_id"] = str(candidate["_id"])
         
     return candidate
+
+@app.post("/login-as")
+def login_data(login_data : dict):
+    
+    user = accounts_collections.find_one({"email" : login_data["email"]})
+    
+    if user:
+        user["_id"] = str(user["_id"])
+        if user["role"] != login_data["role"]:
+            return {
+                "success" : False,
+                "message" : f"User is not registered as a {login_data['role']}"
+            }
+            
+        if user["password"] == login_data["password"]:
+            return {
+                "success" : True,
+                "message" : "Login Successful",
+            }
+        else: 
+            return {
+                "success" : False,
+                "message" : "Invalid Password"
+            }
+            
+    else:
+        return {
+            "success" : False,
+            "message" : "User Not Found"
+        }
