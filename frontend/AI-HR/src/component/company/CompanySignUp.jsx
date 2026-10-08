@@ -1,8 +1,8 @@
 import { useState } from "react"
-import "../styles/candidate_form.css"
-import { handelSubmit } from "../services/api"
+import "../../styles/candidate_form.css"
+import { handelSubmit } from "../../services/api"
 
-function Company_data(){
+function CompanySignUp(){
 
     // Company Detail
     const [companyName , setCompanName] = useState("")
@@ -13,7 +13,7 @@ function Company_data(){
         company_name : companyName,
         company_email : companyemail,
         company_password : companyPassword,
-         
+        role : "company",
     }
 
     return (
@@ -39,4 +39,4 @@ function Company_data(){
     )
 }
 
-export default Company_data
+export default CompanySignUp
