@@ -19,7 +19,7 @@ def home():
     return {"message" : "AI HR API is running"}
 
 # get candidate detail and save in db
-@app.post("/candidate")
+@app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
     print(candidate)
     
@@ -32,7 +32,7 @@ def receive_candidate(candidate : dict):
     }
     
 # get company detail ans save in db 
-@app.post("/company-details")
+@app.post("/company-signup")
 def receive_company_detail(companyDetail : dict):
     print(companyDetail)
     
