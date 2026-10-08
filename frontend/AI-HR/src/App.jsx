@@ -1,12 +1,14 @@
-import LoginAs from "./component/LoginAs"
-import Questions from "./component/Questions"
+// import LoginAs from "./component/LoginAs"
+import CandidateProfile from "./component/candidate/CandidateProfile"
+import CompanyProfile from "./component/company/CompanyProfile"
 
 function App(){
 
   return (
     <div>
-    <LoginAs />
-    <Questions />
+    {/* <LoginAs /> */}
+    <CompanyProfile/>
+    <CandidateProfile/>
     </div>
   )
 }

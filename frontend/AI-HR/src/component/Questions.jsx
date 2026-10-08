@@ -1,11 +1,10 @@
-import { useState, useEffect, cache } from "react";
+import { useState, useEffect } from "react";
 import { getQuestions, handelSubmit } from "../services/api";
 
 function Questions(){
 
     const [questions, setQuestions] = useState([]);
     const [answers , setAnswers] = useState({});
-
     const [loading, setLoading] = useState(true)
 
     function handleAnswer(questionId , optionIndex){
@@ -18,7 +17,6 @@ function Questions(){
     useEffect(() => {
         async function loadQuestions() {
             try{
-
                 const data = await getQuestions();
 
                 setQuestions(data)  
