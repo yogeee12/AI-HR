@@ -120,6 +120,12 @@ def login_data(login_data : dict):
             return {
                 "success" : True,
                 "message" : "Login Successful",
+                "user" : {
+                    "user_name" : user["user_name"],
+                    "name" : user["name"],
+                    "role" : user["role"],
+                    "email" : user["email"]
+                }
             }
         else: 
             return {
