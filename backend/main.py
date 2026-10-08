@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ai_gen_result import analyze_candidate
-from database import candidates_collections, companies_collections
+from database import candidates_collections, companies_collections, accounts_collections
 
 app = FastAPI()
 
@@ -18,12 +18,12 @@ def home():
 
     return {"message" : "AI HR API is running"}
 
-# get candidate detail and save in db
+# get candidate sign up detail and save in db
 @app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
     print(candidate)
     
-    result = candidates_collections.insert_one(candidate)
+    result = accounts_collections.insert_one(candidate)
     
     return {
         "message" : "Candidate recevied",
@@ -31,15 +31,42 @@ def receive_candidate(candidate : dict):
         "candidate_id" : str(result.inserted_id)
     }
     
-# get company detail ans save in db 
+# get company sign up detail ans save in db 
 @app.post("/company-signup")
 def receive_company_detail(companyDetail : dict):
     print(companyDetail)
     
-    result = companies_collections.insert_one(companyDetail)
+    result = accounts_collections.insert_one(companyDetail)
     return {
         "message" : "Company Detail Received",
         "Company" : companyDetail,
+        "company_id" : str(result.inserted_id)
+    }
+    
+
+# get candidate profile detail and save in db
+@app.post("/candidate-profile-setup")
+def receive_candidate_profile(candidateProfile : dict):
+    print(candidateProfile)
+    
+    result = candidates_collections.insert_one(candidateProfile)
+    
+    return {
+        "message" : "Candidate Profile Received",
+        "Candidate Profile" : candidateProfile,
+        "candidate_id" : str(result.inserted_id)
+    } 
+    
+# get company profile detail and save in db
+@app.post("/company-profile-setup")
+def receive_company_profile(companyProfile : dict):
+    print(companyProfile)
+    
+    result = companies_collections.insert_one(companyProfile)
+    
+    return {
+        "message" : "Company Profile Received",
+        "Company Profile" : companyProfile,
         "company_id" : str(result.inserted_id)
     }
     
