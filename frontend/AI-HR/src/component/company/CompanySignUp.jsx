@@ -5,14 +5,16 @@ import { handelSubmit } from "../../services/api"
 function CompanySignUp(){
 
     // Company Detail
+    const [companyUserName, setCompanyUserName] = useState("")
     const [companyName , setCompanName] = useState("")
     const [companyemail, setCompanyEmail] = useState("")
     const [companyPassword, setCompanyPassword] = useState("")
 
     const  companyDetail = {
-        company_name : companyName,
-        company_email : companyemail,
-        company_password : companyPassword,
+        user_name : companyUserName,
+        name : companyName,
+        email : companyemail,
+        password : companyPassword,
         role : "company",
     }
 
@@ -21,6 +23,9 @@ function CompanySignUp(){
             <div className="form-page">
                 <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:companyDetail, endpoint:"company-signup"})}>
                     
+                    <label htmlFor="company-username" className="company-name-label">Company Username</label>
+                    <input type="text" name="company-username" className="company-username-input" value={companyUserName} onChange={(e) => setCompanyUserName(e.target.value)}/>
+
                     <label htmlFor="company-name" className="company-name-label">Company Name</label>
                     <input type="text" name="company-name" className="company-name-input" value={companyName} onChange={(e) => setCompanName(e.target.value)}/>
             
