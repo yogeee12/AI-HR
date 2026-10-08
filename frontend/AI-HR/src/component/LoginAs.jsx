@@ -1,6 +1,6 @@
 import { useState } from "react"
-import CandidateLogin from "./candidate/Candidate_login";
-import Company_data from "./Companies/Company_data";
+import CandidateSignUp from "./candidate/CandidateSignUp";
+import CompanySignUp from "./Companies/CompanySignUp";
 import "../styles/LoginAs.css"
 function LoginAs(){
 
@@ -26,7 +26,7 @@ function LoginAs(){
             }
             {showLogin &&
             <div className="login-content">
-                    {loginAs === "User" ? <CandidateLogin/> : <Company_data />}
+                    {loginAs === "User" ? <CandidateSignUp/> : <CompanySignUp />}
             </div>
             }
         </div>
