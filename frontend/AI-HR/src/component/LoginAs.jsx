@@ -3,6 +3,7 @@ import CandidateSignUp from "./candidate/CandidateSignUp";
 import CompanySignUp from "./company/CompanySignUp";
 import { handelSubmit } from "../services/api";
 import "../styles/LoginAs.css"
+import { useNavigate } from "react-router-dom";
 
 function LoginAs(){
 
@@ -10,6 +11,9 @@ function LoginAs(){
     const [showLogin , setShowLogin] = useState(false)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
+
 
     const loginData = {
         email : email,
@@ -34,7 +38,20 @@ function LoginAs(){
                 }}>Company</button>
                 </div>
             </div>
-            <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:loginData, endpoint:"login-as"})}>
+            <form action="" method="post" onSubmit={ async (e) => {
+                const result = await handelSubmit({e, data:loginData, endpoint:"login-as"});
+
+                if (result.success){
+                    if (result.user.role === "candidate"){
+                        navigate("/candidate-profile")
+                    }
+                    if (result.user.role === "company"){
+                        navigate("/company-profile")
+                    }
+                }else{
+                    console.log(result.message)
+                }
+        }}>
                 <label htmlFor="email" className="email-label">Email</label>
                 <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password" className="password-label">Password</label>
