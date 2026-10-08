@@ -188,8 +188,6 @@ def home():
 # get candidate sign up detail and save in db
 @app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
-    print(candidate)
-    
     result = accounts_collections.insert_one(candidate)
     
     return {
@@ -272,6 +270,41 @@ def get_candidate():
         
     return candidate
 
+@app.post("/login-as")
+def login_data(login_data : dict):
+    
+    user = accounts_collections.find_one({"email" : login_data["email"]})
+    
+    if user:
+        user["_id"] = str(user["_id"])
+        if user["role"] != login_data["role"]:
+            return {
+                "success" : False,
+                "message" : f"User is not registered as a {login_data['role']}"
+            }
+            
+        if user["password"] == login_data["password"]:
+            return {
+                "success" : True,
+                "message" : "Login Successful",
+                "user" : {
+                    "user_name" : user["user_name"],
+                    "name" : user["name"],
+                    "role" : user["role"],
+                    "email" : user["email"]
+                }
+            }
+        else: 
+            return {
+                "success" : False,
+                "message" : "Invalid Password"
+            }
+            
+    else:
+        return {
+            "success" : False,
+            "message" : "User Not Found"
+        }
 ```
 
 ### `backend/prompt.py`
@@ -572,12 +605,13 @@ import "../../styles/candidate_form.css"
 import { handelSubmit } from "../../services/api";
 
 function CandidateSignUp(){
-
     const [candidatename, setCandidatename] = useState('');
+    const [candidateUserName, setCandidateUserName] = useState('');
     const [candidateEmail, setCandidateEmail] = useState('');
     const [candidatePassword, setCandidatePassword] = useState('');
 
     const candidate = {
+        user_name : candidateUserName,
         name : candidatename,
         email : candidateEmail,
         password : candidatePassword,
@@ -587,11 +621,17 @@ function CandidateSignUp(){
     return(
         <div className="candidate-form-page data-form-page">
             <div className="form-page">
+                <h2>Candidate Sign Up</h2>
                 <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:candidate, endpoint:"candidate-signup"})}>
                     <label htmlFor="candidate-name" className="candidate-name-label">Name</label>
                         <input type="text" name="candidate-name" className="candidate-name-input" 
                         placeholder="Full Name" value={candidatename} 
                         onChange={(e) => setCandidatename(e.target.value)}/>
+
+                    <label htmlFor="candidate-username" className="candidate-username-label">Username</label>
+                        <input type="text" name="candidate-username" className="candidate-username-input" 
+                        placeholder="Username" value={candidateUserName} 
+                        onChange={(e) => setCandidateUserName(e.target.value)}/>
 
                     <label htmlFor="candidate-email" className="candidate-email-label">Email</label>
                         <input type="email" name="candidate-email" className="candidate-email-input" 
@@ -722,30 +762,40 @@ import { handelSubmit } from "../../services/api"
 function CompanySignUp(){
 
     // Company Detail
+    const [companyUserName, setCompanyUserName] = useState("")
     const [companyName , setCompanName] = useState("")
     const [companyemail, setCompanyEmail] = useState("")
     const [companyPassword, setCompanyPassword] = useState("")
 
     const  companyDetail = {
-        company_name : companyName,
-        company_email : companyemail,
-        company_password : companyPassword,
+        user_name : companyUserName,
+        name : companyName,
+        email : companyemail,
+        password : companyPassword,
         role : "company",
     }
 
     return (
         <div className="company-data-page data-form-page">
             <div className="form-page">
+                <h2>Company Sign Up</h2>
                 <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:companyDetail, endpoint:"company-signup"})}>
                     
+                    <label htmlFor="company-username" className="company-name-label">Company Username</label>
+                    <input type="text" name="company-username" className="company-username-input" value={companyUserName} 
+                    onChange={(e) => setCompanyUserName(e.target.value)}/>
+
                     <label htmlFor="company-name" className="company-name-label">Company Name</label>
-                    <input type="text" name="company-name" className="company-name-input" value={companyName} onChange={(e) => setCompanName(e.target.value)}/>
+                    <input type="text" name="company-name" className="company-name-input" value={companyName} 
+                    onChange={(e) => setCompanName(e.target.value)}/>
             
                     <label htmlFor="company-email" className="company-email">Email</label>
-                    <input type="text" name="company-Email" className="company-Email-input" value={companyemail} onChange={(e) => setCompanyEmail(e.target.value)}/>
+                    <input type="text" name="company-Email" className="company-Email-input" value={companyemail} 
+                    onChange={(e) => setCompanyEmail(e.target.value)}/>
                     
                     <label htmlFor="company-password" className="company-password-label">Password</label>
-                    <input type="password" name="company-password" className="company-password-input" value={companyPassword} onChange={(e) => setCompanyPassword(e.target.value)}/>
+                    <input type="password" name="company-password" className="company-password-input" value={companyPassword} 
+                    onChange={(e) => setCompanyPassword(e.target.value)}/>
 
                 <button type="submit" className="Save">Submit</button>
 
@@ -759,69 +809,6 @@ function CompanySignUp(){
 export default CompanySignUp
 ```
 
-### `frontend/AI-HR/src/component/Companies.jsx`
-
-```text
-import { useEffect, useState } from "react";
-import { getCompanies } from "../services/api";
-
-function Companies() {
-
-    const [companies, setCompanies] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-
-        async function loadCompanies() {
-            try {
-                const data = await getCompanies();
-
-                console.log("Companies:", data);
-
-                setCompanies(data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        loadCompanies();
-
-    }, []);
-
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
-    return (
-        <div>
-            <h1>Companies</h1>
-
-            {companies.map((item) => (
-                <div key={item._id}>
-
-                    <h2>
-                        {item.company.company_name}
-                    </h2>
-
-                    <p>
-                        {item.company.company_description}
-                    </p>
-
-                    <p>
-                        Industry: {item.company.industry}
-                    </p>
-
-                </div>
-            ))}
-        </div>
-    );
-}
-
-export default Companies;
-```
-
 ### `frontend/AI-HR/src/component/LoginAs.jsx`
 
 ```text
@@ -830,6 +817,7 @@ import CandidateSignUp from "./candidate/CandidateSignUp";
 import CompanySignUp from "./company/CompanySignUp";
 import { handelSubmit } from "../services/api";
 import "../styles/LoginAs.css"
+import { useNavigate } from "react-router-dom";
 
 function LoginAs(){
 
@@ -838,11 +826,15 @@ function LoginAs(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
+
     const loginData = {
         email : email,
         password : password,
         role : loginAs === "User" ? "candidate" : "company",
     }
+
     return(
         <div className="login-page-container">
             {!showLogin &&
@@ -860,7 +852,20 @@ function LoginAs(){
                 }}>Company</button>
                 </div>
             </div>
-            <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:loginData, endPoint:"login-as"})}>
+            <form action="" method="post" onSubmit={ async (e) => {
+                const result = await handelSubmit({e, data:loginData, endpoint:"login-as"});
+
+                if (result.success){
+                    if (result.user.role === "candidate"){
+                        navigate("/candidate-profile")
+                    }
+                    if (result.user.role === "company"){
+                        navigate("/company-profile")
+                    }
+                }else{
+                    console.log(result.message)
+                }
+        }}>
                 <label htmlFor="email" className="email-label">Email</label>
                 <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password" className="password-label">Password</label>
@@ -883,6 +888,7 @@ function LoginAs(){
 }
 
 export default LoginAs
+
 ```
 
 ### `frontend/AI-HR/src/component/Questions.jsx`
@@ -968,47 +974,6 @@ function Questions(){
 }
 
 export default Questions
-```
-
-### `frontend/AI-HR/src/component/User.jsx`
-
-```text
-import { useState, useEffect } from "react";
-import { getCandidates } from "../services/api";
-
-function User(){
-
-    const [user , setUser] = useState([])
-    
-    useEffect(() => {
-        async function loadUser() {
-            try {
-                const data = await getCandidates();
-
-                console.log("Candidates :" , data )
-                setUser(data)
-            } catch (error){
-                console.log(error)
-            }
-
-        }
-        loadUser();
-    },[])
-
-    return(
-        <div>
-            {
-                user.map((item) => (
-                    <div key={item.id}>
-                    <h2>{item.candidate.name}</h2>
-                    </div>
-                ))
-            }
-        </div>
-    )
-}
-
-export default User;
 ```
 
 ### `frontend/AI-HR/src/services/api.js`
@@ -1349,22 +1314,27 @@ export async function handelSubmit({e, data, endpoint}){
 ### `frontend/AI-HR/src/App.jsx`
 
 ```text
+import CandidateProfile from "./component/candidate/CandidateProfile"
+import CompanyProfile from "./component/company/CompanyProfile"
 import LoginAs from "./component/LoginAs"
-// import CandidateProfile from "./component/candidate/CandidateProfile"
-// import CompanyProfile from "./component/company/CompanyProfile"
-// import CompanySignUp from "./component/company/CompanySignUp"
-// import CandidateSignUp from "./component/candidate/CandidateSignUp"
+import { BrowserRouter , Routes , Route } from "react-router-dom"
 
 function App(){
 
   return (
-    <div>
-    <LoginAs />
-    {/* <CompanyProfile/>
-    <CandidateProfile/> */}
-    {/* <CompanySignUp />
-    <CandidateSignUp /> */}
-    </div>
+    <BrowserRouter>
+      <Routes>
+
+        <Route path="/" element={<LoginAs />}/>
+
+        <Route path="/candidate-profile"
+        element={<CandidateProfile/>}/>
+
+        <Route path="/company-profile"
+        element={<CompanyProfile/>}/>
+
+      </Routes>
+    </BrowserRouter>
   )
 }
 
