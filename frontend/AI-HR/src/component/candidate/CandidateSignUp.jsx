@@ -1,17 +1,18 @@
 import { useState } from "react"
-import "../styles/candidate_form.css"
-import { handelSubmit } from "../services/api";
+import "../../styles/candidate_form.css"
+import { handelSubmit } from "../../services/api";
 
 function CandidateSignUp(){
 
     const [candidatename, setCandidatename] = useState('');
-    const [candidatePassword, setCandidatePassword] = useState('');
     const [candidateEmail, setCandidateEmail] = useState('');
+    const [candidatePassword, setCandidatePassword] = useState('');
 
     const candidate = {
         name : candidatename,
         email : candidateEmail,
         password : candidatePassword,
+        role : "candidate",
     }
     
     return(
@@ -33,7 +34,7 @@ function CandidateSignUp(){
                         placeholder="Password" value={candidatePassword} 
                         onChange={(e) => setCandidatePassword(e.target.value)}/>
 
-                    <button type="submit">Find</button>
+                    <button type="submit">Submit</button>
                 </form>
             </div>
         </div>
