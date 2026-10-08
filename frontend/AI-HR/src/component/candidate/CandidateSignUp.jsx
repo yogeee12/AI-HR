@@ -3,12 +3,13 @@ import "../../styles/candidate_form.css"
 import { handelSubmit } from "../../services/api";
 
 function CandidateSignUp(){
-
     const [candidatename, setCandidatename] = useState('');
+    const [candidateUserName, setCandidateUserName] = useState('');
     const [candidateEmail, setCandidateEmail] = useState('');
     const [candidatePassword, setCandidatePassword] = useState('');
 
     const candidate = {
+        user_name : candidateUserName,
         name : candidatename,
         email : candidateEmail,
         password : candidatePassword,
@@ -23,6 +24,11 @@ function CandidateSignUp(){
                         <input type="text" name="candidate-name" className="candidate-name-input" 
                         placeholder="Full Name" value={candidatename} 
                         onChange={(e) => setCandidatename(e.target.value)}/>
+
+                    <label htmlFor="candidate-username" className="candidate-username-label">Username</label>
+                        <input type="text" name="candidate-username" className="candidate-username-input" 
+                        placeholder="Username" value={candidateUserName} 
+                        onChange={(e) => setCandidateUserName(e.target.value)}/>
 
                     <label htmlFor="candidate-email" className="candidate-email-label">Email</label>
                         <input type="email" name="candidate-email" className="candidate-email-input" 
