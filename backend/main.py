@@ -1,10 +1,46 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from ai_gen_result import analyze_candidate
 from database import candidates_collections, companies_collections, accounts_collections
-from auth import create_access_token
+from jose import jwt , JWTError
+from auth import SECRET_KEY, ALGORITHM, create_access_token
 
 app = FastAPI()
+
+security = HTTPBearer()
+
+def get_current_account(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        account_id = payload.get("sub")
+        role = payload.get("role")
+
+        if not account_id or role not in ["candidate", "company"]:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        return {
+            "account_id": account_id,
+            "role": role
+        }
+
+    except JWTError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or expired token"
+        )
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,7 +82,11 @@ def receive_company_detail(companyDetail : dict):
 # get candidate profile detail and save in db
 @app.post("/candidate-profile-setup")
 def receive_candidate_profile(candidateProfile : dict):
-    print(candidateProfile)
+    if not candidateProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is reqiured"
+        )
     
     result = candidates_collections.insert_one(candidateProfile)
     
@@ -59,14 +99,17 @@ def receive_candidate_profile(candidateProfile : dict):
 # get company profile detail and save in db
 @app.post("/company-profile-setup")
 def receive_company_profile(companyProfile : dict):
-    print(companyProfile)
+    if not companyProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is required"
+        )
     
     result = companies_collections.insert_one(companyProfile)
     
     return {
         "success" : True,
         "message" : "Company Profile Received",
-        "Company Profile" : companyProfile,
         "company_id" : str(result.inserted_id)
     }
     
@@ -151,3 +194,23 @@ def login_data(login_data: dict):
             "email": user["email"]
         }
     }
+    
+@app.get("/my-profile")
+def get_my_profile(account: dict = Depends(get_current_account)):
+    account_id = account_id["account_id"]
+    role = account["role"]
+    
+    if role == "candidate":
+        profile = candidates_collections.find_one({"account_id" : account_id})
+    else:
+        profile = companies_collections.find_one({"account_id" : account_id})
+        
+    if not profile:
+        raise HTTPException(
+            status_code = 404,
+            detail = "Profofie Not found . Please complete profile setup"
+        )
+    
+    profile["_id"] = str(profile["_id"])
+    
+    return profile
