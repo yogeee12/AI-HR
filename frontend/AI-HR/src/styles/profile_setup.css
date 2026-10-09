@@ -1,0 +1,160 @@
+
+/* ===== Shared Profile Setup Page ===== */
+
+.candidate-profile-setup,
+.company-profile-setup-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f4f7fb;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== Form Cards ===== */
+
+.candidate-profile-setup form,
+.company-profile-setup-form {
+    width: 100%;
+    max-width: 620px;
+    box-sizing: border-box;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e5eaf2;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+/* ===== Page Headings ===== */
+
+.candidate-profile-setup form::before {
+    content: "Build your candidate profile";
+    display: block;
+    margin-bottom: 8px;
+    color: #172554;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.company-profile-setup-form::before {
+    content: "Set up your company profile";
+    display: block;
+    margin-bottom: 8px;
+    color: #172554;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+/* ===== Labels ===== */
+
+.candidate-profile-setup label,
+.company-profile-setup-form label {
+    margin: 18px 0 8px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ===== Inputs and Textareas ===== */
+
+.candidate-profile-setup input,
+.candidate-profile-setup textarea,
+.company-profile-setup-form input,
+.company-profile-setup-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.candidate-profile-setup input,
+.company-profile-setup-form input {
+    min-height: 46px;
+}
+
+.candidate-profile-setup textarea,
+.company-profile-setup-form textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Placeholder text */
+
+.candidate-profile-setup input::placeholder,
+.candidate-profile-setup textarea::placeholder,
+.company-profile-setup-form input::placeholder,
+.company-profile-setup-form textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* Focus effect */
+
+.candidate-profile-setup input:focus,
+.candidate-profile-setup textarea:focus,
+.company-profile-setup-form input:focus,
+.company-profile-setup-form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ===== Submit Buttons ===== */
+
+.candidate-profile-setup button,
+.company-profile-setup-form button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 28px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.candidate-profile-setup button:hover,
+.company-profile-setup-form button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.candidate-profile-setup button:active,
+.company-profile-setup-form button:active {
+    transform: translateY(0);
+}
+
+/* ===== Mobile Layout ===== */
+
+@media (max-width: 600px) {
+    .candidate-profile-setup,
+    .company-profile-setup-page {
+        padding: 24px 14px;
+        align-items: flex-start;
+    }
+
+    .candidate-profile-setup form,
+    .company-profile-setup-form {
+        padding: 24px 20px;
+        border-radius: 12px;
+    }
+
+    .candidate-profile-setup form::before,
+    .company-profile-setup-form::before {
+        font-size: 23px;
+    }
+}
