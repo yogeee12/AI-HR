@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "../../styles/candidate_form.css"
 import { handelSubmit } from "../../services/api"
+import { useNavigate } from "react-router-dom"
 
 function CompanySignUp(){
 
@@ -17,12 +18,19 @@ function CompanySignUp(){
         password : companyPassword,
         role : "company",
     }
+    const navigate = useNavigate();
 
     return (
         <div className="company-data-page data-form-page">
             <div className="form-page">
                 <h2>Company Sign Up</h2>
-                <form action="" method="post" onSubmit={(e) => handelSubmit({e, data:companyDetail, endpoint:"company-signup"})}>
+                <form action="" method="post" onSubmit={ async (e) => {
+                    const result = await handelSubmit({e, data:companyDetail, endpoint:"company-signup"})
+
+                    if(result.success){
+                        navigate("/company-profile-setup")
+                    }
+                    }}>
                     
                     <label htmlFor="company-username" className="company-name-label">Company Username</label>
                     <input type="text" name="company-username" className="company-username-input" value={companyUserName} 

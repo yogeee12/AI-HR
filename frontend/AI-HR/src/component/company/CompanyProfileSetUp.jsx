@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { handelSubmit } from "../../services/api";
+import { useNavigate } from "react-router-dom";
+import "../../styles/profile_setup.css"
 
 function CompanyProfileSetUp() {
     const [companyName, setCompanyName] = useState("");
@@ -12,12 +14,19 @@ function CompanyProfileSetUp() {
         industry: industry,
     };
 
+    const navigate = useNavigate();
     return (
         <div className="company-profile-setup-page">
             <div className="company-profile-setup-form">
                 <form
                     action=""
-                    method="post" onSubmit={(e) => handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" })}
+                    method="post" onSubmit={async (e) => {
+                        const result = await handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
+
+                        if(result?.success){
+                            navigate("/company-profile")
+                        }
+                }}
                 >
                     <label htmlFor="company-name" className="company-name-label">   Company Name</label>
                     <input
