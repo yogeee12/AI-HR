@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ai_gen_result import analyze_candidate
 from database import candidates_collections, companies_collections, accounts_collections
+from auth import create_access_token
 
 app = FastAPI()
 
@@ -24,8 +25,8 @@ def receive_candidate(candidate : dict):
     result = accounts_collections.insert_one(candidate)
     
     return {
+        "success" : True,
         "message" : "Candidate recevied",
-        "candidate" : candidate,
         "candidate_id" : str(result.inserted_id)
     }
     
@@ -36,8 +37,8 @@ def receive_company_detail(companyDetail : dict):
     
     result = accounts_collections.insert_one(companyDetail)
     return {
+        "success" : True,
         "message" : "Company Detail Received",
-        "Company" : companyDetail,
         "company_id" : str(result.inserted_id)
     }
     
@@ -50,8 +51,8 @@ def receive_candidate_profile(candidateProfile : dict):
     result = candidates_collections.insert_one(candidateProfile)
     
     return {
+        "success" : True,
         "message" : "Candidate Profile Received",
-        "Candidate Profile" : candidateProfile,
         "candidate_id" : str(result.inserted_id)
     } 
     
@@ -63,6 +64,7 @@ def receive_company_profile(companyProfile : dict):
     result = companies_collections.insert_one(companyProfile)
     
     return {
+        "success" : True,
         "message" : "Company Profile Received",
         "Company Profile" : companyProfile,
         "company_id" : str(result.inserted_id)
@@ -103,38 +105,49 @@ def get_candidate():
         
     return candidate
 
+
 @app.post("/login-as")
-def login_data(login_data : dict):
-    
-    user = accounts_collections.find_one({"email" : login_data["email"]})
-    
-    if user:
-        user["_id"] = str(user["_id"])
-        if user["role"] != login_data["role"]:
-            return {
-                "success" : False,
-                "message" : f"User is not registered as a {login_data['role']}"
-            }
-            
-        if user["password"] == login_data["password"]:
-            return {
-                "success" : True,
-                "message" : "Login Successful",
-                "user" : {
-                    "user_name" : user["user_name"],
-                    "name" : user["name"],
-                    "role" : user["role"],
-                    "email" : user["email"]
-                }
-            }
-        else: 
-            return {
-                "success" : False,
-                "message" : "Invalid Password"
-            }
-            
-    else:
+def login_data(login_data: dict):
+
+    user = accounts_collections.find_one({
+        "email": login_data["email"]
+    })
+
+    if not user:
         return {
-            "success" : False,
-            "message" : "User Not Found"
+            "success": False,
+            "message": "User Not Found"
         }
+
+    if user["role"] != login_data["role"]:
+        return {
+            "success": False,
+            "message": f"User is not registered as a {login_data['role']}"
+        }
+
+    if user["password"] != login_data["password"]:
+        return {
+            "success": False,
+            "message": "Invalid Password"
+        }
+
+    # Create JWT after successful login verification
+    token = create_access_token(
+        account_id=str(user["_id"]),
+        role=user["role"]
+    )
+
+    # Return safe user information (never return the password)
+    return {
+        "success": True,
+        "message": "Login Successful",
+        "access_token": token,
+        "token_type": "bearer",
+        "user": {
+            "id": str(user["_id"]),
+            "user_name": user.get("user_name"),
+            "name": user.get("name"),
+            "role": user["role"],
+            "email": user["email"]
+        }
+    }
