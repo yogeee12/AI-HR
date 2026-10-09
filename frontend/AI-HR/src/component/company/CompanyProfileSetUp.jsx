@@ -8,7 +8,10 @@ function CompanyProfileSetUp() {
     const [companyDescription, setCompanyDescription] = useState("");
     const [industry, setIndustry] = useState("");
 
+    const accountId = sessionStorage("pendingAccountId")
+
     const companyDetail = {
+        account_id : accountId, 
         company_name: companyName,
         company_description: companyDescription,
         industry: industry,

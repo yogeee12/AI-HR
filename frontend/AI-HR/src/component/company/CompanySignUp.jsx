@@ -27,7 +27,12 @@ function CompanySignUp(){
                 <form action="" method="post" onSubmit={ async (e) => {
                     const result = await handelSubmit({e, data:companyDetail, endpoint:"company-signup"})
 
-                    if(result.success){
+                    if(result.success && result.company_id){
+                        sessionStorage.setItem(
+                            "pendingAccount",
+                            result.company_id
+                        )
+
                         navigate("/company-profile-setup")
                     }
                     }}>

@@ -1,29 +1,29 @@
-import { getCompanies } from "../../services/api"
+import { getMyProfile } from "../../services/api"
 import { useEffect, useState } from "react"
 
 function CompanyProfile(){
-    const [companyData, setCompanyData] = useState(null);
+    const [companyProfile, setCompanyProfile] = useState(null);
     
     useEffect(() =>{
-        async function fetchCompanyData() {
+        async function fetchProfile() {
             try{
-                const data = await getCompanies();
+                const data = await getMyProfile();
 
-                setCompanyData(data);
+                setCompanyProfile(data);
             }catch (error){
                 console.log("Error fetching company data:", error);
             }
         }
-        fetchCompanyData();
+        fetchProfile();
     },)
     
-    console.log("Company Data:", companyData);
+    console.log("Company Data:", companyProfile);
     return (
         <div className="company-profile-page">
             <div className="company-profile">
-                <h2>{companyData?.company?.company_name}</h2>
-                <p>Industry: {companyData?.company?.industry}</p>
-                <p>{companyData?.company?.company_description}</p>
+                <h2>{companyProfile?.company?.company_name}</h2>
+                <p>Industry: {companyProfile?.company?.industry}</p>
+                <p>{companyProfile?.company?.company_description}</p>
             </div>
         </div>
     )
