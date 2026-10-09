@@ -38,10 +38,15 @@ function LoginAs(){
                 }}>Company</button>
                 </div>
             </div>
+
             <form action="" method="post" onSubmit={ async (e) => {
                 const result = await handelSubmit({e, data:loginData, endpoint:"login-as"});
-
+                
                 if (result.success){
+                    
+                    localStorage.setItem("access_token", result.access_token)
+                    localStorage.setItem("user", JSON.stringify(result.user))
+                    
                     if (result.user.role === "candidate"){
                         navigate("/candidate-profile")
                     }
