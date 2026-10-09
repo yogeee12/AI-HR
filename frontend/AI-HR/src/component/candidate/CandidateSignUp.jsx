@@ -26,7 +26,11 @@ function CandidateSignUp(){
                 <form action="" method="post" onSubmit={ async (e) => {
                     const result = await handelSubmit({e, data:candidate, endpoint:"candidate-signup"})
 
-                    if(result.success){
+                    if(result.success && result?.candidate_id){
+                        sessionStorage.setItem(
+                            "pendingAccountId",
+                            result.candidate_id
+                        )
                         navigate("/candidate-profile-setup")
                     }
                 }}>

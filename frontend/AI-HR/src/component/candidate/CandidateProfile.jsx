@@ -1,24 +1,24 @@
 import {useState, useEffect} from "react";
-import { getCandidate } from "../../services/api";
+import { getMyProfile } from "../../services/api";
 
 function CandidateProfile(){
 
-    const [candidateData, setCandidateData] = useState(null);
+    const [candidateProfile, setCandidateProfile] = useState(null);
 
     useEffect(() => {
-        async function fetchCandidateData(){
-            const data = await getCandidate();
+        async function fetchProfile(){
+            const data = await getMyProfile();
 
-            setCandidateData(data);
+            setCandidateProfile(data);
         }
-        fetchCandidateData()
+        fetchProfile()
     })
     return(
         <div className="candidate-profile-page">
             <div className="candidate-profile">
-                <h2>{candidateData?.candidate?.name}</h2>
-                <p>{candidateData?.candidate?.summary}</p>
-                <p>{candidateData?.candidate?.skills}</p>
+                <h2>{candidateProfile?.candidate?.name}</h2>
+                <p>{candidateProfile?.candidate?.summary}</p>
+                <p>{candidateProfile?.candidate?.skills}</p>
             </div>
         </div>
     )

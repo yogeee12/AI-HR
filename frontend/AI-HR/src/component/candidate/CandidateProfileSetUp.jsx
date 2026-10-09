@@ -12,7 +12,10 @@ function CandidateProfileSetUp() {
     const [experience, setExperience] = useState("");
     const [education, setEducation] = useState("");
 
+    const accountId = sessionStorage.getItem("pendingAccountId");
+
     const candidateProfile = {
+        account_id : accountId,
         name: candidateName,
         phone: phone,
         summary: summary,
