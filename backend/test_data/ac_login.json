@@ -1,0 +1,143 @@
+
+[
+  {
+    "user_name": "rahulsh12",
+    "name": "Rahul Sharma",
+    "email": "rahul01@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "priyaverma",
+    "name": "Priya Verma",
+    "email": "priya02@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "arjunpatel",
+    "name": "Arjun Patel",
+    "email": "arjun03@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "snehagupta",
+    "name": "Sneha Gupta",
+    "email": "sneha04@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "amansingh",
+    "name": "Aman Singh",
+    "email": "aman05@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "nehajoshi",
+    "name": "Neha Joshi",
+    "email": "neha06@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "rohanmehta",
+    "name": "Rohan Mehta",
+    "email": "rohan07@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "ananyarao",
+    "name": "Ananya Rao",
+    "email": "ananya08@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "vikramyadav",
+    "name": "Vikram Yadav",
+    "email": "vikram09@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "poojanair",
+    "name": "Pooja Nair",
+    "email": "pooja10@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "novatechlabs",
+    "name": "NovaTech Labs",
+    "email": "company01@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "bluepeak",
+    "name": "BluePeak Software",
+    "email": "company02@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "datasphereai",
+    "name": "DataSphere AI",
+    "email": "company03@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "cloudnest",
+    "name": "CloudNest Systems",
+    "email": "company04@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "bytecraft",
+    "name": "ByteCraft Solutions",
+    "email": "company05@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "greengrid",
+    "name": "GreenGrid Tech",
+    "email": "company06@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "finedge",
+    "name": "FinEdge Analytics",
+    "email": "company07@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "pixelwave",
+    "name": "PixelWave Studio",
+    "email": "company08@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "securestack",
+    "name": "SecureStack Labs",
+    "email": "company09@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "orbitworks",
+    "name": "OrbitWorks",
+    "email": "company10@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  }
+]
