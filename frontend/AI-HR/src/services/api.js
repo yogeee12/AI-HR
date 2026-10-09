@@ -39,7 +39,7 @@ export async function handelSubmit({e, data, endpoint}){
 
     try{
 
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`,{
+        const response = await fetch(`${API}/${endpoint}`,{
             method : "POST",
             headers : {
                 "content-Type" : "application/json"
@@ -52,4 +52,28 @@ export async function handelSubmit({e, data, endpoint}){
     }catch (error){
         console.error("API Error :",error)
     }
+}
+
+export async function getMyProfile() {
+    const token = localStorage.getItem("access_token");
+
+    if (!token){
+        throw new Error("Please log in first")
+    }
+
+    const response = await fetch(`${API}/my-profile`,{
+        method : "GET",
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+
+    })
+
+    const data = await response.json();
+
+    if (!response){
+        throw new Error(data.detail || "Failed to fecth profile ") 
+    }
+
+    return data;
 }
