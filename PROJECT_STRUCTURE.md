@@ -1,13 +1,26 @@
-# Project Structure and File Snapshot
+﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-10 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
 - Backend source files are included except `.env` and `temp.txt`; secret values and data-bearing contents are redacted or omitted.
-- Frontend content is limited to the app source under `frontend/AI-HR/src`, plus `index.html`, `package.json`, and the relevant CSS/JS entry files.
-- Root-level data artifacts (`ac_login.json`, `candidate_data.json`, `company_data.json`) are not expanded here because they contain project data.
+- Frontend content is limited to the app source under `frontend/AI-HR/src`, plus `index.html`, `package.json`, `README.md`, and the relevant CSS/JS entry files.
+- Demo/test fixture data stored under `backend/test_data/` is included as a non-sensitive sample set; `company_data.json` is currently empty and is kept as a placeholder.
 - Dependencies in `venv/` and `node_modules/` are excluded from this snapshot.
+
+## Current project overview
+
+The repository is a small FastAPI + MongoDB backend paired with a React + Vite frontend. The backend handles account, profile, and AI-driven candidate evaluation flows, while the frontend manages sign-up, login, profile setup, and interview/question screens.
+
+Key items currently present in the repo:
+- Backend auth and token handling in `backend/auth.py` and `backend/main.py`
+- Mongo integration in `backend/database.py`
+- AI candidate analysis pipeline in `backend/ai_gen_result.py`, `backend/prompt.py`, and `backend/data_extract.py`
+- Frontend routing and page composition in `frontend/AI-HR/src/App.jsx`
+- Shared frontend API logic in `frontend/AI-HR/src/services/api.js`
+- UI styling and profile setup flows in `frontend/AI-HR/src/styles/` and `src/component/`
+- Demo data and sample account fixtures under `backend/test_data/`
 
 ## Directory and file tree
 
@@ -28,41 +41,49 @@ C:\Users\Om\Desktop\AI-HR\
 |   |   |-- prompt.py
 |   |   |-- requirements.txt
 |   |   |-- scoring.py
-|   |   |-- temp.txt [sensitive data omitted]
-|   |   `-- test_jwt.py
-|   |-- frontend/
-|   |   `-- AI-HR/
-|   |       |-- index.html
-|   |       |-- package.json
-|   |       |-- public/
-|   |       |   |-- favicon.svg
-|   |       |   `-- icons.svg
-|   |       `-- src/
-|   |           |-- App.css
-|   |           |-- App.jsx
-|   |           |-- index.css
-|   |           |-- main.jsx
-|   |           |-- component/
-|   |           |   |-- LoginAs.jsx
-|   |           |   |-- Questions.jsx
-|   |           |   |-- candidate/
-|   |           |   |   |-- CandidateProfile.jsx
-|   |           |   |   |-- CandidateProfileSetUp.jsx
-|   |           |   |   `-- CandidateSignUp.jsx
-|   |           |   `-- company/
-|   |           |       |-- CompanyProfile.jsx
-|   |           |       |-- CompanyProfileSetUp.jsx
-|   |           |       `-- CompanySignUp.jsx
-|   |           |-- services/
-|   |           |   `-- api.js
-|   |           `-- styles/
-|   |               |-- LoginAs.css
-|   |               `-- candidate_form.css
-|   `-- frontend/AI-HR/node_modules/ [excluded from snapshot]
-|-- ac_login.json [project data file]
-|-- candidate_data.json [project data file]
-|-- company_data.json [project data file]
-`-- venv/ [excluded from snapshot]
+|   |   |-- temp.txt [sensitive content omitted]
+|   |   |-- test_data/
+|   |   |   |-- ac_login.json
+|   |   |   |-- candidate_data.json
+|   |   |   `-- company_data.json
+|   |   |-- test_jwt.py
+|   |   `-- ...
+|   `-- frontend/
+|       `-- AI-HR/
+|           |-- README.md
+|           |-- index.html
+|           |-- package.json
+|           |-- public/
+|           |   |-- favicon.svg
+|           |   `-- icons.svg
+|           `-- src/
+|               |-- App.css
+|               |-- App.jsx
+|               |-- index.css
+|               |-- main.jsx
+|               |-- assets/
+|               |   |-- hero.png
+|               |   |-- react.svg
+|               |   `-- vite.svg
+|               |-- component/
+|               |   |-- LoginAs.jsx
+|               |   |-- Questions.jsx
+|               |   |-- candidate/
+|               |   |   |-- CandidateProfile.jsx
+|               |   |   |-- CandidateProfileSetUp.jsx
+|               |   |   `-- CandidateSignUp.jsx
+|               |   `-- company/
+|               |       |-- CompanyProfile.jsx
+|               |       |-- CompanyProfileSetUp.jsx
+|               |       `-- CompanySignUp.jsx
+|               |-- services/
+|               |   `-- api.js
+|               `-- styles/
+|                   |-- LoginAs.css
+|                   |-- candidate_form.css
+|                   `-- profile_setup.css
+|-- venv/ [excluded from snapshot]
+`-- frontend/AI-HR/node_modules/ [excluded from snapshot]
 ```
 
 ## Text file contents
@@ -72,6 +93,139 @@ C:\Users\Om\Desktop\AI-HR\
 ```text
 .env
 /__pycache__
+```
+
+### `frontend/AI-HR/README.md`
+
+```md
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+
+### `backend/test_data/ac_login.json`
+
+```json
+[
+  {
+    "user_name": "rahulsh12",
+    "name": "Rahul Sharma",
+    "email": "rahul01@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "priyaverma",
+    "name": "Priya Verma",
+    "email": "priya02@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "novatechlabs",
+    "name": "NovaTech Labs",
+    "email": "company01@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  }
+]
+```
+
+### `backend/test_data/candidate_data.json`
+
+```json
+[
+  {
+    "account_id": null,
+    "user_name": "rahulsh12",
+    "name": "Rahul Sharma",
+    "email": "rahul01@test.com",
+    "headline": "Backend developer interested in API development",
+    "bio": "Entry-level backend developer interested in building scalable APIs and database-driven applications.",
+    "skills": ["Python", "FastAPI", "PostgreSQL", "REST API", "Git"],
+    "experience_years": 1,
+    "education": "BCA",
+    "target_role": "Python Backend Developer",
+    "location": "Indore, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "priyaverma",
+    "name": "Priya Verma",
+    "email": "priya02@test.com",
+    "headline": "Frontend developer focused on user experience",
+    "bio": "Frontend developer who enjoys building responsive and accessible web interfaces.",
+    "skills": ["React", "JavaScript", "HTML", "CSS", "Git"],
+    "experience_years": 2,
+    "education": "B.Tech Computer Science",
+    "target_role": "Frontend Developer",
+    "location": "Bhopal, India",
+    "resume_url": null,
+    "profile_completed": true
+  }
+]
+```
+
+### `backend/test_data/company_data.json`
+
+```json
+[]
+```
+
+### `frontend/AI-HR/src/styles/profile_setup.css`
+
+```css
+/* ===== Shared Profile Setup Page ===== */
+
+.candidate-profile-setup,
+.company-profile-setup-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f4f7fb;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.candidate-profile-setup form,
+.company-profile-setup-form {
+    width: 100%;
+    max-width: 620px;
+    box-sizing: border-box;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e5eaf2;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+.candidate-profile-setup form::before {
+    content: "Build your candidate profile";
+    display: block;
+    margin-bottom: 8px;
+    color: #172554;
+    font-size: 27px;
+    font-weight: 700;
+}
 ```
 
 ### `backend/auth.py`
@@ -223,13 +377,49 @@ accounts_collections = db["accounts"]
 ### `backend/main.py`
 
 ```python
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from ai_gen_result import analyze_candidate
 from database import candidates_collections, companies_collections, accounts_collections
-from auth import create_access_token
+from jose import jwt , JWTError
+from auth import SECRET_KEY, ALGORITHM, create_access_token
 
 app = FastAPI()
+
+security = HTTPBearer()
+
+def get_current_account(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        account_id = payload.get("sub")
+        role = payload.get("role")
+
+        if not account_id or role not in ["candidate", "company"]:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        return {
+            "account_id": account_id,
+            "role": role
+        }
+
+    except JWTError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or expired token"
+        )
 
 app.add_middleware(
     CORSMiddleware,
@@ -239,98 +429,101 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
 @app.get("/")
 def home():
-    return {"message": "AI HR API is running"}
 
+    return {"message" : "AI HR API is running"}
 
 # get candidate sign up detail and save in db
 @app.post("/candidate-signup")
-def receive_candidate(candidate: dict):
+def receive_candidate(candidate : dict):
     result = accounts_collections.insert_one(candidate)
-
+    
     return {
-        "success": True,
-        "message": "Candidate recevied",
-        "candidate_id": str(result.inserted_id)
+        "success" : True,
+        "message" : "Candidate recevied",
+        "candidate_id" : str(result.inserted_id)
     }
-
-
-# get company sign up detail ans save in db
+    
+# get company sign up detail ans save in db 
 @app.post("/company-signup")
-def receive_company_detail(companyDetail: dict):
+def receive_company_detail(companyDetail : dict):
     print(companyDetail)
-
+    
     result = accounts_collections.insert_one(companyDetail)
     return {
-        "success": True,
-        "message": "Company Detail Received",
-        "company_id": str(result.inserted_id)
+        "success" : True,
+        "message" : "Company Detail Received",
+        "company_id" : str(result.inserted_id)
     }
-
+    
 
 # get candidate profile detail and save in db
 @app.post("/candidate-profile-setup")
-def receive_candidate_profile(candidateProfile: dict):
-    print(candidateProfile)
-
+def receive_candidate_profile(candidateProfile : dict):
+    if not candidateProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is reqiured"
+        )
+    
     result = candidates_collections.insert_one(candidateProfile)
-
+    
     return {
-        "success": True,
-        "message": "Candidate Profile Received",
-        "candidate_id": str(result.inserted_id)
-    }
-
-
+        "success" : True,
+        "message" : "Candidate Profile Received",
+        "candidate_id" : str(result.inserted_id)
+    } 
+    
 # get company profile detail and save in db
 @app.post("/company-profile-setup")
-def receive_company_profile(companyProfile: dict):
-    print(companyProfile)
-
+def receive_company_profile(companyProfile : dict):
+    if not companyProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is required"
+        )
+    
     result = companies_collections.insert_one(companyProfile)
-
+    
     return {
-        "success": True,
-        "message": "Company Profile Received",
-        "Company Profile": companyProfile,
-        "company_id": str(result.inserted_id)
+        "success" : True,
+        "message" : "Company Profile Received",
+        "company_id" : str(result.inserted_id)
     }
-
-
+    
 # Get answer from frontend
 @app.post("/answers")
 def get_answers(answers: dict):
     return answers
 
-
 # send questions to frontend
 @app.get("/questions")
 def analyze():
-
-    company = companies_collections.find_one({"company.company_name": "NovaTech Labs"})
-    candidate = candidates_collections.find_one({"candidate.name": "Rahul Sharma"})
-
+    
+    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
+    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
+    
     result = analyze_candidate(company=company, candidate=candidate)
     questions = result["get_questions"]
     print(result["get_answers"])
     return questions
 
-
 # send all companies data to react
 @app.get("/companies")
 def all_companies():
-    company = companies_collections.find_one({"company.company_name": "NovaTech Labs"})
+    
+    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
     company["_id"] = str(company["_id"])
     return company
-
 
 # send candidate data to react
 @app.get("/candidate")
 def get_candidate():
-    candidate = candidates_collections.find_one({"candidate.name": "Rahul Sharma"})
+    
+    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
     candidate["_id"] = str(candidate["_id"])
+        
     return candidate
 
 
@@ -359,13 +552,11 @@ def login_data(login_data: dict):
             "message": "Invalid Password"
         }
 
-    # Create JWT after successful login verification
     token = create_access_token(
         account_id=str(user["_id"]),
         role=user["role"]
     )
 
-    # Return safe user information (never return the password)
     return {
         "success": True,
         "message": "Login Successful",
@@ -379,6 +570,26 @@ def login_data(login_data: dict):
             "email": user["email"]
         }
     }
+    
+@app.get("/my-profile")
+def get_my_profile(account: dict = Depends(get_current_account)):
+    account_id = account["account_id"]
+    role = account["role"]
+    
+    if role == "candidate":
+        profile = candidates_collections.find_one({"account_id" : account_id})
+    else:
+        profile = companies_collections.find_one({"account_id" : account_id})
+        
+    if not profile:
+        raise HTTPException(
+            status_code = 404,
+            detail = "Profile Not found . Please complete profile setup"
+        )
+    
+    profile["_id"] = str(profile["_id"])
+    
+    return profile
 ```
 
 ### `backend/prompt.py`
@@ -588,7 +799,7 @@ print(token)
 
 ```jsx
 import CandidateProfile from "./component/candidate/CandidateProfile"
-import CandidateProfileSetUp from "./component/candidate/CandidateProfileSetUp"
+import CandidateProfileSetUp from "./component/candidate/candidateProfileSetUp"
 import CompanyProfile from "./component/company/CompanyProfile"
 import CompanyProfileSetUp from "./component/company/CompanyProfileSetUp"
 import LoginAs from "./component/LoginAs"
@@ -599,7 +810,7 @@ function App(){
   return (
     <BrowserRouter>
       <Routes>
-
+        
         <Route path="/" element={<LoginAs />}/>
 
         <Route path="/candidate-profile"
@@ -665,10 +876,15 @@ function LoginAs(){
                 }}>Company</button>
                 </div>
             </div>
+
             <form action="" method="post" onSubmit={ async (e) => {
                 const result = await handelSubmit({e, data:loginData, endpoint:"login-as"});
-
+                
                 if (result.success){
+                    
+                    localStorage.setItem("access_token", result.access_token)
+                    localStorage.setItem("user", JSON.stringify(result.user))
+                    
                     if (result.user.role === "candidate"){
                         navigate("/candidate-profile")
                     }
@@ -794,6 +1010,7 @@ export default Questions
 import { handelSubmit } from "../../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../styles/profile_setup.css"
 
 function CandidateProfileSetUp() {
 
@@ -804,7 +1021,10 @@ function CandidateProfileSetUp() {
     const [experience, setExperience] = useState("");
     const [education, setEducation] = useState("");
 
+    const accountId = sessionStorage.getItem("pendingAccountId");
+
     const candidateProfile = {
+        account_id : accountId,
         name: candidateName,
         phone: phone,
         summary: summary,
@@ -818,10 +1038,10 @@ function CandidateProfileSetUp() {
     return(
         <div className="candidate-profile-setup">
             <form action="" method="post" onSubmit={async (e) => {
-                const result = handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
+                const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
 
-                if (result.success){
-                    navigate("/candidate-profile")
+                if (result.success ){
+                    navigate("/")
                 }
 
                 }}>
@@ -894,9 +1114,13 @@ function CandidateSignUp(){
             <div className="form-page">
                 <h2>Candidate Sign Up</h2>
                 <form action="" method="post" onSubmit={ async (e) => {
-                    const result = handelSubmit({e, data:candidate, endpoint:"candidate-signup"})
+                    const result = await handelSubmit({e, data:candidate, endpoint:"candidate-signup"})
 
-                    if(result.success){
+                    if(result.success && result?.candidate_id){
+                        sessionStorage.setItem(
+                            "pendingAccountId",
+                            result.candidate_id
+                        )
                         navigate("/candidate-profile-setup")
                     }
                 }}>
@@ -930,19 +1154,55 @@ function CandidateSignUp(){
 export default CandidateSignUp
 ```
 
+### `frontend/AI-HR/src/component/candidate/CandidateProfile.jsx`
+
+```jsx
+import {useState, useEffect} from "react";
+import { getMyProfile } from "../../services/api";
+
+function CandidateProfile(){
+
+    const [candidateProfile, setCandidateProfile] = useState(null);
+
+    useEffect(() => {
+        async function fetchProfile(){
+            const data = await getMyProfile();
+
+            setCandidateProfile(data);
+        }
+        fetchProfile()
+    },[])
+    return(
+        <div className="candidate-profile-page">
+            <div className="candidate-profile">
+                <h2>{candidateProfile?.name}</h2>
+                <p>{candidateProfile?.summary}</p>
+                <p>{candidateProfile?.skills}</p>
+            </div>
+        </div>
+    )
+}
+
+export default CandidateProfile
+```
+
 ### `frontend/AI-HR/src/component/company/CompanyProfileSetUp.jsx`
 
 ```jsx
 import { useState } from "react";
 import { handelSubmit } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import "../../styles/profile_setup.css"
 
 function CompanyProfileSetUp() {
     const [companyName, setCompanyName] = useState("");
     const [companyDescription, setCompanyDescription] = useState("");
     const [industry, setIndustry] = useState("");
 
+    const accountId = sessionStorage.getItem("pendingAccountId")
+
     const companyDetail = {
+        account_id : accountId, 
         company_name: companyName,
         company_description: companyDescription,
         industry: industry,
@@ -955,14 +1215,14 @@ function CompanyProfileSetUp() {
                 <form
                     action=""
                     method="post" onSubmit={async (e) => {
-                        const result = handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
+                        const result = await handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
 
-                        if(result?.success){
-                            navigate("/company-profile")
+                        if(result.success){
+                            navigate("/")
                         }
                 }}
                 >
-                    <label htmlFor="company-name" className="company-name-label">   Company Name</label>
+                    <label htmlFor="company-name" className="company-name-label">Company Name</label>
                     <input
                         type="text"
                         name="company-name"
@@ -989,6 +1249,7 @@ function CompanyProfileSetUp() {
                         value={industry}
                         onChange={(e) => setIndustry(e.target.value)}
                     />
+                    <button type="submit">Submit</button>
                 </form>
             </div>
         </div>
@@ -1009,7 +1270,6 @@ import { useNavigate } from "react-router-dom"
 
 function CompanySignUp(){
 
-    // Company Detail
     const [companyUserName, setCompanyUserName] = useState("")
     const [companyName , setCompanName] = useState("")
     const [companyemail, setCompanyEmail] = useState("")
@@ -1029,9 +1289,14 @@ function CompanySignUp(){
             <div className="form-page">
                 <h2>Company Sign Up</h2>
                 <form action="" method="post" onSubmit={ async (e) => {
-                    const result = handelSubmit({e, data:companyDetail, endpoint:"company-signup"})
+                    const result = await handelSubmit({e, data:companyDetail, endpoint:"company-signup"})
 
-                    if(result.success){
+                    if(result.success && result.company_id){
+                        sessionStorage.setItem(
+                            "pendingAccountId",
+                            result.company_id
+                        )
+
                         navigate("/company-profile-setup")
                     }
                     }}>
@@ -1064,100 +1329,272 @@ function CompanySignUp(){
 export default CompanySignUp
 ```
 
+### `frontend/AI-HR/src/component/company/CompanyProfile.jsx`
+
+```jsx
+import { useEffect, useState } from "react"
+import { getMyProfile } from "../../services/api"
+
+function CompanyProfile(){
+    const [companyProfile, setCompanyProfile] = useState(null);
+    
+    useEffect(() =>{
+        async function fetchProfile() {
+            try{
+                const data = await getMyProfile();
+
+                setCompanyProfile(data);
+            }catch (error){
+                console.log("Error fetching company data:", error);
+            }
+        }
+        fetchProfile();
+    },[])
+    
+    return (
+        <div className="company-profile-page">
+            <div className="company-profile">
+                <h2>{companyProfile?.company_name}</h2>
+                <p>Industry: {companyProfile?.industry}</p>
+                <p>{companyProfile?.company_description}</p>
+            </div>
+        </div>
+    )
+}
+
+export default CompanyProfile
+```
+
 ### `frontend/AI-HR/src/services/api.js`
 
 ```js
-const API = "http://127.0.0.1:8000";
+import { handelSubmit } from "../../services/api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/profile_setup.css"
 
-// getCompany company data from backend
-export async function getCompanies(){
-    const res = await fetch(`${API}/companies`);
+function CandidateProfileSetUp() {
 
-    if (!res.ok) {
-        throw new Error("Failed to fetch company") 
-    }
+    const [candidateName, setCandidateName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [summary, setSummary] = useState("");
+    const [skills, setSkills] = useState("");
+    const [experience, setExperience] = useState("");
+    const [education, setEducation] = useState("");
 
-    return res.json();
+    const accountId = sessionStorage.getItem("pendingAccountId");
+
+    const candidateProfile = {
+        account_id : accountId,
+        name: candidateName,
+        phone: phone,
+        summary: summary,
+        skills: skills,
+        experience: experience,
+        education: education
+    };
+
+    const navigate = useNavigate();
+
+    return(
+        <div className="candidate-profile-setup">
+            <form action="" method="post" onSubmit={async (e) => {
+                const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
+
+                if (result.success ){
+                    navigate("/")
+                }
+
+                }}>
+                <label htmlFor="candidate-name" className="candidate-name-label">Name</label>
+                <input type="text" name="candidate-name" className="candidate-name-input" 
+                placeholder="Full Name" value={candidateName} 
+                onChange={(e) => setCandidateName(e.target.value)}/>
+
+                <label htmlFor="candidate-phone" className="candidate-phone-label">Phone no</label>
+                <input type="text" name="candidate-phone" className="candidate-phone-input" 
+                placeholder="Phone Number" value={phone} 
+                onChange={(e) => setPhone(e.target.value)}/>
+
+                <label htmlFor="candidate-summary" className="candidate-summary-label">Summary</label>
+                <textarea name="candidate-summary" className="candidate-summary-input" 
+                placeholder="Summary" value={summary} 
+                onChange={(e) => setSummary(e.target.value)}/>
+
+                <label htmlFor="candidate-skills" className="candidate-skills-label">Skills</label>
+                <input type="text" name="candidate-skills" className="candidate-skills-input" 
+                placeholder="Skills" value={skills} 
+                onChange={(e) => setSkills(e.target.value)}/>   
+
+                <label htmlFor="candidate-experience" className="candidate-experience-label">Experience</label>
+                <input type="text" name="candidate-experience" className="candidate-experience-input" 
+                placeholder="Experience" value={experience} 
+                onChange={(e) => setExperience(e.target.value)}/>
+
+                <label htmlFor="candidate-education" className="candidate-education-label">Education</label>
+                <input type="text" name="candidate-education" className="candidate-education-input" 
+                placeholder="Education" value={education} 
+                onChange={(e) => setEducation(e.target.value)}/>
+
+                <button type="submit" className="candidate-profile-submit">Submit</button>
+
+            </form>
+        </div>
+    )
 }
 
-// fetch candidtae data from backend
-export async function getCandidate(){
-    const res = await  fetch(`${API}/candidate`);
-
-    if (!res.ok){
-        throw new Error("Failed to feth user") 
-    }
-
-    return res.json()
-}
-
-// fetch questions from backend
-export async function getQuestions(){
-    const res = await fetch(`${API}/questions`)
-
-    if(!res.ok){
-        throw new Error("Failed to fetch data!");
-        
-    }
-    return res.json()
-}
-
-// Handel form submission for every page
-export async function handelSubmit({e, data, endpoint}){
-    e.preventDefault();
-
-    try{
-
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`,{
-            method : "POST",
-            headers : {
-                "content-Type" : "application/json"
-            },
-            body : JSON.stringify(data)
-        });
-        const result = await response.json();
-        console.log(result);
-        return result;
-    }catch (error){
-        console.error("API Error :",error)
-    }
-}
+export default CandidateProfileSetUp
 ```
 
 ### `frontend/AI-HR/src/styles/LoginAs.css`
 
 ```css
-.login-page{
+/* ===== Global page layout ===== */
+
+.login-page-container {
+    min-height: 100vh;
     width: 100%;
+    box-sizing: border-box;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(59, 130, 246, 0.16),
+            transparent 35%
+        ),
+        #0b1120;
+    color: #172033;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
 }
 
-.login-page .login-select{
-    justify-content: center;
-    align-items: center;
-    width: 400px;
-    height: auto;
-    border: 2px solid black;
-}
-
-.login-select h2{
+.login-page {
     width: 100%;
-    margin: 10px;
-    padding: 5px 2px;
+    max-width: 440px;
+    box-sizing: border-box;
+    padding: 38px;
+    background: #ffffff;
+    border: 1px solid #e5eaf2;
+    border-radius: 20px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+    animation: cardEnter 0.35s ease-out;
 }
 
-.login-select .login-select-btn{
+.login-page h2 {
+    margin: 0 0 10px;
+    color: #111827;
+    font-size: 28px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
+    text-align: center;
+}
+
+.login-select {
+    margin-bottom: 28px;
+}
+
+.login-select h2::after {
+    content: "Welcome back. Sign in to continue.";
+    display: block;
+    margin-top: 12px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.login-select-btn {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin: 10px;
+    gap: 6px;
+    padding: 5px;
+    margin-top: 24px;
+    background: #f1f5f9;
+    border-radius: 11px;
 }
 
-.login-select .login-select-btn button{
-    width: 150px;
+.login-select-btn button {
+    flex: 1;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.login-select-btn button:hover {
+    color: #1d4ed8;
+    background: #e8efff;
+}
+
+.login-page form,
+.login-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-page label,
+.login-content label {
+    margin-top: 8px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 650;
+    text-align: left;
+}
+
+.login-page input,
+.login-content input,
+.login-content select,
+.login-content textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #dbe2ea;
+    border-radius: 9px;
+    outline: none;
+    background: #ffffff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-page input:focus,
+.login-content input:focus,
+.login-content select:focus,
+.login-content textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
+}
+
+.login-page form button[type="submit"],
+.login-content form button[type="submit"],
+.login-content form button[type="button"] {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.login-page form button[type="submit"]:hover,
+.login-content form button[type="submit"]:hover,
+.login-content form button[type="button"]:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
 }
 ```
 
@@ -1182,7 +1619,7 @@ export async function handelSubmit({e, data, endpoint}){
     text-align: left;
 }
 
-.data-form-page .form-page label {
+.data-form-page .form-page label{
     text-align: left;
     font-size: 16px;
     font-weight: 500;
