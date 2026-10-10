@@ -19,6 +19,7 @@ Key items currently present in the repo:
 - AI candidate analysis pipeline in `backend/ai_gen_result.py`, `backend/prompt.py`, and `backend/data_extract.py`
 - Frontend routing and page composition in `frontend/AI-HR/src/App.jsx`
 - Shared frontend API logic in `frontend/AI-HR/src/services/api.js`
+- Home-page, navbar, and job-post UX in `frontend/AI-HR/src/component/Home.jsx`, `Navbar.jsx`, and `CreateJobPost.jsx`
 - UI styling and profile setup flows in `frontend/AI-HR/src/styles/` and `src/component/`
 - Demo data and sample account fixtures under `backend/test_data/`
 
@@ -53,6 +54,13 @@ C:\Users\Om\Desktop\AI-HR\
 |           |-- README.md
 |           |-- index.html
 |           |-- package.json
+|           |-- .gitignore
+|           |-- eslint.config.js
+|           |-- index.html
+|           |-- package-lock.json
+|           |-- package.json
+|           |-- README.md
+|           |-- vite.config.js
 |           |-- public/
 |           |   |-- favicon.svg
 |           |   `-- icons.svg
@@ -66,7 +74,10 @@ C:\Users\Om\Desktop\AI-HR\
 |               |   |-- react.svg
 |               |   `-- vite.svg
 |               |-- component/
+|               |   |-- Home.jsx
+|               |   |-- JobPostDashboard.jsx
 |               |   |-- LoginAs.jsx
+|               |   |-- Navbar.jsx
 |               |   |-- Questions.jsx
 |               |   |-- candidate/
 |               |   |   |-- CandidateProfile.jsx
@@ -75,12 +86,16 @@ C:\Users\Om\Desktop\AI-HR\
 |               |   `-- company/
 |               |       |-- CompanyProfile.jsx
 |               |       |-- CompanyProfileSetUp.jsx
-|               |       `-- CompanySignUp.jsx
+|               |       |-- CompanySignUp.jsx
+|               |       `-- CreateJobPost.jsx
 |               |-- services/
 |               |   `-- api.js
 |               `-- styles/
 |                   |-- LoginAs.css
 |                   |-- candidate_form.css
+|                   |-- creat_job_post.css
+|                   |-- home.css
+|                   |-- navbar.css
 |                   `-- profile_setup.css
 |-- venv/ [excluded from snapshot]
 `-- frontend/AI-HR/node_modules/ [excluded from snapshot]
@@ -795,6 +810,72 @@ print(token)
 }
 ```
 
+### `frontend/AI-HR/.gitignore`
+
+```gitignore
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+```
+
+### `frontend/AI-HR/eslint.config.js`
+
+```js
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+])
+```
+
+### `frontend/AI-HR/vite.config.js`
+
+```js
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [react()],
+})
+```
+
 ### `frontend/AI-HR/src/App.jsx`
 
 ```jsx
@@ -802,6 +883,7 @@ import CandidateProfile from "./component/candidate/CandidateProfile"
 import CandidateProfileSetUp from "./component/candidate/candidateProfileSetUp"
 import CompanyProfile from "./component/company/CompanyProfile"
 import CompanyProfileSetUp from "./component/company/CompanyProfileSetUp"
+import Home from "./component/Home"
 import LoginAs from "./component/LoginAs"
 import { BrowserRouter , Routes , Route } from "react-router-dom"
 
@@ -811,7 +893,10 @@ function App(){
     <BrowserRouter>
       <Routes>
         
-        <Route path="/" element={<LoginAs />}/>
+        <Route path="/"
+        element={<Home/>}/>
+        
+        <Route path="/login-as" element={<LoginAs />}/>
 
         <Route path="/candidate-profile"
         element={<CandidateProfile/>}/>
@@ -831,6 +916,546 @@ function App(){
 }
 
 export default App
+```
+
+### `frontend/AI-HR/src/component/Home.jsx`
+
+```jsx
+import Navbar from "./Navbar"
+import "../styles/home.css"
+
+function Home(){
+
+    return (
+        <div className="home-page">
+            <Navbar/>
+            <div className="home-page-body">
+                <div className="hero-section">
+                    <h1>Find Your Dream Job Today</h1>
+                    <p>Browse thousands of jobs listing from top companies around the world.<br/>Your next career move starts here</p>
+                    <div className="home-page-search">
+                    <form action="" method="post">
+                        <input type="search" name="serach" placeholder="Job title, company, Location" className="search-bar"/>
+                        <button type="submit">search</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )    
+}
+
+export default Home
+```
+
+### `frontend/AI-HR/src/component/JobPostDashboard.jsx`
+
+```jsx
+function JobPostDashboard(){
+    return(
+        <></>
+    )
+}
+
+export default JobPostDashboard
+```
+
+### `frontend/AI-HR/src/component/Navbar.jsx`
+
+```jsx
+import { useNavigate } from "react-router-dom"
+import "../styles/navbar.css"
+
+function Navbar(){
+
+    const navigate = useNavigate();
+
+    return(
+        <div className="nav-bar">
+            <div className="nav-bar-container">
+                <div className="logo-name">
+                    <h3>AI-HR</h3>
+                </div>
+                <div className="nav-pages-links">
+                    <a href="http://" target="_blank" rel="noopener noreferrer">Home</a>
+                    <a href="http://" target="_blank" rel="noopener noreferrer">Jobs</a>
+                    <a href="http://" target="_blank" rel="noopener noreferrer">Companies</a>
+                    <a href="http://" target="_blank" rel="noopener noreferrer">About</a>
+                </div>
+                <div className="sign-in-up">
+                        <button onClick={() => navigate("/login-as")}>
+                        Sign In
+                        </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Navbar
+```
+
+### `frontend/AI-HR/src/component/company/CreateJobPost.jsx`
+
+```jsx
+import { useState } from "react"
+import { handelSubmit } from "../../services/api";
+import "../../styles/creat_job_post.css"
+
+function CreateJobPost({onClose}){
+
+    const [jobTitle , setJobTitle] = useState("");
+    const [description , setDescription] = useState("");
+    const [requiredSkills , setRequiredSkills] = useState("");
+    const [experience , setExperience] = useState("");
+    const [location , setLocation] = useState("");
+
+    const jobDetails = {
+        job_title : jobTitle,
+        description : description,
+        required_skills : requiredSkills,
+        min_experience : experience,
+        location : location,
+    }
+
+    return(
+        <div className="job-modal-overlay" onClick={onClose}>
+            <div 
+            className="job-model"
+            onClick={(e) => e.stopPropagation()}>
+                <div className="job-modal-header">
+                    <div>
+                        <h2>Post a job</h2>
+                    </div>
+                    <button 
+                    type="button"
+                    className="job-model_close"
+                    onClick={onClose}
+                    aria-label="Close form"
+                    >
+                        &times;
+                        </button>
+                </div>
+                <form action="" onSubmit={(e) => handelSubmit({e, data:jobDetails, endpoint:"job-details"})}>
+                    <label htmlFor="job-title">Job Title</label>
+                    <input type="text" name="job-title" className="job-title-input" onChange={(e) => setJobTitle(e.target.value)}/>
+
+                    <label htmlFor="job-description">Job Description</label>
+                    <textarea name="job-description" className="job-description-input" onChange={(e) => setDescription(e.target.value)}/>
+
+                    <label htmlFor="job-required-skills">Required Skills</label>
+                    <input type="text" name="job-required-skills" className="job-required-skills-input" onChange={(e) => setRequiredSkills(e.target.value)}/>
+
+                    <label htmlFor="job-min-experience">Minimum Experience</label>
+                    <input type="number" name="job-min-experience" className="job-min-experience-input" onChange={(e) => setExperience(e.target.value)}/>
+
+                    <label htmlFor="job-location">Location</label>
+                    <input type="text" name="job-location" className="job-location-input" onChange={(e) => setLocation(e.target.value)}/>
+
+                    <div className="job-modal-actions">
+                        <button
+                            type="button"
+                            className="job-cancel-btn"
+                            onClick={onClose}
+                        >
+                            Cancel
+                        </button>
+                         <button
+                            type="submit"
+                            className="job-submit-btn"
+                        >
+                            Publish Job
+                        </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    )
+}
+
+export default CreateJobPost
+```
+
+### `frontend/AI-HR/src/styles/home.css`
+
+```css
+/* Home page */
+.home-page {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f8fafc;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hero section */
+.hero-section {
+    width: 100%;
+    min-height: 317px;
+    box-sizing: border-box;
+    padding: 43px 20px 44px;
+    background: linear-gradient(115deg, #2451d8 0%, #1d4ed8 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Main heading */
+.hero-section h1 {
+    margin: 0 0 17px;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -1.8px;
+    color: #ffffff;
+}
+
+/* Hero description */
+.hero-section p {
+    margin: 0;
+    max-width: 680px;
+    color: #e4ebff;
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 400;
+}
+
+/* Search container */
+.home-page-search {
+    width: 100%;
+    max-width: 535px;
+    margin-top: 36px;
+}
+
+/* Search form */
+.home-page-search form {
+    width: 100%;
+    min-height: 62px;
+    padding: 7px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Search input */
+.home-page-search .search-bar {
+    flex: 1;
+    min-width: 0;
+    height: 46px;
+    padding: 0 15px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #1f2937;
+    font-size: 14px;
+}
+
+.home-page-search .search-bar::placeholder {
+    color: #858b95;
+}
+
+/* Search button */
+.home-page-search button {
+    height: 46px;
+    min-width: 122px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2864e8;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.home-page-search button:hover {
+    background-color: #174bc4;
+}
+```
+
+### `frontend/AI-HR/src/styles/navbar.css`
+
+```css
+/* Navbar */
+.nav-bar {
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.nav-bar-container {
+    width: 100%;
+    max-width: 1128px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Logo */
+.logo-name {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo-name h3 {
+    margin: 0;
+    color: #172033;
+    font-size: 23px;
+    font-weight: 750;
+    letter-spacing: -0.6px;
+}
+
+/* Navigation links */
+.nav-pages-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-pages-links a {
+    color: #555d6b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+}
+
+.nav-pages-links a:hover {
+    color: #2563eb;
+}
+
+/* Sign-in/profile area */
+.sign-in-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 38px;
+    border-radius: 6px;
+    background-color: #f3f4f6;
+    cursor: pointer;
+    font-size: 19px;
+    flex-shrink: 0;
+    border-radius: 5px;
+}
+.sign-in-up button{
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+    font-size: 12px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+
+.sign-in-up:hover {
+    background-color: #e5e7eb;
+}
+```
+
+### `frontend/AI-HR/src/styles/creat_job_post.css`
+
+```css
+/* Background overlay */
+.job-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+/* Popup container */
+.job-model {
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    padding: 30px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation: job-modal-appear 0.2s ease-out;
+}
+
+/* Popup header */
+.job-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.job-modal-header h2 {
+    margin: 0;
+    color: #172033;
+    font-size: 26px;
+    font-weight: 750;
+}
+
+/* Close button */
+.job-model_close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    border: none;
+    border-radius: 7px;
+    background: #f3f4f6;
+    color: #4b5563;
+
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.job-model_close:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* Form layout */
+.job-model form {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+/* Labels */
+.job-model form label {
+    margin-top: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Text inputs and textarea */
+.job-model form input,
+.job-model form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    outline: none;
+
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 14px;
+
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+/* Input height */
+.job-model form input {
+    height: 44px;
+}
+
+/* Description field */
+.job-model form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Focus effect */
+.job-model form input:focus,
+.job-model form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Placeholder */
+.job-model form input::placeholder,
+.job-model form textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Bottom action buttons */
+.job-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.job-modal-actions button {
+    min-height: 42px;
+    padding: 0 20px;
+
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
+}
+
+/* Cancel */
+.job-cancel-btn {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+}
+
+.job-cancel-btn:hover {
+    background: #f3f4f6;
+}
+
+/* Publish */
+.job-submit-btn {
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.job-submit-btn:hover {
+    border-color: #1d4ed8;
+    background: #1d4ed8;
+}
 ```
 
 ### `frontend/AI-HR/src/component/LoginAs.jsx`
@@ -1657,6 +2282,6 @@ createRoot(document.getElementById('root')).render(
 ## Notes
 
 - JWT-based login was added via `backend/auth.py` and is used in `backend/main.py`.
-- The frontend app now includes route-based signup and profile setup flows for both candidate and company users.
+- The frontend app now includes route-based signup and profile setup flows for both candidate and company users, plus a home page, navbar navigation, and job-posting modal flow.
 - The repository still uses MongoDB-backed persistence and a Gemini-based candidate-analysis flow, but the document intentionally omits secret keys and generated payloads.
 
