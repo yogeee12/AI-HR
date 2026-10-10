@@ -8,7 +8,7 @@ function CompanyProfileSetUp() {
     const [companyDescription, setCompanyDescription] = useState("");
     const [industry, setIndustry] = useState("");
 
-    const accountId = sessionStorage("pendingAccountId")
+    const accountId = sessionStorage.getItem("pendingAccountId")
 
     const companyDetail = {
         account_id : accountId, 
@@ -26,12 +26,12 @@ function CompanyProfileSetUp() {
                     method="post" onSubmit={async (e) => {
                         const result = await handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
 
-                        if(result?.success){
-                            navigate("/company-profile")
+                        if(result.success){
+                            navigate("/")
                         }
                 }}
                 >
-                    <label htmlFor="company-name" className="company-name-label">   Company Name</label>
+                    <label htmlFor="company-name" className="company-name-label">Company Name</label>
                     <input
                         type="text"
                         name="company-name"
@@ -58,6 +58,7 @@ function CompanyProfileSetUp() {
                         value={industry}
                         onChange={(e) => setIndustry(e.target.value)}
                     />
+                    <button type="submit">Submit</button>
                 </form>
             </div>
         </div>
