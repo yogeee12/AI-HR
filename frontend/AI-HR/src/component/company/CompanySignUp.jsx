@@ -29,7 +29,7 @@ function CompanySignUp(){
 
                     if(result.success && result.company_id){
                         sessionStorage.setItem(
-                            "pendingAccount",
+                            "pendingAccountId",
                             result.company_id
                         )
 
