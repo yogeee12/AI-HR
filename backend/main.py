@@ -197,7 +197,7 @@ def login_data(login_data: dict):
     
 @app.get("/my-profile")
 def get_my_profile(account: dict = Depends(get_current_account)):
-    account_id = account_id["account_id"]
+    account_id = account["account_id"]
     role = account["role"]
     
     if role == "candidate":
@@ -208,7 +208,7 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     if not profile:
         raise HTTPException(
             status_code = 404,
-            detail = "Profofie Not found . Please complete profile setup"
+            detail = "Profile Not found . Please complete profile setup"
         )
     
     profile["_id"] = str(profile["_id"])
