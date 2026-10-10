@@ -31,8 +31,8 @@ function CandidateProfileSetUp() {
             <form action="" method="post" onSubmit={async (e) => {
                 const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
 
-                if (result.success){
-                    navigate("/candidate-profile")
+                if (result.success ){
+                    navigate("/")
                 }
 
                 }}>
