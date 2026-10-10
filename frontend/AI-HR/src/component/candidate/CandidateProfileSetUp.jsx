@@ -32,7 +32,7 @@ function CandidateProfileSetUp() {
                 const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
 
                 if (result.success ){
-                    navigate("/")
+                    navigate("/login-as")
                 }
 
                 }}>
