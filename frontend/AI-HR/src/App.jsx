@@ -2,6 +2,7 @@ import CandidateProfile from "./component/candidate/CandidateProfile"
 import CandidateProfileSetUp from "./component/candidate/candidateProfileSetUp"
 import CompanyProfile from "./component/company/CompanyProfile"
 import CompanyProfileSetUp from "./component/company/CompanyProfileSetUp"
+import Home from "./component/Home"
 import LoginAs from "./component/LoginAs"
 import { BrowserRouter , Routes , Route } from "react-router-dom"
 
@@ -11,7 +12,10 @@ function App(){
     <BrowserRouter>
       <Routes>
         
-        <Route path="/" element={<LoginAs />}/>
+        <Route path="/"
+        element={<Home/>}/>
+        
+        <Route path="/login-as" element={<LoginAs />}/>
 
         <Route path="/candidate-profile"
         element={<CandidateProfile/>}/>
