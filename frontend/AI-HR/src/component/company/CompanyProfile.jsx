@@ -1,9 +1,11 @@
 import { getMyProfile } from "../../services/api"
 import { useEffect, useState } from "react"
+import CreateJobPost from "./CreateJobPost";
 
 function CompanyProfile(){
     const [companyProfile, setCompanyProfile] = useState(null);
-    
+    const [showJobModal , setShowJobModal] = useState(false);
+
     useEffect(() =>{
         async function fetchProfile() {
             try{
@@ -25,6 +27,13 @@ function CompanyProfile(){
                 <p>Industry: {companyProfile?.industry}</p>
                 <p>{companyProfile?.company_description}</p>
             </div>
+            <div className="create-job-post">
+                <button onClick={() => setShowJobModal(true)}>+ Post a Job</button>
+            </div>
+            {showJobModal &&
+                <CreateJobPost onClose={() => setShowJobModal(false)}/>
+
+            }
         </div>
     )
 }
