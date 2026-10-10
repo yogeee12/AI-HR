@@ -27,7 +27,7 @@ function CompanyProfileSetUp() {
                         const result = await handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
 
                         if(result.success){
-                            navigate("/")
+                            navigate("/login-as")
                         }
                 }}
                 >
