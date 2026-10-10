@@ -15,15 +15,15 @@ function CompanyProfile(){
             }
         }
         fetchProfile();
-    },)
+    },[])
     
-    console.log("Company Data:", companyProfile);
+    // console.log("Company Data:", companyProfile);
     return (
         <div className="company-profile-page">
             <div className="company-profile">
-                <h2>{companyProfile?.company?.company_name}</h2>
-                <p>Industry: {companyProfile?.company?.industry}</p>
-                <p>{companyProfile?.company?.company_description}</p>
+                <h2>{companyProfile?.company_name}</h2>
+                <p>Industry: {companyProfile?.industry}</p>
+                <p>{companyProfile?.company_description}</p>
             </div>
         </div>
     )
