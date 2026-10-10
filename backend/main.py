@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from ai_gen_result import analyze_candidate
-from database import candidates_collections, companies_collections, accounts_collections
+from database import candidates_collections, companies_collections, accounts_collections, job_collection
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
 
@@ -117,6 +117,17 @@ def receive_company_profile(companyProfile : dict):
 @app.post("/answers")
 def get_answers(answers: dict):
     return answers
+
+@app.post("/job-details")
+def get_job_details(jobDetails: dict):
+    
+    result = job_collection.insert_one(jobDetails)
+    
+    return {
+        "success" : True,
+        "result" : str(result["_id"])
+    }
+
 
 # send questions to frontend
 @app.get("/questions")
