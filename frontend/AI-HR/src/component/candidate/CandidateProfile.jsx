@@ -12,13 +12,13 @@ function CandidateProfile(){
             setCandidateProfile(data);
         }
         fetchProfile()
-    })
+    },[])
     return(
         <div className="candidate-profile-page">
             <div className="candidate-profile">
-                <h2>{candidateProfile?.candidate?.name}</h2>
-                <p>{candidateProfile?.candidate?.summary}</p>
-                <p>{candidateProfile?.candidate?.skills}</p>
+                <h2>{candidateProfile?.name}</h2>
+                <p>{candidateProfile?.summary}</p>
+                <p>{candidateProfile?.skills}</p>
             </div>
         </div>
     )
