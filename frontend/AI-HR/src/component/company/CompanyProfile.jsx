@@ -32,7 +32,6 @@ function CompanyProfile(){
             </div>
             {showJobModal &&
                 <CreateJobPost onClose={() => setShowJobModal(false)}/>
-
             }
         </div>
     )
