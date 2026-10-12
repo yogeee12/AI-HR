@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-10 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-12 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -18,8 +18,9 @@ Key items currently present in the repo:
 - Mongo integration in `backend/database.py`
 - AI candidate analysis pipeline in `backend/ai_gen_result.py`, `backend/prompt.py`, and `backend/data_extract.py`
 - Frontend routing and page composition in `frontend/AI-HR/src/App.jsx`
+- New shared layout wrapper in `frontend/AI-HR/src/layouts/MainLayout.jsx`
 - Shared frontend API logic in `frontend/AI-HR/src/services/api.js`
-- Home-page, navbar, and job-post UX in `frontend/AI-HR/src/component/Home.jsx`, `Navbar.jsx`, and `CreateJobPost.jsx`
+- Home-page, navbar, jobs dashboard, and job-post UX in `frontend/AI-HR/src/component/Home.jsx`, `Navbar.jsx`, `JobPostDashboard.jsx`, and `CreateJobPost.jsx`
 - UI styling and profile setup flows in `frontend/AI-HR/src/styles/` and `src/component/`
 - Demo data and sample account fixtures under `backend/test_data/`
 
@@ -51,15 +52,12 @@ C:\Users\Om\Desktop\AI-HR\
 |   |   `-- ...
 |   `-- frontend/
 |       `-- AI-HR/
-|           |-- README.md
-|           |-- index.html
-|           |-- package.json
 |           |-- .gitignore
+|           |-- README.md
 |           |-- eslint.config.js
 |           |-- index.html
 |           |-- package-lock.json
 |           |-- package.json
-|           |-- README.md
 |           |-- vite.config.js
 |           |-- public/
 |           |   |-- favicon.svg
@@ -88,6 +86,8 @@ C:\Users\Om\Desktop\AI-HR\
 |               |       |-- CompanyProfileSetUp.jsx
 |               |       |-- CompanySignUp.jsx
 |               |       `-- CreateJobPost.jsx
+|               |-- layouts/
+|               |   `-- MainLayout.jsx
 |               |-- services/
 |               |   `-- api.js
 |               `-- styles/
@@ -396,7 +396,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from ai_gen_result import analyze_candidate
-from database import candidates_collections, companies_collections, accounts_collections
+from database import candidates_collections, companies_collections, accounts_collections, job_collection
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
 
@@ -512,6 +512,40 @@ def receive_company_profile(companyProfile : dict):
 def get_answers(answers: dict):
     return answers
 
+@app.post("/job-details")
+def get_job_details(
+    jobDetails: dict,
+    account: dict = Depends(get_current_account)):
+    
+    if account["role"] != "company":
+        raise HTTPException(
+            status_code = 403,
+            detail = "Only companies can post jobs"
+        )
+        
+    company = companies_collections.find_one({
+        "account_id" : account["account_id"]
+    })
+    
+    if not company:
+        raise HTTPException(
+            status_code = 404,
+            detail="Compnay Profile Not found!"
+        )
+        
+    jobDetails["company_id"] = account["account_id"]
+    jobDetails["company_name"] = company["company_name"]
+    
+    jobDetails["posted_by"] = company.get("username","")
+    
+    result = job_collection.insert_one(jobDetails)
+    
+    return {
+        "success" : True,
+        "result" : str(result.inserted_id)
+    }
+
+
 # send questions to frontend
 @app.get("/questions")
 def analyze():
@@ -528,6 +562,7 @@ def analyze():
 @app.get("/companies")
 def all_companies():
     
+    # companies = list(companies_collections.find())
     company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
     company["_id"] = str(company["_id"])
     return company
@@ -567,11 +602,13 @@ def login_data(login_data: dict):
             "message": "Invalid Password"
         }
 
+    # Create JWT after successful login verification
     token = create_access_token(
         account_id=str(user["_id"]),
         role=user["role"]
     )
 
+    # Return safe user information (never return the password)
     return {
         "success": True,
         "message": "Login Successful",
@@ -585,7 +622,7 @@ def login_data(login_data: dict):
             "email": user["email"]
         }
     }
-    
+
 @app.get("/my-profile")
 def get_my_profile(account: dict = Depends(get_current_account)):
     account_id = account["account_id"]
@@ -605,6 +642,17 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
+
+@app.get("/job_dashboard")
+def get_all_jobs():
+    
+    all_jobs = list(job_collection.find())
+    
+    for job in all_jobs:
+        job["_id"] = str(job["_id"])
+        print(job)
+        
+    return all_jobs
 ```
 
 ### `backend/prompt.py`
@@ -885,16 +933,24 @@ import CompanyProfile from "./component/company/CompanyProfile"
 import CompanyProfileSetUp from "./component/company/CompanyProfileSetUp"
 import Home from "./component/Home"
 import LoginAs from "./component/LoginAs"
+import MainLayout from "./layouts/MainLayout"
+import JobPostDashboard from "./component/JobPostDashboard"
 import { BrowserRouter , Routes , Route } from "react-router-dom"
 
 function App(){
 
+  // const [activePage , setActivePage] = useState("home")
+
   return (
     <BrowserRouter>
       <Routes>
-        
-        <Route path="/"
-        element={<Home/>}/>
+
+        <Route element={<MainLayout/>}>
+
+        <Route path="/" element={<Home/>}/>
+
+        <Route path="/jobs"
+        element={<JobPostDashboard/>}/>
         
         <Route path="/login-as" element={<LoginAs />}/>
 
@@ -909,13 +965,33 @@ function App(){
 
         <Route path="/candidate-profile-setup"
         element={<CandidateProfileSetUp/>}/>
-        
+        </Route>
       </Routes>
     </BrowserRouter>
   )
 }
 
 export default App
+```
+
+### `frontend/AI-HR/src/layouts/MainLayout.jsx`
+
+```jsx
+import { Outlet } from "react-router-dom"
+import Navbar from "../component/Navbar"
+
+function MainLayout(){
+    return (
+        <>
+        <Navbar/>
+        <main>
+            <Outlet/>
+        </main>
+        </>
+    )
+} 
+
+export default MainLayout
 ```
 
 ### `frontend/AI-HR/src/component/Home.jsx`
@@ -1036,7 +1112,15 @@ function CreateJobPost({onClose}){
                         &times;
                         </button>
                 </div>
-                <form action="" onSubmit={(e) => handelSubmit({e, data:jobDetails, endpoint:"job-details"})}>
+                <form action="" onSubmit={async (e) => {
+
+                    const result = handelSubmit({e, data:jobDetails, endpoint:"job-details"})
+
+                    if (result?.success){
+                        onClose();
+                    }
+                    }}>
+
                     <label htmlFor="job-title">Job Title</label>
                     <input type="text" name="job-title" className="job-title-input" onChange={(e) => setJobTitle(e.target.value)}/>
 
@@ -1957,12 +2041,14 @@ export default CompanySignUp
 ### `frontend/AI-HR/src/component/company/CompanyProfile.jsx`
 
 ```jsx
-import { useEffect, useState } from "react"
 import { getMyProfile } from "../../services/api"
+import { useEffect, useState } from "react"
+import CreateJobPost from "./CreateJobPost";
 
 function CompanyProfile(){
     const [companyProfile, setCompanyProfile] = useState(null);
-    
+    const [showJobModal , setShowJobModal] = useState(false);
+
     useEffect(() =>{
         async function fetchProfile() {
             try{
@@ -1976,13 +2062,21 @@ function CompanyProfile(){
         fetchProfile();
     },[])
     
+    // console.log("Company Data:", companyProfile);
     return (
         <div className="company-profile-page">
             <div className="company-profile">
+                {/* <h2>{companyPro}</h2> */}
                 <h2>{companyProfile?.company_name}</h2>
                 <p>Industry: {companyProfile?.industry}</p>
                 <p>{companyProfile?.company_description}</p>
             </div>
+            <div className="create-job-post">
+                <button onClick={() => setShowJobModal(true)}>+ Post a Job</button>
+            </div>
+            {showJobModal &&
+                <CreateJobPost onClose={() => setShowJobModal(false)}/>
+            }
         </div>
     )
 }
@@ -1993,6 +2087,88 @@ export default CompanyProfile
 ### `frontend/AI-HR/src/services/api.js`
 
 ```js
+const API = "http://127.0.0.1:8000";
+
+// getCompany company data from backend
+export async function getCompanies(){
+    const res = await fetch(`${API}/companies`);
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch company") 
+    }
+
+    return res.json();
+}
+
+// fetch candidtae data from backend
+export async function getCandidate(){
+    const res = await  fetch(`${API}/candidate`);
+
+    if (!res.ok){
+        throw new Error("Failed to feth user") 
+    }
+
+    return res.json()
+}
+
+// fetch questions from backend
+export async function getQuestions(){
+    const res = await fetch(`${API}/questions`)
+
+    if(!res.ok){
+        throw new Error("Failed to fetch data!");  
+    }
+    return res.json()
+}
+
+// Handel form submission for every page
+export async function handelSubmit({e, data, endpoint}){
+    e.preventDefault();
+
+    try{
+        const token = localStorage.getItem("access_token")
+        const response = await fetch(`${API}/${endpoint}`,{
+            method : "POST",
+            headers : {
+                "content-Type" : "application/json",
+                "Authorization" : `******
+            },
+            body : JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log(result);
+        return result;
+    }catch (error){
+        console.error("API Error :",error)
+    }
+}
+
+export async function getMyProfile() {
+    const token = localStorage.getItem("access_token");
+
+    if (!token){
+        throw new Error("Please log in first")
+    }
+
+    const response = await fetch(`${API}/my-profile`,{
+        method : "GET",
+        headers : {
+            Authorization : `******
+        }
+    })
+
+    const data = await response.json();
+
+    if (!response){
+        throw new Error(data.detail || "Failed to fecth profile ") 
+    }
+    return data;
+}
+```
+
+### `frontend/AI-HR/src/component/candidate/CandidateProfileSetUp.jsx`
+
+```jsx
 import { handelSubmit } from "../../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -2027,7 +2203,7 @@ function CandidateProfileSetUp() {
                 const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
 
                 if (result.success ){
-                    navigate("/")
+                    navigate("/login-as")
                 }
 
                 }}>
