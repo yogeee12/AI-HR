@@ -1,5 +1,6 @@
 import Navbar from "./Navbar"
 import "../styles/home.css"
+import JobPostDashboard from "./JobPostDashboard"
 
 function Home(){
 
@@ -16,6 +17,9 @@ function Home(){
                         <button type="submit">search</button>
                     </form>
                     </div>
+                </div>
+                <div>
+                    <JobPostDashboard />
                 </div>
             </div>
         </div>
