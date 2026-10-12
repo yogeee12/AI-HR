@@ -27,10 +27,23 @@ export async function getQuestions(){
     const res = await fetch(`${API}/questions`)
 
     if(!res.ok){
-        throw new Error("Failed to fetch data!");
-        
+        throw new Error("Failed to fetch data!");  
     }
     return res.json()
+}
+
+// fetch all jobs from collection
+export async function getAllJobs(){
+
+    const res = await fetch(`${API}/job_dashboard`)
+
+    if(!res.ok){
+        throw new Error(`Failed to fetch data: ${res.status} `)
+    }
+
+    const data = await res.json()
+    console.log(data)
+    return data
 }
 
 // Handel form submission for every page
@@ -38,11 +51,12 @@ export async function handelSubmit({e, data, endpoint}){
     e.preventDefault();
 
     try{
-
+        const token = localStorage.getItem("access_token")
         const response = await fetch(`${API}/${endpoint}`,{
             method : "POST",
             headers : {
-                "content-Type" : "application/json"
+                "content-Type" : "application/json",
+                "Authorization" : `Bearer ${token}`
             },
             body : JSON.stringify(data)
         });
@@ -66,14 +80,12 @@ export async function getMyProfile() {
         headers : {
             Authorization : `Bearer ${token}`
         }
-
     })
 
     const data = await response.json();
 
-    if (!response){
-        throw new Error(data.detail || "Failed to fecth profile ") 
-    }
-
+    // if (!response){
+    //     throw new Error(data.detail || "Failed to fecth profile ") 
+    // }
     return data;
 }
