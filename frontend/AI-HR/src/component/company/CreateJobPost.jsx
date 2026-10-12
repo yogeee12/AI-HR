@@ -36,7 +36,15 @@ function CreateJobPost({onClose}){
                         &times;
                         </button>
                 </div>
-                <form action="" onSubmit={(e) => handelSubmit({e, data:jobDetails, endpoint:"job-details"})}>
+                <form action="" onSubmit={async (e) => {
+
+                    const result = await handelSubmit({e, data:jobDetails, endpoint:"job-details"})
+
+                    if (result?.success){
+                        onClose();
+                    }
+                    }}>
+
                     <label htmlFor="job-title">Job Title</label>
                     <input type="text" name="job-title" className="job-title-input" onChange={(e) => setJobTitle(e.target.value)}/>
 
