@@ -63,7 +63,6 @@ function CompanyProfileSetUp() {
             </div>
         </div>
     )
-
 }
 
 export default CompanyProfileSetUp
