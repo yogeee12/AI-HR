@@ -1,4 +1,3 @@
-import Navbar from "./Navbar"
 import "../styles/home.css"
 import JobPostDashboard from "./JobPostDashboard"
 
@@ -6,7 +5,6 @@ function Home(){
 
     return (
         <div className="home-page">
-            <Navbar/>
             <div className="home-page-body">
                 <div className="hero-section">
                     <h1>Find Your Dream Job Today</h1>
