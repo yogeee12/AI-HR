@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import "../styles/navbar.css"
 
@@ -12,8 +13,8 @@ function Navbar(){
                     <h3>AI-HR</h3>
                 </div>
                 <div className="nav-pages-links">
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Home</a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Jobs</a>
+                    <Link to="/">Home</Link>
+                    <Link to="/jobs">Jobs</Link>
                     <a href="http://" target="_blank" rel="noopener noreferrer">Companies</a>
                     <a href="http://" target="_blank" rel="noopener noreferrer">About</a>
                 </div>
