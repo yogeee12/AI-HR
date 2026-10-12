@@ -49,9 +49,9 @@ function JobPostDashboard() {
                     <p>Location: {job.location}</p>
 
                     <button
-                        // onClick={() =>
-                        //     console.log("Apply for job:", job._id)
-                        // }
+                        onClick={() =>
+                            console.log("Apply for job:", job._id)
+                        }
                     >
                         Apply for AI-HR Round
                     </button>
