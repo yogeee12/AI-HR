@@ -4,16 +4,24 @@ import CompanyProfile from "./component/company/CompanyProfile"
 import CompanyProfileSetUp from "./component/company/CompanyProfileSetUp"
 import Home from "./component/Home"
 import LoginAs from "./component/LoginAs"
+import MainLayout from "./layouts/MainLayout"
+import JobPostDashboard from "./component/JobPostDashboard"
 import { BrowserRouter , Routes , Route } from "react-router-dom"
 
 function App(){
 
+  // const [activePage , setActivePage] = useState("home")
+
   return (
     <BrowserRouter>
       <Routes>
-        
-        <Route path="/"
-        element={<Home/>}/>
+
+        <Route element={<MainLayout/>}>
+
+        <Route path="/" element={<Home/>}/>
+
+        <Route path="/jobs"
+        element={<JobPostDashboard/>}/>
         
         <Route path="/login-as" element={<LoginAs />}/>
 
@@ -28,7 +36,7 @@ function App(){
 
         <Route path="/candidate-profile-setup"
         element={<CandidateProfileSetUp/>}/>
-        
+        </Route>
       </Routes>
     </BrowserRouter>
   )
