@@ -119,13 +119,36 @@ def get_answers(answers: dict):
     return answers
 
 @app.post("/job-details")
-def get_job_details(jobDetails: dict):
+def get_job_details(
+    jobDetails: dict,
+    account: dict = Depends(get_current_account)):
+    
+    if account["role"] != "company":
+        raise HTTPException(
+            status_code = 403,
+            detail = "Only companies can post jobs"
+        )
+        
+    company = companies_collections.find_one({
+        "account_id" : account["account_id"]
+    })
+    
+    if not company:
+        raise HTTPException(
+            status_code = 404,
+            detail="Compnay Profile Not found!"
+        )
+        
+    jobDetails["company_id"] = account["account_id"]
+    jobDetails["company_name"] = company["company_name"]
+    
+    jobDetails["posted_by"] = company.get("username","")
     
     result = job_collection.insert_one(jobDetails)
     
     return {
         "success" : True,
-        "result" : str(result["_id"])
+        "result" : str(result.inserted_id)
     }
 
 
@@ -205,7 +228,7 @@ def login_data(login_data: dict):
             "email": user["email"]
         }
     }
-    
+
 @app.get("/my-profile")
 def get_my_profile(account: dict = Depends(get_current_account)):
     account_id = account["account_id"]
@@ -225,3 +248,14 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
+
+@app.get("/job_dashboard")
+def get_all_jobs():
+    
+    all_jobs = list(job_collection.find())
+    
+    for job in all_jobs:
+        job["_id"] = str(job["_id"])
+        print(job)     
+        
+    return all_jobs
