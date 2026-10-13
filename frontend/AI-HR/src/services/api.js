@@ -89,3 +89,47 @@ export async function getMyProfile() {
     // }
     return data;
 }
+
+export async function loginUser({email, password, role}){
+
+   const res = await fetch(`${API}/login-as`,{
+    method:"POST",
+    headers:{
+        "Content-Type" : "application/json",
+    },
+    body: JSON.stringify({ email, password, role}),
+   });
+
+   const result = await res.json();
+
+   if (!res.ok || !result.success){
+    throw new Error(
+        result.message || result.detail || "Login failed"
+    );
+
+    }
+    localStorage.setItem("access_token", result.access_token);
+    localStorage.setItem("current_user", JSON.stringify(result.user));
+
+    window.dispatchEvent(new Event("auth-changed"));
+
+    return result;
+}
+
+
+export function getSavedUser() {
+    try {
+        const user = localStorage.getItem("current_user");
+        return user ? JSON.parse(user) : null;
+    } catch {
+        return null;
+    }
+}
+
+export function logoutUser(){
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("current_user");
+    localStorage.removeItem("user");
+
+    window.dispatchEvent(new Event("auth-changed"));
+}
