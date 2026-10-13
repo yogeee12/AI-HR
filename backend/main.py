@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from bson import ObjectId
 from ai_gen_result import analyze_candidate
 from database import candidates_collections, companies_collections, accounts_collections, job_collection
 from jose import jwt , JWTError
@@ -68,9 +69,7 @@ def receive_candidate(candidate : dict):
     
 # get company sign up detail ans save in db 
 @app.post("/company-signup")
-def receive_company_detail(companyDetail : dict):
-    print(companyDetail)
-    
+def receive_company_detail(companyDetail : dict):    
     result = accounts_collections.insert_one(companyDetail)
     return {
         "success" : True,
@@ -151,6 +150,48 @@ def get_job_details(
         "result" : str(result.inserted_id)
     }
 
+@app.post("/apply-job")
+def get_job_round_data(
+    job_data : dict,
+    current_account : dict = Depends(get_current_account)):
+    
+    if current_account["role"] != "candidate":
+        raise HTTPException(
+            status_code=403,
+            detail="Only candidate can apply for jobs"
+        )
+        
+    job_id = job_data.get("jobId")
+    
+    if not job_id:
+        raise HTTPException(
+            status_code=400,
+            detail = "Job ID is required"    
+        )
+        
+        
+     # Check whether it is a valid MongoDB ObjectId
+    if not ObjectId.is_valid(job_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Invalid job ID"
+        )
+    job_detail = job_collection.find_one({"_id" : ObjectId(job_id)})
+    
+    if not job_detail:
+        raise HTTPException(
+            status_code=404,
+            detail="Job not found"
+    )
+    
+    job_detail["_id"] = str(job_detail["_id"])
+    
+    return {
+        "success" : True,
+        "messege" : "Job found Successfully",
+        "job" : job_detail,
+        "candidate_id" : current_account["account_id"]
+    }
 
 # send questions to frontend
 @app.get("/questions")
@@ -255,7 +296,6 @@ def get_all_jobs():
     all_jobs = list(job_collection.find())
     
     for job in all_jobs:
-        job["_id"] = str(job["_id"])
-        print(job)     
+        job["_id"] = str(job["_id"])     
         
     return all_jobs
