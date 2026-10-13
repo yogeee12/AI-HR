@@ -1,12 +1,52 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getSavedUser } from "../services/api";
+import { getSavedUser, validateSession } from "../services/api";
 import "../styles/navbar.css"
 
 function Navbar(){
     
     const navigate = useNavigate();
     const [user, setUser] = useState(() => getSavedUser());
+    
+    useEffect(() => {
+
+        let active = true;
+
+        async function checkSession(){
+
+            const token = localStorage.getItem("access_token");
+
+            if (!token){
+                setUser(null);
+                return;
+            }
+
+            const valid = await validateSession();
+
+            if(!active) return ;
+
+            if(valid === false){
+                setUser(null)
+            }else{
+                setUser(getSavedUser());
+            }
+        }
+
+        function updateUser(){
+            setUser(getSavedUser());
+        }
+
+        checkSession();
+
+        window.addEventListener("auth-changed", updateUser);
+        window.addEventListener("storage", updateUser);
+
+        return () => {
+            active = false;
+            window.removeEventListener("auth-changed", updateUser);
+            window.removeEventListener("storage", updateUser);
+        };
+    },[]);
 
     useEffect(() => {
         function updateUser(){
@@ -15,7 +55,7 @@ function Navbar(){
 
         window.addEventListener("auth-changed", updateUser);
         window.addEventListener("storage", updateUser);
-
+       
         return () => {
             window.removeEventListener("auth-changed", updateUser);
             window.removeEventListener("storage", updateUser);
@@ -42,8 +82,8 @@ function Navbar(){
                 <div className="nav-pages-links">
                     <Link to="/">Home</Link>
                     <Link to="/jobs">Jobs</Link>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Companies</a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">About</a>
+                    <a href="/" target="_blank" rel="noopener noreferrer">Companies</a>
+                    <a href="/" target="_blank" rel="noopener noreferrer">About</a>
                 </div>
                 <div className="sign-in-up">
                     {user ? (
