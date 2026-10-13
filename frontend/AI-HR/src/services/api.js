@@ -41,9 +41,8 @@ export async function getAllJobs(){
         throw new Error(`Failed to fetch data: ${res.status} `)
     }
 
-    const data = await res.json()
-    console.log(data)
-    return data
+    
+    return await res.json()
 }
 
 // Handel form submission for every page
@@ -61,7 +60,6 @@ export async function handelSubmit({e, data, endpoint}){
             body : JSON.stringify(data)
         });
         const result = await response.json();
-        console.log(result);
         return result;
     }catch (error){
         console.error("API Error :",error)
@@ -132,4 +130,64 @@ export function logoutUser(){
     localStorage.removeItem("user");
 
     window.dispatchEvent(new Event("auth-changed"));
+}
+
+export async function applyForAiHrRound(jobId){
+
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        throw new Error("Please sign in before applying")
+    }
+
+    const res = await fetch(`${API}/apply-job`,{
+        method: "POST",
+        headers : {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            job_id : jobId,
+        }),
+    });
+
+    const result = await res.json();
+
+    if(!res.ok){
+        throw new Error(
+            result.detail || result.message || "Failed to apply"
+        );
+   }
+
+   console.log(result)
+
+    return result;
+}
+
+export async function validateSession() {
+   
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        logoutUser();
+        return null
+    }
+
+    try{
+        const res = await fetch(`${API}/my-profile`, {
+            headers:{
+                Authorization : `Bearer ${token}`
+            },
+        });
+
+        if (!res.ok){
+            logoutUser();
+            return null;
+        }
+
+        return await res.JSON();
+    }catch(error){
+        console.error("Could not validate session",error);
+        return null
+    }
 }
