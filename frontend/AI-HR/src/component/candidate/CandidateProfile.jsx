@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
-import { getMyProfile } from "../../services/api";
+import { getMyProfile, logoutUser } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 function CandidateProfile(){
 
@@ -13,6 +14,14 @@ function CandidateProfile(){
         }
         fetchProfile()
     },[])
+
+    const navigate = useNavigate();
+
+    function handelLogout(){
+        logoutUser();
+        navigate("/");
+    }
+
     return(
         <div className="candidate-profile-page">
             <div className="candidate-profile">
@@ -20,6 +29,7 @@ function CandidateProfile(){
                 <p>{candidateProfile?.summary}</p>
                 <p>{candidateProfile?.skills}</p>
             </div>
+            <button onClick={handelLogout}>Logout</button>
         </div>
     )
 }

@@ -1,5 +1,6 @@
-import { getMyProfile } from "../../services/api"
+import { getMyProfile, logoutUser } from "../../services/api"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import CreateJobPost from "./CreateJobPost";
 
 function CompanyProfile(){
@@ -19,6 +20,12 @@ function CompanyProfile(){
         fetchProfile();
     },[])
     
+    const navigate = useNavigate();
+
+        function handelLogout(){
+            logoutUser();
+            navigate("/");
+        }
     // console.log("Company Data:", companyProfile);
     return (
         <div className="company-profile-page">
@@ -33,6 +40,7 @@ function CompanyProfile(){
             {showJobModal &&
                 <CreateJobPost onClose={() => setShowJobModal(false)}/>
             }
+            <button onClick={handelLogout}>Logout</button>
         </div>
     )
 }
