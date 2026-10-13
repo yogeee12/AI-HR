@@ -1,12 +1,15 @@
-import { getAllJobs } from "../services/api";
+import { getAllJobs, applyForAiHrRound } from "../services/api";
 import { useEffect, useMemo, useState } from "react";
 import "../styles/jobs_dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 function JobPostDashboard() {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState("");
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchJobs() {
@@ -179,9 +182,20 @@ function JobPostDashboard() {
                                 <div className="job-actions">
                                     <button
                                         className="apply-button"
-                                        onClick={() =>
-                                            console.log("Apply for job:", job._id)
-                                        }
+                                        onClick={async () => {
+                                            try{
+                                                const result = applyForAiHrRound(job._id)
+                                                console.log("Application response :", result )
+                                            }catch(error){
+                                                console.error("Applied Failed : ", error.message );
+
+                                                if(!localStorage.getItem("access_token")){
+                                                    navigate("/login-as")
+                                                }else{
+                                                    alert(error.message);
+                                                }
+                                            }
+                                        }}
                                     >
                                         Apply for AI-HR Round <span>→</span>
                                     </button>
