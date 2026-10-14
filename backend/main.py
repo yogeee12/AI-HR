@@ -121,16 +121,63 @@ def get_answers(answers: dict):
     return answers
 
 # send questions to frontend
-@app.get("/questions")
-def analyze():
+@app.get("/start-interview/{interview_id}")
+def start_interview(
+    interview_id : str,
+    current_account : dict= Depends(get_current_account)
+):
     
-    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
-    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
+    if current_account["role"] != "candidate":
+        raise HTTPException(
+            status_code=403,
+            detail="Only candidate can apply!"
+        )
+        
+    if not ObjectId.is_valid(interview_id):
+        raise HTTPException(
+            status_code=400,
+            detail="invalid interview ID"
+        )
+        
+    interview = interview_collections.find_one({
+        "_id" : ObjectId(interview_id),
+        "candidate_id" : current_account["account_id"]
+    }) 
     
-    result = analyze_candidate(company=company, candidate=candidate)
+    if not interview_id:
+        raise HTTPException(
+            status_code=404,
+            detail = "Interview not found"
+        )
+        
+    company = companies_collections.find_one({
+        "account_id" : interview["company_id"],
+    })
+
+    candidate =  candidates_collections.find_one({
+        "account_id" : current_account["account_id"]  
+    }) 
+    
+    job = job_collection.find_one({
+        "_id" : ObjectId(interview["job_id"])
+    })
+    
+    print("candidate :" , candidate)
+    print("company : " , company)
+    print("job : " , job)
+    if not company or not candidate or not job:
+        raise HTTPException(
+            status_code=404,
+            detail="company, candidate or job details not found"
+        )
+    
+    result = analyze_candidate(company=company, candidate=candidate, job=job)
     questions = result["get_questions"]
-    print(result["get_answers"])
-    return questions
+    
+    return {
+        "success" : True,
+        "questions" : questions 
+    }
 
 # Job APIs
 @app.post("/job-details")
@@ -212,19 +259,41 @@ def get_job_round_data(
     
     job_detail["_id"] = str(job_detail["_id"])
     
+    existing_interview = interview_collections.find_one({
+        "candidate_id" : current_account["account_id"],
+        "job_id" : job_detail["_id"]
+    })
+    
+    if existing_interview:
+        raise HTTPException(
+            status_code = 409,
+            detail = "You have already applied for job",
+        )
     interview_data = {
         "candidate_id" : current_account["account_id"],
         "company_id" : job_detail["company_id"],
         "job_id" : job_detail["_id"],
-        "date" : str(datetime.now().date()),
-        "time" : str(datetime.now().time()),
+        
+        "status" : "applied",
+        "result" : None,
+        
+        "created_at" : datetime.now(),
+        "started_at" : None,
+        "completed_at" : None,
+        
+        "questions" : [],
+        
+        "score" : None,
+        "total_question" : 0,
+        "correct_answers" : 0
     }
     
-    interview_collections.insert_one(interview_data)
+    saved_interview = interview_collections.insert_one(interview_data)
     
     return {
         "success" : True,
         "messege" : "Job found Successfully",
+        "interview_id" : str(saved_interview.inserted_id),
         "job" : job_detail,
         "candidate_id" : current_account["account_id"]
     }
