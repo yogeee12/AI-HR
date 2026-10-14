@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-12 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-14 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -134,6 +134,7 @@ If you are developing a production application, we recommend using TypeScript wi
 ### `backend/test_data/ac_login.json`
 
 ```json
+
 [
   {
     "user_name": "rahulsh12",
@@ -150,9 +151,128 @@ If you are developing a production application, we recommend using TypeScript wi
     "role": "candidate"
   },
   {
+    "user_name": "arjunpatel",
+    "name": "Arjun Patel",
+    "email": "arjun03@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "snehagupta",
+    "name": "Sneha Gupta",
+    "email": "sneha04@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "amansingh",
+    "name": "Aman Singh",
+    "email": "aman05@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "nehajoshi",
+    "name": "Neha Joshi",
+    "email": "neha06@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "rohanmehta",
+    "name": "Rohan Mehta",
+    "email": "rohan07@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "ananyarao",
+    "name": "Ananya Rao",
+    "email": "ananya08@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "vikramyadav",
+    "name": "Vikram Yadav",
+    "email": "vikram09@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
+    "user_name": "poojanair",
+    "name": "Pooja Nair",
+    "email": "pooja10@test.com",
+    "password": "Test@12345",
+    "role": "candidate"
+  },
+  {
     "user_name": "novatechlabs",
     "name": "NovaTech Labs",
     "email": "company01@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "bluepeak",
+    "name": "BluePeak Software",
+    "email": "company02@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "datasphereai",
+    "name": "DataSphere AI",
+    "email": "company03@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "cloudnest",
+    "name": "CloudNest Systems",
+    "email": "company04@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "bytecraft",
+    "name": "ByteCraft Solutions",
+    "email": "company05@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "greengrid",
+    "name": "GreenGrid Tech",
+    "email": "company06@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "finedge",
+    "name": "FinEdge Analytics",
+    "email": "company07@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "pixelwave",
+    "name": "PixelWave Studio",
+    "email": "company08@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "securestack",
+    "name": "SecureStack Labs",
+    "email": "company09@test.com",
+    "password": "Test@12345",
+    "role": "company"
+  },
+  {
+    "user_name": "orbitworks",
+    "name": "OrbitWorks",
+    "email": "company10@test.com",
     "password": "Test@12345",
     "role": "company"
   }
@@ -162,6 +282,7 @@ If you are developing a production application, we recommend using TypeScript wi
 ### `backend/test_data/candidate_data.json`
 
 ```json
+
 [
   {
     "account_id": null,
@@ -192,6 +313,126 @@ If you are developing a production application, we recommend using TypeScript wi
     "location": "Bhopal, India",
     "resume_url": null,
     "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "arjunpatel",
+    "name": "Arjun Patel",
+    "email": "arjun03@test.com",
+    "headline": "Aspiring data analyst",
+    "bio": "Interested in data cleaning, exploratory analysis, reporting, and business insights.",
+    "skills": ["Python", "Pandas", "NumPy", "SQL", "Matplotlib"],
+    "experience_years": 0,
+    "education": "B.Sc Statistics",
+    "target_role": "Data Analyst",
+    "location": "Indore, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "snehagupta",
+    "name": "Sneha Gupta",
+    "email": "sneha04@test.com",
+    "headline": "Machine learning enthusiast",
+    "bio": "Interested in predictive modelling, feature engineering, and practical ML applications.",
+    "skills": ["Python", "Scikit-learn", "SQL", "Pandas", "Machine Learning"],
+    "experience_years": 1,
+    "education": "B.Tech Information Technology",
+    "target_role": "ML Engineer",
+    "location": "Pune, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "amansingh",
+    "name": "Aman Singh",
+    "email": "aman05@test.com",
+    "headline": "Java backend developer",
+    "bio": "Builds server-side applications and works with relational databases and REST services.",
+    "skills": ["Java", "Spring Boot", "MySQL", "REST API", "Docker"],
+    "experience_years": 3,
+    "education": "B.Tech Computer Science",
+    "target_role": "Java Developer",
+    "location": "Bengaluru, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "nehajoshi",
+    "name": "Neha Joshi",
+    "email": "neha06@test.com",
+    "headline": "React frontend developer",
+    "bio": "Focused on component-based UI development, responsive layouts, and frontend integration.",
+    "skills": ["React", "JavaScript", "CSS", "HTML", "REST API"],
+    "experience_years": 2,
+    "education": "BCA",
+    "target_role": "Frontend Developer",
+    "location": "Mumbai, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "rohanmehta",
+    "name": "Rohan Mehta",
+    "email": "rohan07@test.com",
+    "headline": "Python and Django developer",
+    "bio": "Interested in backend development, authentication, and reliable web applications.",
+    "skills": ["Python", "Django", "REST API", "PostgreSQL", "Git"],
+    "experience_years": 1,
+    "education": "B.Tech Information Technology",
+    "target_role": "Python Developer",
+    "location": "Ahmedabad, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "ananyarao",
+    "name": "Ananya Rao",
+    "email": "ananya08@test.com",
+    "headline": "Data analyst interested in business intelligence",
+    "bio": "Enjoys transforming raw data into understandable reports and dashboards.",
+    "skills": ["SQL", "Excel", "Power BI", "Python", "Data Visualization"],
+    "experience_years": 0,
+    "education": "B.Com",
+    "target_role": "Data Analyst",
+    "location": "Hyderabad, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "vikramyadav",
+    "name": "Vikram Yadav",
+    "email": "vikram09@test.com",
+    "headline": "DevOps engineer focused on cloud infrastructure",
+    "bio": "Interested in infrastructure automation, containerization, monitoring, and deployment.",
+    "skills": ["Linux", "Docker", "AWS", "CI/CD", "Git"],
+    "experience_years": 4,
+    "education": "B.Tech Computer Science",
+    "target_role": "DevOps Engineer",
+    "location": "Gurugram, India",
+    "resume_url": null,
+    "profile_completed": true
+  },
+  {
+    "account_id": null,
+    "user_name": "poojanair",
+    "name": "Pooja Nair",
+    "email": "pooja10@test.com",
+    "headline": "AI engineer interested in language models",
+    "bio": "Explores natural language processing and practical AI-powered applications.",
+    "skills": ["Python", "NLP", "Transformers", "PyTorch", "Machine Learning"],
+    "experience_years": 2,
+    "education": "M.Sc Computer Science",
+    "target_role": "AI Engineer",
+    "location": "Chennai, India",
+    "resume_url": null,
+    "profile_completed": true
   }
 ]
 ```
@@ -199,12 +440,13 @@ If you are developing a production application, we recommend using TypeScript wi
 ### `backend/test_data/company_data.json`
 
 ```json
-[]
+
 ```
 
 ### `frontend/AI-HR/src/styles/profile_setup.css`
 
 ```css
+
 /* ===== Shared Profile Setup Page ===== */
 
 .candidate-profile-setup,
@@ -218,6 +460,8 @@ If you are developing a production application, we recommend using TypeScript wi
     background: #f4f7fb;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ===== Form Cards ===== */
 
 .candidate-profile-setup form,
 .company-profile-setup-form {
@@ -233,6 +477,8 @@ If you are developing a production application, we recommend using TypeScript wi
     box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
 }
 
+/* ===== Page Headings ===== */
+
 .candidate-profile-setup form::before {
     content: "Build your candidate profile";
     display: block;
@@ -240,6 +486,125 @@ If you are developing a production application, we recommend using TypeScript wi
     color: #172554;
     font-size: 27px;
     font-weight: 700;
+}
+
+.company-profile-setup-form::before {
+    content: "Set up your company profile";
+    display: block;
+    margin-bottom: 8px;
+    color: #172554;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+/* ===== Labels ===== */
+
+.candidate-profile-setup label,
+.company-profile-setup-form label {
+    margin: 18px 0 8px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ===== Inputs and Textareas ===== */
+
+.candidate-profile-setup input,
+.candidate-profile-setup textarea,
+.company-profile-setup-form input,
+.company-profile-setup-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.candidate-profile-setup input,
+.company-profile-setup-form input {
+    min-height: 46px;
+}
+
+.candidate-profile-setup textarea,
+.company-profile-setup-form textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Placeholder text */
+
+.candidate-profile-setup input::placeholder,
+.candidate-profile-setup textarea::placeholder,
+.company-profile-setup-form input::placeholder,
+.company-profile-setup-form textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* Focus effect */
+
+.candidate-profile-setup input:focus,
+.candidate-profile-setup textarea:focus,
+.company-profile-setup-form input:focus,
+.company-profile-setup-form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ===== Submit Buttons ===== */
+
+.candidate-profile-setup button,
+.company-profile-setup-form button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 28px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.candidate-profile-setup button:hover,
+.company-profile-setup-form button:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.candidate-profile-setup button:active,
+.company-profile-setup-form button:active {
+    transform: translateY(0);
+}
+
+/* ===== Mobile Layout ===== */
+
+@media (max-width: 600px) {
+    .candidate-profile-setup,
+    .company-profile-setup-page {
+        padding: 24px 14px;
+        align-items: flex-start;
+    }
+
+    .candidate-profile-setup form,
+    .company-profile-setup-form {
+        padding: 24px 20px;
+        border-radius: 12px;
+    }
+
+    .candidate-profile-setup form::before,
+    .company-profile-setup-form::before {
+        font-size: 23px;
+    }
 }
 ```
 
@@ -296,27 +661,30 @@ from prompt import RESP
 from data_extract import get_questions, get_answers
 
 load_dotenv()
-def analyze_candidate(company, candidate):
+def analyze_candidate(company, candidate, job):
     client = genai.Client(
         api_key=os.getenv("GEMINI_API_KEY")
     )
 
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-3.7-flash",
         contents=f"""
         You are an experienced HR and technical interviewer.
 
         Analyze whether the candidate is suitable for the company's available
         job/project based on the information provided.
 
-        {RESP}
         
         COMPANY INFORMATION:
         {company}
+        
+        JOB INFORMATION:
+        {job}
 
         CANDIDATE INFORMATION:
         {candidate}
 
+        {RESP}
         """
         )
 
@@ -325,9 +693,9 @@ def analyze_candidate(company, candidate):
     data = json.loads(str_data)
 
     return {
-        "data": data,
-        "get_questions": get_questions(data),
-        "get_answers": get_answers(data)
+        "data" : data,
+        "get_questions" : get_questions(data),
+        "get_answers" : get_answers(data)
     }
 ```
 
@@ -336,33 +704,31 @@ def analyze_candidate(company, candidate):
 ```python
 import json
 
-
 def get_questions(data):
 
     questions = data["questions"]
     result = []
     for ques in questions:
-        option = ques["options"]
+        option = ques["options"] 
         result.append({
-            "question_id": ques["question_id"],
-            "question": ques["question"],
-            "option_1": option[0],
-            "option_2": option[1],
-            "option_3": option[2],
-            "option_4": option[3]
+            "question_id" : ques["question_id"],
+            "question" : ques["question"],
+            "option_1" : option[0],
+            "option_2" : option[1],
+            "option_3" : option[2],
+            "option_4" : option[3]
         },)
 
     return result
-
 
 def get_answers(data):
     questions = data["questions"]
     result = []
     for ques in questions:
         result.append({
-            "question_id": ques["question_id"],
-            "question": ques["question"],
-            "correct_option": ques["correct_option"]
+            "question_id" : ques["question_id"],
+            "question" : ques["question"],
+            "correct_option" : ques["correct_option"]
         },)
 
     return result
@@ -385,8 +751,9 @@ db = client.get_default_database()
 
 companies_collections = db["companies"]
 candidates_collections = db["candidates"]
-interview_collections = db["inetrview"]
+interview_collections = db["interview"]
 accounts_collections = db["accounts"]
+job_collection = db["job_details"]
 ```
 
 ### `backend/main.py`
@@ -395,15 +762,17 @@ accounts_collections = db["accounts"]
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from bson import ObjectId
 from ai_gen_result import analyze_candidate
-from database import candidates_collections, companies_collections, accounts_collections, job_collection
+from database import candidates_collections, companies_collections, accounts_collections, job_collection, interview_collections
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
-
+from datetime import datetime
 app = FastAPI()
 
 security = HTTPBearer()
 
+# check user token and get urrent account token
 def get_current_account(
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
@@ -449,46 +818,16 @@ def home():
 
     return {"message" : "AI HR API is running"}
 
-# get candidate sign up detail and save in db
-@app.post("/candidate-signup")
-def receive_candidate(candidate : dict):
-    result = accounts_collections.insert_one(candidate)
-    
-    return {
-        "success" : True,
-        "message" : "Candidate recevied",
-        "candidate_id" : str(result.inserted_id)
-    }
-    
+# Company APIs
 # get company sign up detail ans save in db 
 @app.post("/company-signup")
-def receive_company_detail(companyDetail : dict):
-    print(companyDetail)
-    
+def receive_company_detail(companyDetail : dict):    
     result = accounts_collections.insert_one(companyDetail)
     return {
         "success" : True,
         "message" : "Company Detail Received",
         "company_id" : str(result.inserted_id)
     }
-    
-
-# get candidate profile detail and save in db
-@app.post("/candidate-profile-setup")
-def receive_candidate_profile(candidateProfile : dict):
-    if not candidateProfile.get("account_id"):
-        raise HTTPException(
-            status_code=400,
-            detail="account_id is reqiured"
-        )
-    
-    result = candidates_collections.insert_one(candidateProfile)
-    
-    return {
-        "success" : True,
-        "message" : "Candidate Profile Received",
-        "candidate_id" : str(result.inserted_id)
-    } 
     
 # get company profile detail and save in db
 @app.post("/company-profile-setup")
@@ -507,11 +846,101 @@ def receive_company_profile(companyProfile : dict):
         "company_id" : str(result.inserted_id)
     }
     
+# Candidate APIs
+# get candidate sign up detail and save in db
+@app.post("/candidate-signup")
+def receive_candidate(candidate : dict):
+    result = accounts_collections.insert_one(candidate)
+    
+    return {
+        "success" : True,
+        "message" : "Candidate recevied",
+        "candidate_id" : str(result.inserted_id)
+    }
+    
+# get candidate profile detail and save in db
+@app.post("/candidate-profile-setup")
+def receive_candidate_profile(candidateProfile : dict):
+    if not candidateProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is reqiured"
+        )
+    
+    result = candidates_collections.insert_one(candidateProfile)
+    
+    return {
+        "success" : True,
+        "message" : "Candidate Profile Received",
+        "candidate_id" : str(result.inserted_id)
+    } 
+        
+# Question Answer APIs
 # Get answer from frontend
 @app.post("/answers")
 def get_answers(answers: dict):
     return answers
 
+# send questions to frontend
+@app.get("/start-interview/{interview_id}")
+def start_interview(
+    interview_id : str,
+    current_account : dict= Depends(get_current_account)
+):
+    
+    if current_account["role"] != "candidate":
+        raise HTTPException(
+            status_code=403,
+            detail="Only candidate can apply!"
+        )
+        
+    if not ObjectId.is_valid(interview_id):
+        raise HTTPException(
+            status_code=400,
+            detail="invalid interview ID"
+        )
+        
+    interview = interview_collections.find_one({
+        "_id" : ObjectId(interview_id),
+        "candidate_id" : current_account["account_id"]
+    }) 
+    
+    if not interview_id:
+        raise HTTPException(
+            status_code=404,
+            detail = "Interview not found"
+        )
+        
+    company = companies_collections.find_one({
+        "account_id" : interview["company_id"],
+    })
+
+    candidate =  candidates_collections.find_one({
+        "account_id" : current_account["account_id"]  
+    }) 
+    
+    job = job_collection.find_one({
+        "_id" : ObjectId(interview["job_id"])
+    })
+    
+    print("candidate :" , candidate)
+    print("company : " , company)
+    print("job : " , job)
+    if not company or not candidate or not job:
+        raise HTTPException(
+            status_code=404,
+            detail="company, candidate or job details not found"
+        )
+    
+    result = analyze_candidate(company=company, candidate=candidate, job=job)
+    questions = result["get_questions"]
+    
+    return {
+        "success" : True,
+        "questions" : questions 
+    }
+
+# Job APIs
 @app.post("/job-details")
 def get_job_details(
     jobDetails: dict,
@@ -544,39 +973,93 @@ def get_job_details(
         "success" : True,
         "result" : str(result.inserted_id)
     }
-
-
-# send questions to frontend
-@app.get("/questions")
-def analyze():
     
-    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
-    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
+@app.get("/job_dashboard")
+def get_all_jobs():
     
-    result = analyze_candidate(company=company, candidate=candidate)
-    questions = result["get_questions"]
-    print(result["get_answers"])
-    return questions
-
-# send all companies data to react
-@app.get("/companies")
-def all_companies():
+    all_jobs = list(job_collection.find())
     
-    # companies = list(companies_collections.find())
-    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
-    company["_id"] = str(company["_id"])
-    return company
-
-# send candidate data to react
-@app.get("/candidate")
-def get_candidate():
-    
-    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
-    candidate["_id"] = str(candidate["_id"])
+    for job in all_jobs:
+        job["_id"] = str(job["_id"])     
         
-    return candidate
+    return all_jobs
 
+@app.post("/apply-job")
+def get_job_round_data(
+    job_data : dict,
+    current_account : dict = Depends(get_current_account)):
+    
+    if current_account["role"] != "candidate":
+        raise HTTPException(
+            status_code=403,
+            detail="Only candidate can apply for jobs"
+        )
+        
+    job_id = job_data.get("job_id")
+    
+    if not job_id:
+        raise HTTPException(
+            status_code=400,
+            detail = "Job ID is required"    
+        )
+        
+        
+    # Check whether it is a valid MongoDB ObjectId
+    if not ObjectId.is_valid(job_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Invalid job ID"
+        )
+    job_detail = job_collection.find_one({"_id" : ObjectId(job_id)})
+    
+    if not job_detail:
+        raise HTTPException(
+            status_code=404,
+            detail="Job not found"
+    )
+    
+    job_detail["_id"] = str(job_detail["_id"])
+    
+    existing_interview = interview_collections.find_one({
+        "candidate_id" : current_account["account_id"],
+        "job_id" : job_detail["_id"]
+    })
+    
+    if existing_interview:
+        raise HTTPException(
+            status_code = 409,
+            detail = "You have already applied for job",
+        )
+    interview_data = {
+        "candidate_id" : current_account["account_id"],
+        "company_id" : job_detail["company_id"],
+        "job_id" : job_detail["_id"],
+        
+        "status" : "applied",
+        "result" : None,
+        
+        "created_at" : datetime.now(),
+        "started_at" : None,
+        "completed_at" : None,
+        
+        "questions" : [],
+        
+        "score" : None,
+        "total_question" : 0,
+        "correct_answers" : 0
+    }
+    
+    saved_interview = interview_collections.insert_one(interview_data)
+    
+    return {
+        "success" : True,
+        "messege" : "Job found Successfully",
+        "interview_id" : str(saved_interview.inserted_id),
+        "job" : job_detail,
+        "candidate_id" : current_account["account_id"]
+    }
 
+# Login and Profile APIs
 @app.post("/login-as")
 def login_data(login_data: dict):
 
@@ -642,17 +1125,6 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
-
-@app.get("/job_dashboard")
-def get_all_jobs():
-    
-    all_jobs = list(job_collection.find())
-    
-    for job in all_jobs:
-        job["_id"] = str(job["_id"])
-        print(job)
-        
-    return all_jobs
 ```
 
 ### `backend/prompt.py`
@@ -753,32 +1225,31 @@ user_answers = {'q1': 0, 'q2': 1, 'q3': 2, 'q4': 0, 'q5': 1}
 
 correct_answers = [
   {
-    'question_id': 'q1',
-    'question': 'In Python, which of the following methods is used to safely retrieve a value from a dictionary without raising a KeyError if the key does not exist?',
+    'question_id': 'q1', 
+    'question': 'In Python, which of the following methods is used to safely retrieve a value from a dictionary without raising a KeyError if the key does not exist?', 
     'correct_option': 0
-  },
+  }, 
   {
-    'question_id': 'q2',
-    'question': 'In FastAPI, how do you define a path parameter in a route decorator?',
+    'question_id': 'q2', 
+    'question': 'In FastAPI, how do you define a path parameter in a route decorator?', 
     'correct_option': 1
-  },
+  }, 
   {
-    'question_id': 'q3',
-    'question': 'Which SQL clause is used to filter the results of a GROUP BY query based on a specified condition?',
+    'question_id': 'q3', 
+    'question': 'Which SQL clause is used to filter the results of a GROUP BY query based on a specified condition?', 
     'correct_option': 2
-  },
+  }, 
   {
-    'question_id': 'q4',
-    'question': 'Which HTTP method is typically used to update an existing resource completely or replace it in a RESTful API?',
+    'question_id': 'q4', 
+    'question': 'Which HTTP method is typically used to update an existing resource completely or replace it in a RESTful API?', 
     'correct_option': 3
-  },
+  }, 
   {
-    'question_id': 'q5',
-    'question': 'Which library does FastAPI natively use for data validation and settings management via Python type hints?',
+    'question_id': 'q5', 
+    'question': 'Which library does FastAPI natively use for data validation and settings management via Python type hints?', 
     'correct_option': 0
   }
 ]
-
 
 def score_candidate(user_answers, correct_answers):
     total_questions = len(correct_answers)
@@ -787,25 +1258,22 @@ def score_candidate(user_answers, correct_answers):
         for key, value in user_answers.items():
             if i["question_id"] == key:
                 score_board.append({
-                    i["question_id"]: {
-                        "question": i["question"],
-                        "correct_answer": i["correct_option"],
-                        "user_answer": value,
-                        "answer": (i["correct_option"] == value),
-                        "score": (10 if i["correct_option"] == value else 0)
-                    },
-                })
-
+                    i["question_id"] : {
+                        "question" : i["question"],
+                        "correct_answer":i["correct_option"],
+                        "user_answer":value,
+                        "answer" : (i["correct_option"] == value),
+                        "score" : (10 if i["correct_option"] == value else 0)
+                        },})
+                            
     return {
-        "company_id": None,
-        "candidate_id": None,
-        "score_board": score_board,
-        "total_questions": total_questions
-    }
-
-
+        "company_id" : None,
+        "candidate_id" : None,
+        "score_board" : score_board,
+        "total_questions" : total_questions
+        }
+    
 r = score_candidate(user_answers, correct_answers)
-
 
 def inertview_collection(score):
     pass
@@ -919,6 +1387,7 @@ export default defineConfig([
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
 })
@@ -997,14 +1466,13 @@ export default MainLayout
 ### `frontend/AI-HR/src/component/Home.jsx`
 
 ```jsx
-import Navbar from "./Navbar"
 import "../styles/home.css"
+import JobPostDashboard from "./JobPostDashboard"
 
 function Home(){
 
     return (
         <div className="home-page">
-            <Navbar/>
             <div className="home-page-body">
                 <div className="hero-section">
                     <h1>Find Your Dream Job Today</h1>
@@ -1015,6 +1483,9 @@ function Home(){
                         <button type="submit">search</button>
                     </form>
                     </div>
+                </div>
+                <div>
+                    <JobPostDashboard />
                 </div>
             </div>
         </div>
@@ -1027,24 +1498,314 @@ export default Home
 ### `frontend/AI-HR/src/component/JobPostDashboard.jsx`
 
 ```jsx
-function JobPostDashboard(){
-    return(
-        <></>
-    )
+import { getAllJobs, applyForAiHrRound } from "../services/api";
+import { useEffect, useMemo, useState } from "react";
+import "../styles/jobs_dashboard.css";
+import { useNavigate } from "react-router-dom";
+import InterviewPopup from "./InterviewPopup";
+
+function JobPostDashboard() {
+    const [jobs, setJobs] = useState([]);
+    const [error, setError] = useState("");
+    const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [interviewId, setInterviewId] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function fetchJobs() {
+            try {
+                const data = await getAllJobs();
+
+                if (Array.isArray(data)) {
+                    setJobs(data);
+                } else if (Array.isArray(data?.jobs)) {
+                    setJobs(data.jobs);
+                } else {
+                    throw new Error("Unexpected jobs response format.");
+                }
+            } catch (error) {
+                console.error("Error while fetching jobs:", error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchJobs();
+    }, []);
+
+    const filteredJobs = useMemo(() => {
+        const query = search.trim().toLowerCase();
+
+        if (!query) return jobs;
+
+        return jobs.filter((job) => {
+            const searchableText = [
+                job.job_title,
+                job.company_name,
+                job.description,
+                job.required_skills,
+                job.location,
+            ]
+                .filter(Boolean)
+                .map((value) =>
+                    Array.isArray(value) ? value.join(" ") : String(value)
+                )
+                .join(" ")
+                .toLowerCase();
+
+            return searchableText.includes(query);
+        });
+    }, [jobs, search]);
+
+    function getSkills(skills) {
+        if (Array.isArray(skills)) return skills;
+        if (typeof skills === "string") {
+            return skills.split(",").map((skill) => skill.trim()).filter(Boolean);
+        }
+        return [];
+    }
+
+    return (
+        <div className="jobs-page">
+            <div className="jobs-container">
+                <section className="jobs-hero">
+                    <div className="hero-icon">💼</div>
+                    <div className="hero-content">
+                        <span className="eyebrow">JOB OPPORTUNITIES</span>
+                        <h1>Find Your Next Opportunity</h1>
+                        <p>
+                            Explore job openings, build your skills, and take
+                            the next step in your career with AI-HR.
+                        </p>
+                    </div>
+                    <div className="hero-decoration">✦</div>
+                </section>
+
+                <section className="jobs-search">
+                    <div className="search-box">
+                        <span>⌕</span>
+                        <input
+                            type="search"
+                            placeholder="Search jobs, skills, or companies..."
+                            value={search}
+                            onChange={(event) => setSearch(event.target.value)}
+                        />
+                    </div>
+                    <div className="jobs-count">
+                        Showing <strong>{filteredJobs.length}</strong>{" "}
+                        {filteredJobs.length === 1 ? "job" : "jobs"}
+                    </div>
+                </section>
+
+                {loading && (
+                    <div className="jobs-message">
+                        <div className="jobs-spinner" />
+                        <p>Finding opportunities for you...</p>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="jobs-message jobs-error">
+                        <h3>Unable to load jobs</h3>
+                        <p>{error}</p>
+                        <button onClick={() => window.location.reload()}>
+                            Try again
+                        </button>
+                    </div>
+                )}
+
+                {!loading && !error && filteredJobs.length === 0 && (
+                    <div className="jobs-message">
+                        <div className="empty-jobs-icon">⌕</div>
+                        <h3>{jobs.length ? "No matching jobs" : "No jobs yet"}</h3>
+                        <p>
+                            {jobs.length
+                                ? "Try searching with another keyword."
+                                : "Published job opportunities will appear here."}
+                        </p>
+                        {search && (
+                            <button
+                                className="clear-search"
+                                onClick={() => setSearch("")}
+                            >
+                                Clear search
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                <section className="jobs-list">
+                    {filteredJobs.map((job, index) => {
+                        const skills = getSkills(job.required_skills);
+
+                        return (
+                            <article className="job-card" key={job._id}>
+                                <div className={`job-icon job-icon-${index % 5}`}>
+                                    {["</>", "✧", "▣", "☁", "✦"][index % 5]}
+                                </div>
+
+                                <div className="job-main">
+                                    <div className="job-title-row">
+                                        <h2>{job.job_title || "Untitled Position"}</h2>
+                                        {job.is_demo && (
+                                            <span className="demo-badge">Demo Job</span>
+                                        )}
+                                    </div>
+
+                                    <div className="job-company">
+                                        <span>▦ {job.company_name || "Company"}</span>
+                                        <span>•</span>
+                                        <span>⌖ {job.location || "Location not specified"}</span>
+                                    </div>
+
+                                    <p className="job-description">
+                                        {job.description || "Explore this opportunity and its requirements."}
+                                    </p>
+
+                                    {skills.length > 0 && (
+                                        <div className="job-skills">
+                                            {skills.map((skill, skillIndex) => (
+                                                <span key={`${skill}-${skillIndex}`}>
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="job-meta">
+                                    <span>▣ {job.min_experience ?? 0}+ years</span>
+                                    <span>⌖ {job.location || "Not specified"}</span>
+                                </div>
+
+                                <div className="job-actions">
+                                    <button
+                                        className="apply-button"
+                                        onClick={async () => {
+                                            try{
+                                                const result = await applyForAiHrRound(job._id)
+                                                setSelectedJob(result.job);
+                                                setInterviewId(result.interview_id);
+
+                                            }catch(error){
+                                                console.error("Applied Failed : ", error.message );
+
+                                                if(!localStorage.getItem("access_token")){
+                                                    navigate("/login-as")
+                                                }else{
+                                                    alert(error.message);
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        Apply for AI-HR Round <span>→</span>
+                                    </button>
+                                </div>
+                            </article>
+                        );
+                    })}
+                </section>
+                {selectedJob && interviewId && (
+                    <InterviewPopup
+                        job={selectedJob}
+                        interviewId={interviewId}
+                        onClose={() => {
+                            setSelectedJob(null);
+                            setInterviewId(null);
+                        }}
+                    />
+                )}
+                <p className="jobs-footer">
+                    Discover opportunities and take your next career step with AI-HR.
+                </p>
+            </div>
+        </div>
+    );
 }
 
-export default JobPostDashboard
+export default JobPostDashboard;
 ```
 
 ### `frontend/AI-HR/src/component/Navbar.jsx`
 
 ```jsx
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getSavedUser, validateSession } from "../services/api";
 import "../styles/navbar.css"
 
 function Navbar(){
-
+    
     const navigate = useNavigate();
+    const [user, setUser] = useState(() => getSavedUser());
+    
+    useEffect(() => {
+
+        let active = true;
+
+        async function checkSession(){
+
+            const token = localStorage.getItem("access_token");
+
+            if (!token){
+                setUser(null);
+                return;
+            }
+
+            const valid = await validateSession();
+
+            if(!active) return ;
+
+            if(valid === false){
+                setUser(null)
+            }else{
+                setUser(getSavedUser());
+            }
+        }
+
+        function updateUser(){
+            setUser(getSavedUser());
+        }
+
+        checkSession();
+
+        window.addEventListener("auth-changed", updateUser);
+        window.addEventListener("storage", updateUser);
+
+        return () => {
+            active = false;
+            window.removeEventListener("auth-changed", updateUser);
+            window.removeEventListener("storage", updateUser);
+        };
+    },[]);
+
+    useEffect(() => {
+        function updateUser(){
+            setUser(getSavedUser());
+        }
+
+        window.addEventListener("auth-changed", updateUser);
+        window.addEventListener("storage", updateUser);
+       
+        return () => {
+            window.removeEventListener("auth-changed", updateUser);
+            window.removeEventListener("storage", updateUser);
+        }
+    },[])
+
+    function handelProfileClick(){
+        if (user?.role === "candidate"){
+            navigate("/candidate-profile");
+        }else if(user?.role === "company"){
+            navigate("/company-profile");
+        }else{
+            navigate("/login-as")
+        }
+    }
+
 
     return(
         <div className="nav-bar">
@@ -1053,15 +1814,24 @@ function Navbar(){
                     <h3>AI-HR</h3>
                 </div>
                 <div className="nav-pages-links">
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Home</a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Jobs</a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">Companies</a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">About</a>
+                    <Link to="/">Home</Link>
+                    <Link to="/jobs">Jobs</Link>
+                    <a href="/" target="_blank" rel="noopener noreferrer">Companies</a>
+                    <a href="/" target="_blank" rel="noopener noreferrer">About</a>
                 </div>
                 <div className="sign-in-up">
+                    {user ? (
+                        <>
+                            <button onClick={handelProfileClick}>
+                                👤
+                            </button>
+                        </>
+                    ):(
                         <button onClick={() => navigate("/login-as")}>
                         Sign In
                         </button>
+                        )
+                    }
                 </div>
             </div>
         </div>
@@ -1114,7 +1884,7 @@ function CreateJobPost({onClose}){
                 </div>
                 <form action="" onSubmit={async (e) => {
 
-                    const result = handelSubmit({e, data:jobDetails, endpoint:"job-details"})
+                    const result = await handelSubmit({e, data:jobDetails, endpoint:"job-details"})
 
                     if (result?.success){
                         onClose();
@@ -1163,6 +1933,7 @@ export default CreateJobPost
 ### `frontend/AI-HR/src/styles/home.css`
 
 ```css
+
 /* Home page */
 .home-page {
     min-height: 100vh;
@@ -1262,11 +2033,73 @@ export default CreateJobPost
 .home-page-search button:hover {
     background-color: #174bc4;
 }
+
+/* Tablet */
+@media (max-width: 650px) {
+    .hero-section {
+        min-height: 300px;
+        padding: 42px 18px;
+    }
+
+    .hero-section h1 {
+        letter-spacing: -1px;
+    }
+
+    .hero-section p {
+        font-size: 16px;
+    }
+
+    .home-page-search {
+        max-width: 500px;
+        margin-top: 30px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+    .hero-section {
+        min-height: 280px;
+        padding: 38px 16px;
+    }
+
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .hero-section p {
+        font-size: 14px;
+    }
+
+    .hero-section p br {
+        display: none;
+    }
+
+    .home-page-search {
+        margin-top: 26px;
+    }
+
+    .home-page-search form {
+        gap: 4px;
+        padding: 5px;
+    }
+
+    .home-page-search .search-bar {
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    .home-page-search button {
+        min-width: 78px;
+        padding: 0 12px;
+        font-size: 12px;
+    }
+}
 ```
 
 ### `frontend/AI-HR/src/styles/navbar.css`
 
 ```css
+
 /* Navbar */
 .nav-bar {
     width: 100%;
@@ -1353,11 +2186,50 @@ export default CreateJobPost
 .sign-in-up:hover {
     background-color: #e5e7eb;
 }
+
+/* Tablet and mobile */
+@media (max-width: 650px) {
+    .nav-bar-container {
+        padding: 0 16px;
+    }
+
+    .logo-name h3 {
+        font-size: 20px;
+    }
+
+    .nav-pages-links {
+        gap: 14px;
+    }
+
+    .nav-pages-links a {
+        font-size: 12px;
+    }
+
+    .sign-in-up {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 420px) {
+    .nav-pages-links {
+        gap: 9px;
+    }
+
+    .nav-pages-links a {
+        font-size: 11px;
+    }
+
+    .logo-name h3 {
+        font-size: 17px;
+    }
+}
 ```
 
 ### `frontend/AI-HR/src/styles/creat_job_post.css`
 
 ```css
+
 /* Background overlay */
 .job-modal-overlay {
     position: fixed;
@@ -1540,6 +2412,40 @@ export default CreateJobPost
     border-color: #1d4ed8;
     background: #1d4ed8;
 }
+
+/* Popup animation */
+@keyframes job-modal-appear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 500px) {
+    .job-model {
+        padding: 22px 18px;
+        max-height: 92vh;
+    }
+
+    .job-modal-header h2 {
+        font-size: 23px;
+    }
+
+    .job-modal-actions {
+        gap: 8px;
+    }
+
+    .job-modal-actions button {
+        flex: 1;
+        padding: 0 10px;
+    }
+}
 ```
 
 ### `frontend/AI-HR/src/component/LoginAs.jsx`
@@ -1548,7 +2454,7 @@ export default CreateJobPost
 import { useState } from "react"
 import CandidateSignUp from "./candidate/CandidateSignUp";
 import CompanySignUp from "./company/CompanySignUp";
-import { handelSubmit } from "../services/api";
+import { loginUser } from "../services/api";
 import "../styles/LoginAs.css"
 import { useNavigate } from "react-router-dom";
 
@@ -1558,15 +2464,9 @@ function LoginAs(){
     const [showLogin , setShowLogin] = useState(false)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
-
-
-    const loginData = {
-        email : email,
-        password : password,
-        role : loginAs === "User" ? "candidate" : "company",
-    }
 
     return(
         <div className="login-page-container">
@@ -1587,27 +2487,32 @@ function LoginAs(){
             </div>
 
             <form action="" method="post" onSubmit={ async (e) => {
-                const result = await handelSubmit({e, data:loginData, endpoint:"login-as"});
-                
-                if (result.success){
-                    
-                    localStorage.setItem("access_token", result.access_token)
-                    localStorage.setItem("user", JSON.stringify(result.user))
-                    
-                    if (result.user.role === "candidate"){
-                        navigate("/candidate-profile")
+                e.preventDefault();
+                setError("");
+
+                try{
+                    const result = await loginUser({
+                        email,
+                        password,
+                        role: loginAs === "User" ? "candidate" : "company",
+                    })
+
+                    if (result.success){
+                        navigate("/")
                     }
-                    if (result.user.role === "company"){
-                        navigate("/company-profile")
-                    }
-                }else{
-                    console.log(result.message)
+                }catch(error){
+                    setError(error.message || "Login failed. Please try again.");
                 }
+                
         }}>
                 <label htmlFor="email" className="email-label">Email</label>
-                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+
                 <label htmlFor="password" className="password-label">Password</label>
-                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+
+                {error && <p className="login-error">{error}</p> }
+
                 <p className="forgot-password"><a href="/forgot-password">Forgot your password?</a></p>
                 <button type="submit">Login</button>
             </form>
@@ -1750,7 +2655,7 @@ function CandidateProfileSetUp() {
                 const result = await handelSubmit({e, data:candidateProfile, endpoint:"candidate-profile-setup"})
 
                 if (result.success ){
-                    navigate("/")
+                    navigate("/login-as")
                 }
 
                 }}>
@@ -1867,7 +2772,8 @@ export default CandidateSignUp
 
 ```jsx
 import {useState, useEffect} from "react";
-import { getMyProfile } from "../../services/api";
+import { getMyProfile, logoutUser } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 function CandidateProfile(){
 
@@ -1881,6 +2787,14 @@ function CandidateProfile(){
         }
         fetchProfile()
     },[])
+
+    const navigate = useNavigate();
+
+    function handelLogout(){
+        logoutUser();
+        navigate("/");
+    }
+
     return(
         <div className="candidate-profile-page">
             <div className="candidate-profile">
@@ -1888,6 +2802,7 @@ function CandidateProfile(){
                 <p>{candidateProfile?.summary}</p>
                 <p>{candidateProfile?.skills}</p>
             </div>
+            <button onClick={handelLogout}>Logout</button>
         </div>
     )
 }
@@ -1927,7 +2842,7 @@ function CompanyProfileSetUp() {
                         const result = await handelSubmit({ e, data: companyDetail, endpoint: "company-profile-setup" });
 
                         if(result.success){
-                            navigate("/")
+                            navigate("/login-as")
                         }
                 }}
                 >
@@ -1963,7 +2878,6 @@ function CompanyProfileSetUp() {
             </div>
         </div>
     )
-
 }
 
 export default CompanyProfileSetUp
@@ -1979,6 +2893,7 @@ import { useNavigate } from "react-router-dom"
 
 function CompanySignUp(){
 
+    // Company Detail
     const [companyUserName, setCompanyUserName] = useState("")
     const [companyName , setCompanName] = useState("")
     const [companyemail, setCompanyEmail] = useState("")
@@ -2041,8 +2956,9 @@ export default CompanySignUp
 ### `frontend/AI-HR/src/component/company/CompanyProfile.jsx`
 
 ```jsx
-import { getMyProfile } from "../../services/api"
+import { getMyProfile, logoutUser } from "../../services/api"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import CreateJobPost from "./CreateJobPost";
 
 function CompanyProfile(){
@@ -2062,11 +2978,16 @@ function CompanyProfile(){
         fetchProfile();
     },[])
     
+    const navigate = useNavigate();
+
+        function handelLogout(){
+            logoutUser();
+            navigate("/");
+        }
     // console.log("Company Data:", companyProfile);
     return (
         <div className="company-profile-page">
             <div className="company-profile">
-                {/* <h2>{companyPro}</h2> */}
                 <h2>{companyProfile?.company_name}</h2>
                 <p>Industry: {companyProfile?.industry}</p>
                 <p>{companyProfile?.company_description}</p>
@@ -2077,6 +2998,7 @@ function CompanyProfile(){
             {showJobModal &&
                 <CreateJobPost onClose={() => setShowJobModal(false)}/>
             }
+            <button onClick={handelLogout}>Logout</button>
         </div>
     )
 }
@@ -2112,13 +3034,43 @@ export async function getCandidate(){
 }
 
 // fetch questions from backend
-export async function getQuestions(){
-    const res = await fetch(`${API}/questions`)
+export async function startInterview(interviewId){
+    
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        throw new Error("Please log in first")
+    }
+
+    const res = await fetch(`${API}/start-interview/${interviewId}`,{
+        method  : "GET",
+        headers:{
+            Authorization : `Bearer ${token}`,
+        },
+    })
+
+    const result = await res.json()
 
     if(!res.ok){
-        throw new Error("Failed to fetch data!");  
+        throw new Error(
+            result.detail || "Failed to start interview"
+        );
     }
-    return res.json()
+
+    return result.questions
+}
+
+// fetch all jobs from collection
+export async function getAllJobs(){
+
+    const res = await fetch(`${API}/job_dashboard`)
+
+    if(!res.ok){
+        throw new Error(`Failed to fetch data: ${res.status} `)
+    }
+
+    
+    return await res.json()
 }
 
 // Handel form submission for every page
@@ -2131,12 +3083,11 @@ export async function handelSubmit({e, data, endpoint}){
             method : "POST",
             headers : {
                 "content-Type" : "application/json",
-                "Authorization" : `******
+                "Authorization" : `Bearer ${token}`
             },
             body : JSON.stringify(data)
         });
         const result = await response.json();
-        console.log(result);
         return result;
     }catch (error){
         console.error("API Error :",error)
@@ -2153,16 +3104,120 @@ export async function getMyProfile() {
     const response = await fetch(`${API}/my-profile`,{
         method : "GET",
         headers : {
-            Authorization : `******
+            Authorization : `Bearer ${token}`
         }
     })
 
     const data = await response.json();
 
-    if (!response){
-        throw new Error(data.detail || "Failed to fecth profile ") 
-    }
+    // if (!response){
+    //     throw new Error(data.detail || "Failed to fecth profile ") 
+    // }
     return data;
+}
+
+export async function loginUser({email, password, role}){
+
+   const res = await fetch(`${API}/login-as`,{
+    method:"POST",
+    headers:{
+        "Content-Type" : "application/json",
+    },
+    body: JSON.stringify({ email, password, role}),
+   });
+
+   const result = await res.json();
+
+   if (!res.ok || !result.success){
+    throw new Error(
+        result.message || result.detail || "Login failed"
+    );
+
+    }
+    localStorage.setItem("access_token", result.access_token);
+    localStorage.setItem("current_user", JSON.stringify(result.user));
+
+    window.dispatchEvent(new Event("auth-changed"));
+
+    return result;
+}
+
+
+export function getSavedUser() {
+    try {
+        const user = localStorage.getItem("current_user");
+        return user ? JSON.parse(user) : null;
+    } catch {
+        return null;
+    }
+}
+
+export function logoutUser(){
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("current_user");
+    localStorage.removeItem("user");
+
+    window.dispatchEvent(new Event("auth-changed"));
+}
+
+export async function applyForAiHrRound(jobId){
+
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        throw new Error("Please sign in before applying")
+    }
+
+    const res = await fetch(`${API}/apply-job`,{
+        method: "POST",
+        headers : {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            job_id : jobId,
+        }),
+    });
+
+    const result = await res.json();
+
+    if(!res.ok){
+        throw new Error(
+            result.detail || result.message || "Failed to apply"
+        );
+   }
+
+   console.log(result)
+
+    return result;
+}
+
+export async function validateSession() {
+   
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        logoutUser();
+        return null
+    }
+
+    try{
+        const res = await fetch(`${API}/my-profile`, {
+            headers:{
+                Authorization : `Bearer ${token}`
+            },
+        });
+
+        if (!res.ok){
+            logoutUser();
+            return null;
+        }
+
+        return await res.json();
+    }catch(error){
+        console.error("Could not validate session",error);
+        return null
+    }
 }
 ```
 
@@ -2250,6 +3305,7 @@ export default CandidateProfileSetUp
 ### `frontend/AI-HR/src/styles/LoginAs.css`
 
 ```css
+
 /* ===== Global page layout ===== */
 
 .login-page-container {
@@ -2272,6 +3328,8 @@ export default CandidateProfileSetUp
         "Segoe UI", sans-serif;
 }
 
+/* ===== Login card ===== */
+
 .login-page {
     width: 100%;
     max-width: 440px;
@@ -2292,6 +3350,8 @@ export default CandidateProfileSetUp
     letter-spacing: -0.8px;
     text-align: center;
 }
+
+/* ===== Candidate / company selector ===== */
 
 .login-select {
     margin-bottom: 28px;
@@ -2334,6 +3394,8 @@ export default CandidateProfileSetUp
     background: #e8efff;
 }
 
+/* ===== Form elements ===== */
+
 .login-page form,
 .login-content form {
     display: flex;
@@ -2367,6 +3429,12 @@ export default CandidateProfileSetUp
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.login-page input::placeholder,
+.login-content input::placeholder,
+.login-content textarea::placeholder {
+    color: #9aa5b5;
+}
+
 .login-page input:focus,
 .login-content input:focus,
 .login-content select:focus,
@@ -2374,6 +3442,8 @@ export default CandidateProfileSetUp
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
 }
+
+/* ===== Main buttons ===== */
 
 .login-page form button[type="submit"],
 .login-content form button[type="submit"],
@@ -2397,6 +3467,122 @@ export default CandidateProfileSetUp
     background: #1d4ed8;
     transform: translateY(-1px);
 }
+
+/* ===== Forgot password ===== */
+
+.forgot-password {
+    margin: 2px 0 4px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.forgot-password a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Signup link ===== */
+
+.login-signup {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #edf0f5;
+    text-align: center;
+}
+
+.login-signup p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.login-signup button {
+    padding: 4px 5px;
+    border: none;
+    background: transparent;
+    color: #2563eb;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-signup button:hover {
+    text-decoration: underline;
+}
+
+/* ===== Signup card ===== */
+
+.login-content {
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+    padding: 38px;
+    border: 1px solid #e5eaf2;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+    animation: cardEnter 0.35s ease-out;
+}
+
+.login-content h1,
+.login-content h2,
+.login-content h3 {
+    margin-top: 0;
+    color: #111827;
+    letter-spacing: -0.5px;
+}
+
+.login-content p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.login-content textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* ===== Animation ===== */
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Mobile responsive ===== */
+
+@media (max-width: 520px) {
+    .login-page-container {
+        padding: 20px 14px;
+    }
+
+    .login-page,
+    .login-content {
+        padding: 26px 22px;
+        border-radius: 15px;
+    }
+
+    .login-page h2 {
+        font-size: 25px;
+    }
+}
+
+.login-error {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 10px;
+}
 ```
 
 ### `frontend/AI-HR/src/styles/candidate_form.css`
@@ -2405,6 +3591,7 @@ export default CandidateProfileSetUp
 .data-form-page {
     width: 100%;
     height: auto;
+    /* justify-self: center; */
     display: flex;
     justify-content: center;
     align-content: center;
@@ -2416,7 +3603,7 @@ export default CandidateProfileSetUp
     padding: 20px;
     border: 2px solid black;
     border-radius: 20px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Prevents padding from breaking the 300px width */
     text-align: left;
 }
 
@@ -2427,12 +3614,14 @@ export default CandidateProfileSetUp
     color: black;
 }
 
+/* ADD THIS RULE BELOW TO FIX THE STACKING */
 .data-form-page .form-page form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 12px; /* Adds clean spacing between each row */
 }
 
+/* Optional: Makes inputs look clean and span full width */
 .data-form-page .form-page input {
     width: 100%;
     box-sizing: border-box;
