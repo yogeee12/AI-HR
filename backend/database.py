@@ -12,6 +12,6 @@ db = client.get_default_database()
 
 companies_collections = db["companies"]
 candidates_collections = db["candidates"]
-interview_collections = db["inetrview"]
+interview_collections = db["interview"]
 accounts_collections = db["accounts"]
 job_collection = db["job_details"]
