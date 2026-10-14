@@ -2,13 +2,15 @@ import { getAllJobs, applyForAiHrRound } from "../services/api";
 import { useEffect, useMemo, useState } from "react";
 import "../styles/jobs_dashboard.css";
 import { useNavigate } from "react-router-dom";
+import InterviewPopup from "./InterviewPopup";
 
 function JobPostDashboard() {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState("");
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
-
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [interviewId, setInterviewId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -184,8 +186,10 @@ function JobPostDashboard() {
                                         className="apply-button"
                                         onClick={async () => {
                                             try{
-                                                const result = applyForAiHrRound(job._id)
-                                                console.log("Application response :", result )
+                                                const result = await applyForAiHrRound(job._id)
+                                                setSelectedJob(result.job);
+                                                setInterviewId(result.interview_id);
+
                                             }catch(error){
                                                 console.error("Applied Failed : ", error.message );
 
@@ -204,7 +208,16 @@ function JobPostDashboard() {
                         );
                     })}
                 </section>
-
+                {selectedJob && interviewId && (
+                    <InterviewPopup
+                        job={selectedJob}
+                        interviewId={interviewId}
+                        onClose={() => {
+                            setSelectedJob(null);
+                            setInterviewId(null);
+                        }}
+                    />
+                )}
                 <p className="jobs-footer">
                     Discover opportunities and take your next career step with AI-HR.
                 </p>
