@@ -7,27 +7,30 @@ from prompt import RESP
 from data_extract import get_questions, get_answers
 
 load_dotenv()
-def analyze_candidate(company, candidate):
+def analyze_candidate(company, candidate, job):
     client = genai.Client(
         api_key=os.getenv("GEMINI_API_KEY")
     )
 
     response = client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-3.7-flash",
         contents=f"""
         You are an experienced HR and technical interviewer.
 
         Analyze whether the candidate is suitable for the company's available
         job/project based on the information provided.
 
-        {RESP}
         
         COMPANY INFORMATION:
         {company}
+        
+        JOB INFORMATION:
+        {job}
 
         CANDIDATE INFORMATION:
         {candidate}
 
+        {RESP}
         """
         )
 
