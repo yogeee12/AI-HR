@@ -23,13 +23,30 @@ export async function getCandidate(){
 }
 
 // fetch questions from backend
-export async function getQuestions(){
-    const res = await fetch(`${API}/questions`)
+export async function startInterview(interviewId){
+    
+    const token = localStorage.getItem("access_token");
+
+    if(!token){
+        throw new Error("Please log in first")
+    }
+
+    const res = await fetch(`${API}/start-interview/${interviewId}`,{
+        method  : "GET",
+        headers:{
+            Authorization : `Bearer ${token}`,
+        },
+    })
+
+    const result = await res.json()
 
     if(!res.ok){
-        throw new Error("Failed to fetch data!");  
+        throw new Error(
+            result.detail || "Failed to start interview"
+        );
     }
-    return res.json()
+
+    return result.questions
 }
 
 // fetch all jobs from collection
@@ -185,7 +202,7 @@ export async function validateSession() {
             return null;
         }
 
-        return await res.JSON();
+        return await res.json();
     }catch(error){
         console.error("Could not validate session",error);
         return null
