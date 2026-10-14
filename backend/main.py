@@ -3,14 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from bson import ObjectId
 from ai_gen_result import analyze_candidate
-from database import candidates_collections, companies_collections, accounts_collections, job_collection
+from database import candidates_collections, companies_collections, accounts_collections, job_collection, interview_collections
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
-
+from datetime import datetime
 app = FastAPI()
 
 security = HTTPBearer()
 
+# check user token and get urrent account token
 def get_current_account(
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
@@ -56,17 +57,7 @@ def home():
 
     return {"message" : "AI HR API is running"}
 
-# get candidate sign up detail and save in db
-@app.post("/candidate-signup")
-def receive_candidate(candidate : dict):
-    result = accounts_collections.insert_one(candidate)
-    
-    return {
-        "success" : True,
-        "message" : "Candidate recevied",
-        "candidate_id" : str(result.inserted_id)
-    }
-    
+# Company APIs
 # get company sign up detail ans save in db 
 @app.post("/company-signup")
 def receive_company_detail(companyDetail : dict):    
@@ -76,24 +67,6 @@ def receive_company_detail(companyDetail : dict):
         "message" : "Company Detail Received",
         "company_id" : str(result.inserted_id)
     }
-    
-
-# get candidate profile detail and save in db
-@app.post("/candidate-profile-setup")
-def receive_candidate_profile(candidateProfile : dict):
-    if not candidateProfile.get("account_id"):
-        raise HTTPException(
-            status_code=400,
-            detail="account_id is reqiured"
-        )
-    
-    result = candidates_collections.insert_one(candidateProfile)
-    
-    return {
-        "success" : True,
-        "message" : "Candidate Profile Received",
-        "candidate_id" : str(result.inserted_id)
-    } 
     
 # get company profile detail and save in db
 @app.post("/company-profile-setup")
@@ -112,11 +85,54 @@ def receive_company_profile(companyProfile : dict):
         "company_id" : str(result.inserted_id)
     }
     
+# Candidate APIs
+# get candidate sign up detail and save in db
+@app.post("/candidate-signup")
+def receive_candidate(candidate : dict):
+    result = accounts_collections.insert_one(candidate)
+    
+    return {
+        "success" : True,
+        "message" : "Candidate recevied",
+        "candidate_id" : str(result.inserted_id)
+    }
+    
+# get candidate profile detail and save in db
+@app.post("/candidate-profile-setup")
+def receive_candidate_profile(candidateProfile : dict):
+    if not candidateProfile.get("account_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="account_id is reqiured"
+        )
+    
+    result = candidates_collections.insert_one(candidateProfile)
+    
+    return {
+        "success" : True,
+        "message" : "Candidate Profile Received",
+        "candidate_id" : str(result.inserted_id)
+    } 
+        
+# Question Answer APIs
 # Get answer from frontend
 @app.post("/answers")
 def get_answers(answers: dict):
     return answers
 
+# send questions to frontend
+@app.get("/questions")
+def analyze():
+    
+    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
+    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
+    
+    result = analyze_candidate(company=company, candidate=candidate)
+    questions = result["get_questions"]
+    print(result["get_answers"])
+    return questions
+
+# Job APIs
 @app.post("/job-details")
 def get_job_details(
     jobDetails: dict,
@@ -149,6 +165,16 @@ def get_job_details(
         "success" : True,
         "result" : str(result.inserted_id)
     }
+    
+@app.get("/job_dashboard")
+def get_all_jobs():
+    
+    all_jobs = list(job_collection.find())
+    
+    for job in all_jobs:
+        job["_id"] = str(job["_id"])     
+        
+    return all_jobs
 
 @app.post("/apply-job")
 def get_job_round_data(
@@ -161,7 +187,7 @@ def get_job_round_data(
             detail="Only candidate can apply for jobs"
         )
         
-    job_id = job_data.get("jobId")
+    job_id = job_data.get("job_id")
     
     if not job_id:
         raise HTTPException(
@@ -170,7 +196,7 @@ def get_job_round_data(
         )
         
         
-     # Check whether it is a valid MongoDB ObjectId
+    # Check whether it is a valid MongoDB ObjectId
     if not ObjectId.is_valid(job_id):
         raise HTTPException(
             status_code=403,
@@ -186,6 +212,16 @@ def get_job_round_data(
     
     job_detail["_id"] = str(job_detail["_id"])
     
+    interview_data = {
+        "candidate_id" : current_account["account_id"],
+        "company_id" : job_detail["company_id"],
+        "job_id" : job_detail["_id"],
+        "date" : str(datetime.now().date()),
+        "time" : str(datetime.now().time()),
+    }
+    
+    interview_collections.insert_one(interview_data)
+    
     return {
         "success" : True,
         "messege" : "Job found Successfully",
@@ -193,37 +229,7 @@ def get_job_round_data(
         "candidate_id" : current_account["account_id"]
     }
 
-# send questions to frontend
-@app.get("/questions")
-def analyze():
-    
-    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
-    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
-    
-    result = analyze_candidate(company=company, candidate=candidate)
-    questions = result["get_questions"]
-    print(result["get_answers"])
-    return questions
-
-# send all companies data to react
-@app.get("/companies")
-def all_companies():
-    
-    # companies = list(companies_collections.find())
-    company = companies_collections.find_one({"company.company_name" : "NovaTech Labs"})
-    company["_id"] = str(company["_id"])
-    return company
-
-# send candidate data to react
-@app.get("/candidate")
-def get_candidate():
-    
-    candidate = candidates_collections.find_one({"candidate.name" : "Rahul Sharma"})
-    candidate["_id"] = str(candidate["_id"])
-        
-    return candidate
-
-
+# Login and Profile APIs
 @app.post("/login-as")
 def login_data(login_data: dict):
 
@@ -289,13 +295,3 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
-
-@app.get("/job_dashboard")
-def get_all_jobs():
-    
-    all_jobs = list(job_collection.find())
-    
-    for job in all_jobs:
-        job["_id"] = str(job["_id"])     
-        
-    return all_jobs
