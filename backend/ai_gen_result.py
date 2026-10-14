@@ -12,34 +12,48 @@ def analyze_candidate(company, candidate, job):
         api_key=os.getenv("GEMINI_API_KEY")
     )
 
-    response = client.models.generate_content(
-        model="gemini-3.7-flash",
-        contents=f"""
-        You are an experienced HR and technical interviewer.
+    models = os.getenv("MODELS").split(",")
+    for mod in models:
+        try:
+            response = client.models.generate_content(
+                model = mod,
+                contents=f"""
+                You are an experienced HR and technical interviewer.
 
-        Analyze whether the candidate is suitable for the company's available
-        job/project based on the information provided.
+                Analyze whether the candidate is suitable for the company's available
+                job/project based on the information provided.
 
+                
+                COMPANY INFORMATION:
+                {company}
+                
+                JOB INFORMATION:
+                {job}
+
+                CANDIDATE INFORMATION:
+                {candidate}
+
+                {RESP}
+                """
+                )
+            if response and response.text:
+                str_data = response.text
+                str_data = str_data.replace("```json", "").replace("```", "").strip()
+                data = json.loads(str_data)
+                        
+                return {
+                    "data" : data,
+                    "get_questions" : get_questions(data),
+                    "get_answers" : get_answers(data)
+                }
+                
+        except Exception as e:
+            print("ERROR : ", e)
+            continue
         
-        COMPANY INFORMATION:
-        {company}
-        
-        JOB INFORMATION:
-        {job}
-
-        CANDIDATE INFORMATION:
-        {candidate}
-
-        {RESP}
-        """
-        )
-
-    str_data = response.text
-    str_data = str_data.replace("```json", "").replace("```", "").strip()
-    data = json.loads(str_data)
-
+    print("CRITICAL: All configured Gemini models failed.")
     return {
-        "data" : data,
-        "get_questions" : get_questions(data),
-        "get_answers" : get_answers(data)
+        "data": {},
+        "get_questions": [],
+        "get_answers": []
     }
