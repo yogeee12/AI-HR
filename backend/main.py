@@ -7,6 +7,8 @@ from database import candidates_collections, companies_collections, accounts_col
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
 from datetime import datetime
+from scoring import question_update, score_candidate
+
 app = FastAPI()
 
 security = HTTPBearer()
@@ -118,8 +120,23 @@ def receive_candidate_profile(candidateProfile : dict):
 # Get answer from frontend
 @app.post("/answers")
 def get_answers(answers: dict):
-    return answers
-
+    
+    interview_id = ObjectId(answers["interview_id"])
+    candidate_answers = answers["answers"]
+    
+    interview_id[""]
+    score_candidate(
+        interview_id=interview_id,
+        candidate_answers=candidate_answers,
+        correct_answers=
+        )    
+    
+    print(answers)
+    return{
+        "success" : True,
+        "answers" : answers
+    }
+    
 # send questions to frontend
 @app.get("/start-interview/{interview_id}")
 def start_interview(
@@ -144,7 +161,7 @@ def start_interview(
         "candidate_id" : current_account["account_id"]
     }) 
     
-    if not interview_id:
+    if not interview:
         raise HTTPException(
             status_code=404,
             detail = "Interview not found"
@@ -162,17 +179,18 @@ def start_interview(
         "_id" : ObjectId(interview["job_id"])
     })
     
-    print("candidate :" , candidate)
-    print("company : " , company)
-    print("job : " , job)
     if not company or not candidate or not job:
         raise HTTPException(
             status_code=404,
             detail="company, candidate or job details not found"
         )
-    
     result = analyze_candidate(company=company, candidate=candidate, job=job)
     questions = result["get_questions"]
+    correct_answers = result["get_answers"]
+    
+    question_update(
+        interview_id=interview_id, 
+        questions=questions)
     
     return {
         "success" : True,
@@ -281,11 +299,13 @@ def get_job_round_data(
         "started_at" : None,
         "completed_at" : None,
         
-        "questions" : [],
-        
-        "score" : None,
+        "questions" : [], 
+        "correct_anser"
         "total_question" : 0,
-        "correct_answers" : 0
+        
+        "score_board" : [],
+        "correct_answers_no" : 0,
+        "total_score" : 0
     }
     
     saved_interview = interview_collections.insert_one(interview_data)
