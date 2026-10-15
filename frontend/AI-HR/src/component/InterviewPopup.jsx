@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { startInterview } from "../services/api";
+import { handelSubmit, startInterview } from "../services/api";
 import "../styles/interview_popup.css"
 
 function InterviewPopup({job, interviewId, onClose}){
     const [loading , setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [userAnswers, setUserAnswers] = useState({})
     const [questions, setQuestions] = useState(null); 
 
     async function handelStartInterview(){
@@ -21,6 +22,15 @@ function InterviewPopup({job, interviewId, onClose}){
             setLoading(false)
         }
     }
+
+
+    const payload = {
+        interview_id : interviewId,
+        answers : userAnswers,
+
+    }
+        console.log("Answer to send :", payload)
+    
 
     return(
         <div className="interview-overlay">
@@ -62,7 +72,15 @@ function InterviewPopup({job, interviewId, onClose}){
                     </button>
                     </>
                 ):(
+                    
                     <>
+                    <form action="" onSubmit={ async (e) => {
+                        const result = await handelSubmit({e, data:payload, endpoint:"answers"})
+
+                        if(result?.success){
+                            onClose()      
+                        }
+                    }}>
                         <p className="popup-label">YOUR INTERVIEW</p>
                         <h2>Interview Questions</h2>
 
@@ -75,15 +93,41 @@ function InterviewPopup({job, interviewId, onClose}){
                                     {index + 1}. {question.question}
                                 </h3>
 
-                                {[1, 2, 3, 4].map((optionNumber) => (
-                                    <p key={optionNumber}>
-                                        {optionNumber}.{" "}
-                                        {question[`option_${optionNumber}`]}
-                                    </p>
-                                ))}
+                                {[1, 2, 3, 4].map((optionNumber) => {
+                                    const optionValue = `option_${optionNumber}`;
+
+                                    return (
+                                        <label
+                                            className="interview-option"
+                                            key={optionNumber}
+                                        >
+                                            <input 
+                                            type="radio"
+                                            name={`question_${question.question_id || index}`}
+                                            value={optionNumber}
+                                            checked={
+                                                userAnswers[question.question_id] === optionNumber
+                                            }
+                                            onChange={() => 
+                                                setUserAnswers((previousAnswers) => ({
+                                                    ...previousAnswers,
+                                                    [question.question_id] : optionNumber,
+                                                }))
+                                            }
+                                             />
+                                             <span>
+                                                {optionNumber}. {question[optionValue]}
+                                             </span>
+                                        </label>
+                                    )
+                                })}
                             </div>
                         ))}
+                    <button type="submit">Submit</button>
+
+                    </form>
                     </>
+
                 )}
                 {error && (
                     <p className="interview-error">{error}</p>
