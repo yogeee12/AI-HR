@@ -1,56 +1,74 @@
-user_answers = {'q1': 0, 'q2': 1, 'q3': 2, 'q4': 0, 'q5': 1}
+from bson import ObjectId
+from database import interview_collections
+from datetime import datetime
+from data_extract import get_answers, get_questions
 
-correct_answers = [
-  {
-    'question_id': 'q1', 
-    'question': 'In Python, which of the following methods is used to safely retrieve a value from a dictionary without raising a KeyError if the key does not exist?', 
-    'correct_option': 0
-  }, 
-  {
-    'question_id': 'q2', 
-    'question': 'In FastAPI, how do you define a path parameter in a route decorator?', 
-    'correct_option': 1
-  }, 
-  {
-    'question_id': 'q3', 
-    'question': 'Which SQL clause is used to filter the results of a GROUP BY query based on a specified condition?', 
-    'correct_option': 2
-  }, 
-  {
-    'question_id': 'q4', 
-    'question': 'Which HTTP method is typically used to update an existing resource completely or replace it in a RESTful API?', 
-    'correct_option': 3
-  }, 
-  {
-    'question_id': 'q5', 
-    'question': 'Which library does FastAPI natively use for data validation and settings management via Python type hints?', 
-    'correct_option': 0
+def question_update(interview_id, questions):
+  if not interview_id:
+    return False
+  
+  total_question = len(questions)
+  
+  interview_filter = {
+    "_id" : ObjectId(interview_id)
   }
-]
-
-def score_candidate(user_answers, correct_answers):
-    total_questions = len(correct_answers)
+  
+  updates = {
+    "$set" : {
+      "questions" : questions,
+      "started_at" : datetime.now(),
+      "total_questions" : total_question
+    }
+  }
+  
+  interview_collections.update_one(
+    interview_filter,
+    updates
+    )
+  
+  return True
+  
+def score_candidate(interview_id , candidate_answers, correct_answers):
+    if not candidate_answers and not correct_answers: 
+      return False
+    total_socre = 0 
+    correct_answer = 0
     score_board = []
     for i in correct_answers:
-        for key, value in user_answers.items():
-            if i["question_id"] == key:
-                score_board.append({
-                    i["question_id"] : {
-                        "question" : i["question"],
-                        "correct_answer":i["correct_option"],
-                        "user_answer":value,
-                        "answer" : (i["correct_option"] == value),
-                        "score" : (10 if i["correct_option"] == value else 0)
-                        },})
-                            
-    return {
-        "company_id" : None,
-        "candidate_id" : None,
-        "score_board" : score_board,
-        "total_questions" : total_questions
-        }
+        for key, value in candidate_answers.items():
+          value-=1
+          if i["question_id"] == key:
+            score_board.append({
+                i["question_id"] : {
+                "question" : i["question"],
+                "correct_answer":i["correct_option"],
+                "user_answer": i["options"][value],
+                "answer" : (i["correct_option"] == value),
+                "score" : (10 if i["correct_option"] == value else 0)
+                },})
+            
+    for ques in score_board:
+      for i in ques:
+        total_score += i["score"]      
+        correct_answer += [1 if i["answer"] else 0]
+      
+    interview_filter = {
+        "_id" : ObjectId(interview_id)
+      }
     
-r = score_candidate(user_answers, correct_answers)
-
-def inertview_collection(score):
-    pass
+    upadtes = {
+      "$set" : {
+        "result" : "completed",
+        "score_board" : score_board,
+        "total_score" : total_socre,
+        "correct_answers" : correct_answer,
+        "completed_at" : datetime.now()
+      }
+    } 
+    
+    interview_collections.update_one(
+      interview_filter,
+      upadtes
+    )
+    
+    return True
