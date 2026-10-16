@@ -124,12 +124,16 @@ def get_answers(answers: dict):
     interview_id = ObjectId(answers["interview_id"])
     candidate_answers = answers["answers"]
     
-    interview_id[""]
+    interview_answers = interview_collections.find_one({
+        "_id" : interview_id
+    })
+    
+    correct_answer = interview_answers["correct_answer"]
     score_candidate(
         interview_id=interview_id,
         candidate_answers=candidate_answers,
-        correct_answers=
-        )    
+        correct_answers=correct_answer,
+        )
     
     print(answers)
     return{
@@ -190,7 +194,10 @@ def start_interview(
     
     question_update(
         interview_id=interview_id, 
-        questions=questions)
+        questions=questions,
+        answer=correct_answers
+        )
+    
     
     return {
         "success" : True,
@@ -300,8 +307,8 @@ def get_job_round_data(
         "completed_at" : None,
         
         "questions" : [], 
-        "correct_anser"
-        "total_question" : 0,
+        "correct_answer" : [],
+        "total_questions" : 0,
         
         "score_board" : [],
         "correct_answers_no" : 0,
