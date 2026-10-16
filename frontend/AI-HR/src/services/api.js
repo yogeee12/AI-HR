@@ -208,3 +208,22 @@ export async function validateSession() {
         return null
     }
 }
+
+export async function getAllInterviewRounds(company_id){
+    try{
+        const token = localStorage.getItem("access_token")
+        
+        const res = await fetch(`${API}/interview-dashboard/${company_id}`,{
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : `Bearer ${token}`
+            },           
+        })
+        const data = await res.json();
+        console.log(data)
+        return data
+    }catch(err){
+        console.error("Error",err)
+    }
+}
