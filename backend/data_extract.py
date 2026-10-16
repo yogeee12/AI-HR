@@ -24,10 +24,10 @@ def get_answers(data):
             "question_id" : ques["question_id"],
             "correct_option_id" : ques["correct_option"],
             "options" : {
-                0 : option[0],
-                1 : option[1],
-                2 : option[2],
-                3 : option[3]
+                "0" : option[0],
+                "1" : option[1],
+                "2" : option[2],
+                "3" : option[3]
             },
             "correct_option" : option[int(ques["correct_option"])]
         },)
