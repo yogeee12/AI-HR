@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-14 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-16 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -108,6 +108,7 @@ C:\Users\Om\Desktop\AI-HR\
 ```text
 .env
 /__pycache__
+test.py
 ```
 
 ### `frontend/AI-HR/README.md`
@@ -666,44 +667,56 @@ def analyze_candidate(company, candidate, job):
         api_key=os.getenv("GEMINI_API_KEY")
     )
 
-    response = client.models.generate_content(
-        model="gemini-3.7-flash",
-        contents=f"""
-        You are an experienced HR and technical interviewer.
+    models = os.getenv("MODELS").split(",")
+    for mod in models:
+        try:
+            response = client.models.generate_content(
+                model = mod,
+                contents=f"""
+                You are an experienced HR and technical interviewer.
 
-        Analyze whether the candidate is suitable for the company's available
-        job/project based on the information provided.
+                Analyze whether the candidate is suitable for the company's available
+                job/project based on the information provided.
 
+                
+                COMPANY INFORMATION:
+                {company}
+                
+                JOB INFORMATION:
+                {job}
+
+                CANDIDATE INFORMATION:
+                {candidate}
+
+                {RESP}
+                """
+                )
+            if response and response.text:
+                str_data = response.text
+                str_data = str_data.replace("```json", "").replace("```", "").strip()
+                data = json.loads(str_data)
+                        
+                return {
+                    "data" : data,
+                    "get_questions" : get_questions(data),
+                    "get_answers" : get_answers(data)
+                }
+                
+        except Exception as e:
+            print("ERROR : ", e)
+            continue
         
-        COMPANY INFORMATION:
-        {company}
-        
-        JOB INFORMATION:
-        {job}
-
-        CANDIDATE INFORMATION:
-        {candidate}
-
-        {RESP}
-        """
-        )
-
-    str_data = response.text
-    str_data = str_data.replace("```json", "").replace("```", "").strip()
-    data = json.loads(str_data)
-
+    print("CRITICAL: All configured Gemini models failed.")
     return {
-        "data" : data,
-        "get_questions" : get_questions(data),
-        "get_answers" : get_answers(data)
+        "data": {},
+        "get_questions": [],
+        "get_answers": []
     }
 ```
 
 ### `backend/data_extract.py`
 
 ```python
-import json
-
 def get_questions(data):
 
     questions = data["questions"]
@@ -725,10 +738,17 @@ def get_answers(data):
     questions = data["questions"]
     result = []
     for ques in questions:
+        option = ques["options"]
         result.append({
             "question_id" : ques["question_id"],
-            "question" : ques["question"],
-            "correct_option" : ques["correct_option"]
+            "correct_option_id" : ques["correct_option"],
+            "options" : {
+                "0" : option[0],
+                "1" : option[1],
+                "2" : option[2],
+                "3" : option[3]
+            },
+            "correct_option" : option[int(ques["correct_option"])]
         },)
 
     return result
@@ -768,6 +788,8 @@ from database import candidates_collections, companies_collections, accounts_col
 from jose import jwt , JWTError
 from auth import SECRET_KEY, ALGORITHM, create_access_token
 from datetime import datetime
+from scoring import question_update, score_candidate
+
 app = FastAPI()
 
 security = HTTPBearer()
@@ -879,8 +901,27 @@ def receive_candidate_profile(candidateProfile : dict):
 # Get answer from frontend
 @app.post("/answers")
 def get_answers(answers: dict):
-    return answers
-
+    
+    interview_id = ObjectId(answers["interview_id"])
+    candidate_answers = answers["answers"]
+    
+    interview_answers = interview_collections.find_one({
+        "_id" : interview_id
+    })
+    
+    correct_answer = interview_answers["correct_answer"]
+    score_candidate(
+        interview_id=interview_id,
+        candidate_answers=candidate_answers,
+        correct_answers=correct_answer,
+        )
+    
+    print(answers)
+    return{
+        "success" : True,
+        "answers" : answers
+    }
+    
 # send questions to frontend
 @app.get("/start-interview/{interview_id}")
 def start_interview(
@@ -905,7 +946,7 @@ def start_interview(
         "candidate_id" : current_account["account_id"]
     }) 
     
-    if not interview_id:
+    if not interview:
         raise HTTPException(
             status_code=404,
             detail = "Interview not found"
@@ -923,17 +964,21 @@ def start_interview(
         "_id" : ObjectId(interview["job_id"])
     })
     
-    print("candidate :" , candidate)
-    print("company : " , company)
-    print("job : " , job)
     if not company or not candidate or not job:
         raise HTTPException(
             status_code=404,
             detail="company, candidate or job details not found"
         )
-    
     result = analyze_candidate(company=company, candidate=candidate, job=job)
     questions = result["get_questions"]
+    correct_answers = result["get_answers"]
+    
+    question_update(
+        interview_id=interview_id, 
+        questions=questions,
+        answer=correct_answers
+        )
+    
     
     return {
         "success" : True,
@@ -1042,11 +1087,13 @@ def get_job_round_data(
         "started_at" : None,
         "completed_at" : None,
         
-        "questions" : [],
+        "questions" : [], 
+        "correct_answer" : [],
+        "total_questions" : 0,
         
-        "score" : None,
-        "total_question" : 0,
-        "correct_answers" : 0
+        "score_board" : [],
+        "correct_answers_no" : 0,
+        "total_score" : 0
     }
     
     saved_interview = interview_collections.insert_one(interview_data)
@@ -1221,62 +1268,109 @@ Return exactly this structure:
 ### `backend/scoring.py`
 
 ```python
-user_answers = {'q1': 0, 'q2': 1, 'q3': 2, 'q4': 0, 'q5': 1}
+from bson import ObjectId
+from database import interview_collections
+from datetime import datetime
+from data_extract import get_answers, get_questions
 
-correct_answers = [
-  {
-    'question_id': 'q1', 
-    'question': 'In Python, which of the following methods is used to safely retrieve a value from a dictionary without raising a KeyError if the key does not exist?', 
-    'correct_option': 0
-  }, 
-  {
-    'question_id': 'q2', 
-    'question': 'In FastAPI, how do you define a path parameter in a route decorator?', 
-    'correct_option': 1
-  }, 
-  {
-    'question_id': 'q3', 
-    'question': 'Which SQL clause is used to filter the results of a GROUP BY query based on a specified condition?', 
-    'correct_option': 2
-  }, 
-  {
-    'question_id': 'q4', 
-    'question': 'Which HTTP method is typically used to update an existing resource completely or replace it in a RESTful API?', 
-    'correct_option': 3
-  }, 
-  {
-    'question_id': 'q5', 
-    'question': 'Which library does FastAPI natively use for data validation and settings management via Python type hints?', 
-    'correct_option': 0
+def question_update(interview_id, questions, answer):
+  if not interview_id:
+    return False
+  
+  total_question = len(questions)
+  
+  interview_filter = {
+    "_id" : ObjectId(interview_id)
   }
-]
+  
+  updates = {
+    "$set" : {
+      "questions" : questions,
+      "started_at" : datetime.now(),
+      "total_questions" : total_question,
+      "correct_answer" : answer
+    }
+  }
+  
+  interview_collections.update_one(
+    interview_filter,
+    updates
+    )
+  
+  return True
+  
 
-def score_candidate(user_answers, correct_answers):
-    total_questions = len(correct_answers)
+def score_candidate(interview_id, candidate_answers, correct_answers):
+    if not candidate_answers or not correct_answers:
+        return False
+
+    total_score = 0
+    correct_count = 0
     score_board = []
-    for i in correct_answers:
-        for key, value in user_answers.items():
-            if i["question_id"] == key:
-                score_board.append({
-                    i["question_id"] : {
-                        "question" : i["question"],
-                        "correct_answer":i["correct_option"],
-                        "user_answer":value,
-                        "answer" : (i["correct_option"] == value),
-                        "score" : (10 if i["correct_option"] == value else 0)
-                        },})
-                            
-    return {
-        "company_id" : None,
-        "candidate_id" : None,
-        "score_board" : score_board,
-        "total_questions" : total_questions
-        }
-    
-r = score_candidate(user_answers, correct_answers)
 
-def inertview_collection(score):
-    pass
+    # Convert the submitted answers into a dictionary:
+    # {"q1": 1, "q2": 3, ...}
+    
+    answers_by_question = {
+        question_id: int(selected_option)
+        for question_id , selected_option in candidate_answers.items()
+    }
+
+    for question in correct_answers:
+        question_id = question["question_id"]
+
+        # Skip questions the candidate didn't answer
+        if question_id not in answers_by_question:
+            continue
+
+        selected_option = answers_by_question[question_id]
+
+        # Your options are indexed from 0 to 3
+        selected_index = selected_option - 1
+        is_correct = (
+            question["correct_option_id"] == selected_index
+        )
+
+        score = 10 if is_correct else 0
+
+        if is_correct:
+            correct_count += 1
+
+        total_score += score
+
+        score_board.append({
+            question_id: {
+                "correct_answer": question["correct_option"],
+                "user_answer": question["options"][str(selected_index)],
+                "answer": is_correct,
+                "score": score
+            }
+        })
+
+    interview_filter = {
+        "_id": ObjectId(interview_id)
+    }
+
+    updates = {
+        "$set": {
+            "status" : "completed",
+            "result":  "Pass" if total_score > 20 else "Fail",
+            "score_board": score_board,
+            "total_score": total_score,
+            "correct_answers_no": correct_count,
+            "completed_at": datetime.now()
+        }
+    }
+
+    result = interview_collections.update_one(
+        interview_filter,
+        updates
+    )
+
+    if result.matched_count == 0:
+        return False
+
+    return True
 ```
 
 ### `backend/test_jwt.py`
