@@ -3,7 +3,7 @@ from database import interview_collections
 from datetime import datetime
 from data_extract import get_answers, get_questions
 
-def question_update(interview_id, questions):
+def question_update(interview_id, questions, answer):
   if not interview_id:
     return False
   
@@ -17,7 +17,8 @@ def question_update(interview_id, questions):
     "$set" : {
       "questions" : questions,
       "started_at" : datetime.now(),
-      "total_questions" : total_question
+      "total_questions" : total_question,
+      "correct_answer" : answer
     }
   }
   
@@ -28,47 +29,75 @@ def question_update(interview_id, questions):
   
   return True
   
-def score_candidate(interview_id , candidate_answers, correct_answers):
-    if not candidate_answers and not correct_answers: 
-      return False
-    total_socre = 0 
-    correct_answer = 0
+
+def score_candidate(interview_id, candidate_answers, correct_answers):
+    if not candidate_answers or not correct_answers:
+        return False
+
+    total_score = 0
+    correct_count = 0
     score_board = []
-    for i in correct_answers:
-        for key, value in candidate_answers.items():
-          value-=1
-          if i["question_id"] == key:
-            score_board.append({
-                i["question_id"] : {
-                "question" : i["question"],
-                "correct_answer":i["correct_option"],
-                "user_answer": i["options"][value],
-                "answer" : (i["correct_option"] == value),
-                "score" : (10 if i["correct_option"] == value else 0)
-                },})
-            
-    for ques in score_board:
-      for i in ques:
-        total_score += i["score"]      
-        correct_answer += [1 if i["answer"] else 0]
-      
+
+    # Convert the submitted answers into a dictionary:
+    # {"q1": 1, "q2": 3, ...}
+    
+    answers_by_question = {
+        question_id: int(selected_option)
+        for question_id , selected_option in candidate_answers.items()
+    }
+
+    for question in correct_answers:
+        question_id = question["question_id"]
+
+        # Skip questions the candidate didn't answer
+        if question_id not in answers_by_question:
+            continue
+
+        selected_option = answers_by_question[question_id]
+
+        # Your options are indexed from 0 to 3
+        selected_index = selected_option - 1
+        is_correct = (
+            question["correct_option_id"] == selected_index
+        )
+
+        score = 10 if is_correct else 0
+
+        if is_correct:
+            correct_count += 1
+
+        total_score += score
+
+        score_board.append({
+            question_id: {
+                "correct_answer": question["correct_option"],
+                "user_answer": question["options"][str(selected_index)],
+                "answer": is_correct,
+                "score": score
+            }
+        })
+
     interview_filter = {
-        "_id" : ObjectId(interview_id)
-      }
-    
-    upadtes = {
-      "$set" : {
-        "result" : "completed",
-        "score_board" : score_board,
-        "total_score" : total_socre,
-        "correct_answers" : correct_answer,
-        "completed_at" : datetime.now()
-      }
-    } 
-    
-    interview_collections.update_one(
-      interview_filter,
-      upadtes
+        "_id": ObjectId(interview_id)
+    }
+
+    updates = {
+        "$set": {
+            "status" : "completed",
+            "result":  "Pass" if total_score > 20 else "Fail",
+            "score_board": score_board,
+            "total_score": total_score,
+            "correct_answers_no": correct_count,
+            "completed_at": datetime.now()
+        }
+    }
+
+    result = interview_collections.update_one(
+        interview_filter,
+        updates
     )
-    
+
+    if result.matched_count == 0:
+        return False
+
     return True
