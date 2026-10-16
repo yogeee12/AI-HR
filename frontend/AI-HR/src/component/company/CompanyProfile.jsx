@@ -2,6 +2,7 @@ import { getMyProfile, logoutUser } from "../../services/api"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import CreateJobPost from "./CreateJobPost";
+import CompanyJobDashboard from "./CompanyJobDashboard";
 
 function CompanyProfile(){
     const [companyProfile, setCompanyProfile] = useState(null);
@@ -37,9 +38,13 @@ function CompanyProfile(){
             <div className="create-job-post">
                 <button onClick={() => setShowJobModal(true)}>+ Post a Job</button>
             </div>
+
             {showJobModal &&
                 <CreateJobPost onClose={() => setShowJobModal(false)}/>
             }
+
+            <CompanyJobDashboard/>
+
             <button onClick={handelLogout}>Logout</button>
         </div>
     )
