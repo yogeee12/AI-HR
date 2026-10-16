@@ -391,3 +391,33 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
+
+@app.get("/interview-dashboard/{company_id}")
+def get_all_interview(company_id : str):
+
+    interview_data = list(interview_collections.find({
+        "company_id" : company_id
+    }))
+
+    for data in interview_data:
+        data["_id"] = str(data["_id"])
+        candidate_data = list(companies_collections.find_one({
+            "account_id" : data["candidate_id"]
+        }))
+        
+        job_data = list(job_collection.find_one({
+            "_id" : data["job_id"]
+        }))
+        
+        account_detail = list(accounts_collections.find_one({
+            "_id" : ObjectId(candidate_data["account_id"])
+        }))
+        
+        data.append({
+            "candidate_name" : candidate_data["name"],
+            "candidate_email" : account_detail["email"],
+            "user_name" : account_detail["user_name"],  
+            "for_post" : job_data["job_title"]
+        })
+
+    return interview_data
