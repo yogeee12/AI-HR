@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-16 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-20 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -1172,6 +1172,34 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     profile["_id"] = str(profile["_id"])
     
     return profile
+
+@app.get("/interview-dashboard/{company_id}")
+def get_all_interview(company_id : str):
+
+    interview_data = list(interview_collections.find({
+        "company_id" : company_id
+    }))
+
+    for data in interview_data:
+        data["_id"] = str(data["_id"])
+        candidate_data = candidates_collections.find_one({
+            "account_id" : data["candidate_id"]
+        })
+        
+        job_data = job_collection.find_one({
+            "_id" : ObjectId(data["job_id"])
+        })
+        
+        account_detail = accounts_collections.find_one({
+            "_id" : ObjectId(candidate_data["account_id"])
+        })
+        
+        data["candidate_name"] = candidate_data["name"]
+        data["candidate_email"] = account_detail["email"]
+        data["user_name"] = account_detail["user_name"] 
+        data["for_post"] = job_data["job_title"]
+
+    return interview_data
 ```
 
 ### `backend/prompt.py`
@@ -2865,43 +2893,135 @@ export default CandidateSignUp
 ### `frontend/AI-HR/src/component/candidate/CandidateProfile.jsx`
 
 ```jsx
-import {useState, useEffect} from "react";
+
+import { useState, useEffect } from "react";
 import { getMyProfile, logoutUser } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import "../../styles/candidate_profile.css";
 
-function CandidateProfile(){
-
+function CandidateProfile() {
     const [candidateProfile, setCandidateProfile] = useState(null);
-
-    useEffect(() => {
-        async function fetchProfile(){
-            const data = await getMyProfile();
-
-            setCandidateProfile(data);
-        }
-        fetchProfile()
-    },[])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
-    function handelLogout(){
+    useEffect(() => {
+        async function fetchProfile() {
+            try {
+                const data = await getMyProfile();
+
+                if (!data || data.detail) {
+                    throw new Error(data?.detail || "Unable to load profile.");
+                }
+
+                setCandidateProfile(data);
+            } catch (err) {
+                console.error("Profile error:", err);
+                setError("We couldn't load your profile. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchProfile();
+    }, []);
+
+    function handleLogout() {
         logoutUser();
         navigate("/");
     }
 
-    return(
-        <div className="candidate-profile-page">
-            <div className="candidate-profile">
-                <h2>{candidateProfile?.name}</h2>
-                <p>{candidateProfile?.summary}</p>
-                <p>{candidateProfile?.skills}</p>
+    if (loading) {
+        return (
+            <main className="candidate-profile-page">
+                <p className="profile-message">Loading your profile...</p>
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="candidate-profile-page">
+                <p className="profile-message profile-error">{error}</p>
+            </main>
+        );
+    }
+
+    const skills = Array.isArray(candidateProfile?.skills)
+        ? candidateProfile.skills
+        : typeof candidateProfile?.skills === "string"
+          ? candidateProfile.skills.split(",").map((skill) => skill.trim()).filter(Boolean)
+          : [];
+
+    return (
+        <main className="candidate-profile-page">
+            <div className="candidate-profile-layout">
+                <header className="candidate-profile-heading">
+                    <div>
+                        <p className="profile-eyebrow">YOUR ACCOUNT</p>
+                        <h1>My Profile</h1>
+                        <p>Manage your professional information.</p>
+                    </div>
+
+                    <button
+                        className="profile-logout-button"
+                        onClick={handleLogout}
+                    >
+                        Log out
+                    </button>
+                </header>
+
+                <section className="candidate-profile-card">
+                    <div className="candidate-profile-banner" />
+
+                    <div className="candidate-profile-main">
+                        <div className="candidate-profile-avatar">
+                            {(candidateProfile?.name || "C")
+                                .charAt(0)
+                                .toUpperCase()}
+                        </div>
+
+                        <div className="candidate-profile-identity">
+                            <h2>{candidateProfile?.name || "Candidate"}</h2>
+                            <p>Candidate account</p>
+                        </div>
+                    </div>
+
+                    <div className="candidate-profile-details">
+                        <section className="profile-detail-section">
+                            <h3>About me</h3>
+                            <p className="profile-summary">
+                                {candidateProfile?.summary ||
+                                    "Add a professional summary to tell companies about yourself."}
+                            </p>
+                        </section>
+
+                        <section className="profile-detail-section">
+                            <h3>Skills</h3>
+
+                            {skills.length > 0 ? (
+                                <div className="profile-skills">
+                                    {skills.map((skill, index) => (
+                                        <span key={`${skill}-${index}`}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="profile-muted">
+                                    No skills added yet.
+                                </p>
+                            )}
+                        </section>
+                    </div>
+                </section>
             </div>
-            <button onClick={handelLogout}>Logout</button>
-        </div>
-    )
+        </main>
+    );
 }
 
-export default CandidateProfile
+export default CandidateProfile;
 ```
 
 ### `frontend/AI-HR/src/component/company/CompanyProfileSetUp.jsx`
@@ -3050,54 +3170,147 @@ export default CompanySignUp
 ### `frontend/AI-HR/src/component/company/CompanyProfile.jsx`
 
 ```jsx
-import { getMyProfile, logoutUser } from "../../services/api"
-import { useEffect, useState } from "react"
+
+import { getMyProfile, logoutUser } from "../../services/api";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateJobPost from "./CreateJobPost";
+import CompanyJobDashboard from "./CompanyJobDashboard";
+import "../../styles/company_profile.css";
 
-function CompanyProfile(){
+function CompanyProfile() {
     const [companyProfile, setCompanyProfile] = useState(null);
-    const [showJobModal , setShowJobModal] = useState(false);
+    const [showJobModal, setShowJobModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    useEffect(() =>{
-        async function fetchProfile() {
-            try{
-                const data = await getMyProfile();
-
-                setCompanyProfile(data);
-            }catch (error){
-                console.log("Error fetching company data:", error);
-            }
-        }
-        fetchProfile();
-    },[])
-    
     const navigate = useNavigate();
 
-        function handelLogout(){
-            logoutUser();
-            navigate("/");
-        }
-    // console.log("Company Data:", companyProfile);
-    return (
-        <div className="company-profile-page">
-            <div className="company-profile">
-                <h2>{companyProfile?.company_name}</h2>
-                <p>Industry: {companyProfile?.industry}</p>
-                <p>{companyProfile?.company_description}</p>
-            </div>
-            <div className="create-job-post">
-                <button onClick={() => setShowJobModal(true)}>+ Post a Job</button>
-            </div>
-            {showJobModal &&
-                <CreateJobPost onClose={() => setShowJobModal(false)}/>
+    useEffect(() => {
+        async function fetchProfile() {
+            try {
+                const data = await getMyProfile();
+
+                if (!data || data.detail) {
+                    throw new Error(data?.detail || "Unable to load company profile");
+                }
+
+                setCompanyProfile(data);
+            } catch (error) {
+                console.error("Error fetching company data:", error);
+                setError("Unable to load your company profile.");
+            } finally {
+                setLoading(false);
             }
-            <button onClick={handelLogout}>Logout</button>
-        </div>
-    )
+        }
+
+        fetchProfile();
+    }, []);
+
+    function handleLogout() {
+        logoutUser();
+        navigate("/");
+    }
+
+    return (
+        <main className="company-profile-page">
+            <div className="company-profile-layout">
+
+                <header className="company-profile-header">
+                    <div>
+                        <p className="company-profile-eyebrow">
+                            COMPANY WORKSPACE
+                        </p>
+                        <h1>Company Profile</h1>
+                        <p className="company-profile-subtitle">
+                            Manage your company, publish jobs, and review candidates.
+                        </p>
+                    </div>
+
+                    <button
+                        className="company-logout-button"
+                        onClick={handleLogout}
+                    >
+                        Log out
+                    </button>
+                </header>
+
+                {loading ? (
+                    <div className="company-profile-message">
+                        Loading company profile...
+                    </div>
+                ) : error ? (
+                    <div className="company-profile-message company-profile-error">
+                        {error}
+                    </div>
+                ) : (
+                    <section className="company-info-card">
+                        <div className="company-info-banner" />
+
+                        <div className="company-info-content">
+                            <div className="company-logo-placeholder">
+                                {(companyProfile?.company_name || "C")
+                                    .charAt(0)
+                                    .toUpperCase()}
+                            </div>
+
+                            <div className="company-info-details">
+                                <span className="company-account-label">
+                                    COMPANY ACCOUNT
+                                </span>
+
+                                <h2>
+                                    {companyProfile?.company_name || "Your Company"}
+                                </h2>
+
+                                <p className="company-industry">
+                                    {companyProfile?.industry || "Industry not specified"}
+                                </p>
+
+                                <p className="company-description">
+                                    {companyProfile?.company_description ||
+                                        "Add a description to introduce your company to potential candidates."}
+                                </p>
+                            </div>
+
+                            <button
+                                className="post-job-button"
+                                onClick={() => setShowJobModal(true)}
+                            >
+                                <span>+</span> Post a Job
+                            </button>
+                        </div>
+                    </section>
+                )}
+
+                {showJobModal && (
+                    <CreateJobPost
+                        onClose={() => setShowJobModal(false)}
+                    />
+                )}
+
+                <section className="company-interview-area">
+                    <div className="company-interview-intro">
+                        <div>
+                            <p className="company-profile-eyebrow">
+                                RECRUITMENT
+                            </p>
+                            <h2>Interview Management</h2>
+                            <p>
+                                Review candidate applications and AI interview results.
+                            </p>
+                        </div>
+                    </div>
+
+                    <CompanyJobDashboard />
+                </section>
+
+            </div>
+        </main>
+    );
 }
 
-export default CompanyProfile
+export default CompanyProfile;
 ```
 
 ### `frontend/AI-HR/src/services/api.js`
@@ -3311,6 +3524,25 @@ export async function validateSession() {
     }catch(error){
         console.error("Could not validate session",error);
         return null
+    }
+}
+
+export async function getAllInterviewRounds(company_id){
+    try{
+        const token = localStorage.getItem("access_token")
+        
+        const res = await fetch(`${API}/interview-dashboard/${company_id}`,{
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : `Bearer ${token}`
+            },           
+        })
+        const data = await res.json();
+        console.log(data)
+        return data
+    }catch(err){
+        console.error("Error",err)
     }
 }
 ```
