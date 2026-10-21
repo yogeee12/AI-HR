@@ -116,7 +116,7 @@ function InterviewPopup({job, interviewId, onClose}){
                                             }
                                              />
                                              <span>
-                                                {optionNumber}. {question[optionValue]}
+                                                {question[optionValue]}
                                              </span>
                                         </label>
                                     )
