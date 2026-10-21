@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-20 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-21 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -506,6 +506,9 @@ If you are developing a production application, we recommend using TypeScript wi
     color: #334155;
     font-size: 14px;
     font-weight: 600;
+    text-align: left;
+    margin-left: 5px;
+    font-size: 16px;
 }
 
 /* ===== Inputs and Textareas ===== */
@@ -969,16 +972,26 @@ def start_interview(
             status_code=404,
             detail="company, candidate or job details not found"
         )
+    
     result = analyze_candidate(company=company, candidate=candidate, job=job)
     questions = result["get_questions"]
     correct_answers = result["get_answers"]
+    
+
+    interview_collections.update_one(
+        {"_id" : ObjectId(interview_id)},
+        {
+            "$set" :{
+                "status" : "applied",
+                "result" : "Not Submited"
+            }
+        })
     
     question_update(
         interview_id=interview_id, 
         questions=questions,
         answer=correct_answers
         )
-    
     
     return {
         "success" : True,
@@ -1048,7 +1061,6 @@ def get_job_round_data(
             detail = "Job ID is required"    
         )
         
-        
     # Check whether it is a valid MongoDB ObjectId
     if not ObjectId.is_valid(job_id):
         raise HTTPException(
@@ -1067,7 +1079,8 @@ def get_job_round_data(
     
     existing_interview = interview_collections.find_one({
         "candidate_id" : current_account["account_id"],
-        "job_id" : job_detail["_id"]
+        "job_id" : job_detail["_id"],
+        "status" : "applied"
     })
     
     if existing_interview:
@@ -1075,33 +1088,45 @@ def get_job_round_data(
             status_code = 409,
             detail = "You have already applied for job",
         )
-    interview_data = {
+    
+    clicked_interview = interview_collections.find_one({
         "candidate_id" : current_account["account_id"],
-        "company_id" : job_detail["company_id"],
         "job_id" : job_detail["_id"],
-        
-        "status" : "applied",
-        "result" : None,
-        
-        "created_at" : datetime.now(),
-        "started_at" : None,
-        "completed_at" : None,
-        
-        "questions" : [], 
-        "correct_answer" : [],
-        "total_questions" : 0,
-        
-        "score_board" : [],
-        "correct_answers_no" : 0,
-        "total_score" : 0
-    }
+        "status" : "clicked"
+    })
     
-    saved_interview = interview_collections.insert_one(interview_data)
+    if not clicked_interview:
+        interview_data = {
+            "candidate_id" : current_account["account_id"],
+            "company_id" : job_detail["company_id"],
+            "job_id" : job_detail["_id"],
+            
+            "status" : "clicked",
+            "result" : None,
+            
+            "created_at" : datetime.now(),
+            "started_at" : None,
+            "completed_at" : None,
+            
+            "questions" : [], 
+            "correct_answer" : [],
+            "total_questions" : 0,
+            
+            "score_board" : [],
+            "correct_answers_no" : 0,
+            "total_score" : 0
+        }
+        
+        saved_interview = interview_collections.insert_one(interview_data)
+        interview_id = str(saved_interview.inserted_id)
     
+    else : 
+        interview_id = str(clicked_interview["_id"])
+ 
     return {
         "success" : True,
         "messege" : "Job found Successfully",
-        "interview_id" : str(saved_interview.inserted_id),
+        "interview_id" : interview_id,
         "job" : job_detail,
         "candidate_id" : current_account["account_id"]
     }
@@ -2023,7 +2048,7 @@ function CreateJobPost({onClose}){
                     <input type="text" name="job-required-skills" className="job-required-skills-input" onChange={(e) => setRequiredSkills(e.target.value)}/>
 
                     <label htmlFor="job-min-experience">Minimum Experience</label>
-                    <input type="number" name="job-min-experience" className="job-min-experience-input" onChange={(e) => setExperience(e.target.value)}/>
+                    <input type="number" name="job-min-experience" className="job-min-experience-input" step="any" onChange={(e) => setExperience(e.target.value)}/>
 
                     <label htmlFor="job-location">Location</label>
                     <input type="text" name="job-location" className="job-location-input" onChange={(e) => setLocation(e.target.value)}/>
@@ -2391,7 +2416,7 @@ export default CreateJobPost
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    text-align: center;
     margin-bottom: 22px;
 }
 
@@ -2400,6 +2425,7 @@ export default CreateJobPost
     color: #172033;
     font-size: 26px;
     font-weight: 750;
+    text-align: center;
 }
 
 /* Close button */
@@ -2441,6 +2467,10 @@ export default CreateJobPost
     color: #374151;
     font-size: 14px;
     font-weight: 600;
+    text-align: left;
+    font-weight: 700;
+    margin: 5px 0px 0px 8px ;
+    font-size: 16px;
 }
 
 /* Text inputs and textarea */
@@ -3170,7 +3200,6 @@ export default CompanySignUp
 ### `frontend/AI-HR/src/component/company/CompanyProfile.jsx`
 
 ```jsx
-
 import { getMyProfile, logoutUser } from "../../services/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -3255,9 +3284,6 @@ function CompanyProfile() {
                             </div>
 
                             <div className="company-info-details">
-                                <span className="company-account-label">
-                                    COMPANY ACCOUNT
-                                </span>
 
                                 <h2>
                                     {companyProfile?.company_name || "Your Company"}
