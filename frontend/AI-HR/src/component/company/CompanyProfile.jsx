@@ -1,4 +1,3 @@
-
 import { getMyProfile, logoutUser } from "../../services/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -83,9 +82,6 @@ function CompanyProfile() {
                             </div>
 
                             <div className="company-info-details">
-                                <span className="company-account-label">
-                                    COMPANY ACCOUNT
-                                </span>
 
                                 <h2>
                                     {companyProfile?.company_name || "Your Company"}
