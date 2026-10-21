@@ -188,16 +188,26 @@ def start_interview(
             status_code=404,
             detail="company, candidate or job details not found"
         )
+    
     result = analyze_candidate(company=company, candidate=candidate, job=job)
     questions = result["get_questions"]
     correct_answers = result["get_answers"]
+    
+
+    interview_collections.update_one(
+        {"_id" : ObjectId(interview_id)},
+        {
+            "$set" :{
+                "status" : "applied",
+                "result" : "Not Submited"
+            }
+        })
     
     question_update(
         interview_id=interview_id, 
         questions=questions,
         answer=correct_answers
         )
-    
     
     return {
         "success" : True,
@@ -267,7 +277,6 @@ def get_job_round_data(
             detail = "Job ID is required"    
         )
         
-        
     # Check whether it is a valid MongoDB ObjectId
     if not ObjectId.is_valid(job_id):
         raise HTTPException(
@@ -286,7 +295,8 @@ def get_job_round_data(
     
     existing_interview = interview_collections.find_one({
         "candidate_id" : current_account["account_id"],
-        "job_id" : job_detail["_id"]
+        "job_id" : job_detail["_id"],
+        "status" : "applied"
     })
     
     if existing_interview:
@@ -294,33 +304,45 @@ def get_job_round_data(
             status_code = 409,
             detail = "You have already applied for job",
         )
-    interview_data = {
+    
+    clicked_interview = interview_collections.find_one({
         "candidate_id" : current_account["account_id"],
-        "company_id" : job_detail["company_id"],
         "job_id" : job_detail["_id"],
-        
-        "status" : "applied",
-        "result" : None,
-        
-        "created_at" : datetime.now(),
-        "started_at" : None,
-        "completed_at" : None,
-        
-        "questions" : [], 
-        "correct_answer" : [],
-        "total_questions" : 0,
-        
-        "score_board" : [],
-        "correct_answers_no" : 0,
-        "total_score" : 0
-    }
+        "status" : "clicked"
+    })
     
-    saved_interview = interview_collections.insert_one(interview_data)
+    if not clicked_interview:
+        interview_data = {
+            "candidate_id" : current_account["account_id"],
+            "company_id" : job_detail["company_id"],
+            "job_id" : job_detail["_id"],
+            
+            "status" : "clicked",
+            "result" : None,
+            
+            "created_at" : datetime.now(),
+            "started_at" : None,
+            "completed_at" : None,
+            
+            "questions" : [], 
+            "correct_answer" : [],
+            "total_questions" : 0,
+            
+            "score_board" : [],
+            "correct_answers_no" : 0,
+            "total_score" : 0
+        }
+        
+        saved_interview = interview_collections.insert_one(interview_data)
+        interview_id = str(saved_interview.inserted_id)
     
+    else : 
+        interview_id = str(clicked_interview["_id"])
+ 
     return {
         "success" : True,
         "messege" : "Job found Successfully",
-        "interview_id" : str(saved_interview.inserted_id),
+        "interview_id" : interview_id,
         "job" : job_detail,
         "candidate_id" : current_account["account_id"]
     }
