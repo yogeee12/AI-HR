@@ -1,7 +1,7 @@
 
 .candidate-profile-page {
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 20px 20px;
     background: #f5f7fb;
     color: #172033;
 }
@@ -118,6 +118,7 @@
 .profile-detail-section h3 {
     margin: 0 0 14px;
     font-size: 16px;
+    text-align: left;
 }
 
 .profile-summary {
@@ -126,6 +127,7 @@
     font-size: 14px;
     line-height: 1.8;
     white-space: pre-wrap;
+    text-align: left;
 }
 
 .profile-skills {

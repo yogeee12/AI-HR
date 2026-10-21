@@ -220,11 +220,16 @@
 }
 
 .job-description {
+    min-height: 30px;
+    max-height: 80px;
     margin: 10px 0;
     color: #72819b;
     font-size: 13px;
     line-height: 1.65;
     overflow-wrap: anywhere;
+    text-align: left;
+    overflow: hidden;
+    margin-bottom: 20px ;
 }
 
 .job-skills {
