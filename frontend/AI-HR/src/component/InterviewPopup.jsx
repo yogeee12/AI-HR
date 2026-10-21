@@ -50,11 +50,11 @@ function InterviewPopup({job, interviewId, onClose}){
 
                     <p>{job.description}</p>
                     <p>
-                        <strong>Location:</strong>{" "}
+                        <strong>Location : </strong>{" "}
                         {job.location || "Not specified"}
                     </p>
                     <p>
-                        <strong>Experience:</strong>{" "}
+                        <strong>Required Skills : </strong>{" "}
                         {Array.isArray(job.required_skills)
                             ? job.required_skills.join(",")
                             : job.required_skills || "Not specified"
