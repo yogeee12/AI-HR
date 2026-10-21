@@ -55,7 +55,7 @@ function CreateJobPost({onClose}){
                     <input type="text" name="job-required-skills" className="job-required-skills-input" onChange={(e) => setRequiredSkills(e.target.value)}/>
 
                     <label htmlFor="job-min-experience">Minimum Experience</label>
-                    <input type="number" name="job-min-experience" className="job-min-experience-input" onChange={(e) => setExperience(e.target.value)}/>
+                    <input type="number" name="job-min-experience" className="job-min-experience-input" step="any" onChange={(e) => setExperience(e.target.value)}/>
 
                     <label htmlFor="job-location">Location</label>
                     <input type="text" name="job-location" className="job-location-input" onChange={(e) => setLocation(e.target.value)}/>
