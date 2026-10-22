@@ -209,11 +209,11 @@ export async function validateSession() {
     }
 }
 
-export async function getAllInterviewRounds(company_id){
+export async function getAllInterviewRounds(user_id, role){
     try{
         const token = localStorage.getItem("access_token")
         
-        const res = await fetch(`${API}/interview-dashboard/${company_id}`,{
+        const res = await fetch(`${API}/interview-dashboard/${user_id}/${role}`,{
             method : "GET",
             headers : {
                 "Content-Type" : "application/json",
@@ -221,7 +221,6 @@ export async function getAllInterviewRounds(company_id){
             },           
         })
         const data = await res.json();
-        console.log(data)
         return data
     }catch(err){
         console.error("Error",err)
