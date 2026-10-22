@@ -1,6 +1,6 @@
 ﻿# Project Structure and File Snapshot
 
-This document reflects the current state of the `AI-HR` project as of 2026-10-21 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
+This document reflects the current state of the `AI-HR` project as of 2026-10-22 and embeds the contents of readable, non-sensitive text files as a point-in-time snapshot.
 
 ## Scope and sensitive data
 
@@ -848,10 +848,13 @@ def home():
 @app.post("/company-signup")
 def receive_company_detail(companyDetail : dict):    
     result = accounts_collections.insert_one(companyDetail)
+    user_name = companyDetail.get("user_name")
+
     return {
         "success" : True,
         "message" : "Company Detail Received",
-        "company_id" : str(result.inserted_id)
+        "company_id" : str(result.inserted_id),
+        "user_name" : user_name
     }
     
 # get company profile detail and save in db
@@ -864,7 +867,7 @@ def receive_company_profile(companyProfile : dict):
         )
     
     result = companies_collections.insert_one(companyProfile)
-    
+
     return {
         "success" : True,
         "message" : "Company Profile Received",
@@ -876,11 +879,13 @@ def receive_company_profile(companyProfile : dict):
 @app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
     result = accounts_collections.insert_one(candidate)
-    
+    user_name = candidate.get("user_name")
+
     return {
         "success" : True,
         "message" : "Candidate recevied",
-        "candidate_id" : str(result.inserted_id)
+        "candidate_id" : str(result.inserted_id),
+        "user_name" : user_name
     }
     
 # get candidate profile detail and save in db
@@ -893,11 +898,11 @@ def receive_candidate_profile(candidateProfile : dict):
         )
     
     result = candidates_collections.insert_one(candidateProfile)
-    
+    print(candidateProfile)
     return {
         "success" : True,
         "message" : "Candidate Profile Received",
-        "candidate_id" : str(result.inserted_id)
+        "candidate_id" : str(result.inserted_id),
     } 
         
 # Question Answer APIs
@@ -1198,32 +1203,53 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     
     return profile
 
-@app.get("/interview-dashboard/{company_id}")
-def get_all_interview(company_id : str):
+@app.get("/interview-dashboard/{user_id}/{role}")
+def get_all_interview(user_id : str,
+                      role : str):
 
-    interview_data = list(interview_collections.find({
-        "company_id" : company_id
-    }))
+    if role == "company":
+        interview_data = list(interview_collections.find({
+            "company_id" : user_id
+        }))
+        
+        for data in interview_data:
+            data["_id"] = str(data["_id"])
+            candidate_data = candidates_collections.find_one({
+                "account_id" : data["candidate_id"]
+            })
+            
+            job_data = job_collection.find_one({
+                "_id" : ObjectId(data["job_id"])
+            })
+            
+            account_detail = accounts_collections.find_one({
+                "_id" : ObjectId(candidate_data["account_id"])
+            })
+            
+            data["candidate_name"] = candidate_data["name"]
+            data["candidate_email"] = account_detail["email"]
+            data["user_name"] = account_detail["user_name"] 
+            data["for_post"] = job_data["job_title"]
+        
+    elif role == "candidate":
+        interview_data = list(interview_collections.find({
+            "candidate_id" : user_id
+        }))
 
-    for data in interview_data:
-        data["_id"] = str(data["_id"])
-        candidate_data = candidates_collections.find_one({
-            "account_id" : data["candidate_id"]
-        })
-        
-        job_data = job_collection.find_one({
-            "_id" : ObjectId(data["job_id"])
-        })
-        
-        account_detail = accounts_collections.find_one({
-            "_id" : ObjectId(candidate_data["account_id"])
-        })
-        
-        data["candidate_name"] = candidate_data["name"]
-        data["candidate_email"] = account_detail["email"]
-        data["user_name"] = account_detail["user_name"] 
-        data["for_post"] = job_data["job_title"]
-
+        for data in interview_data:
+            data["_id"] = str(data["_id"])            
+            company_data = companies_collections.find_one({
+                "account_id" : data["company_id"]
+            })
+            
+            job_data = job_collection.find_one({
+                "_id" : ObjectId(data["job_id"])
+            })
+            
+            data["company_name"] = company_data["company_name"]
+            data["industry"] = company_data["industry"]
+            data["job_title"] = job_data["job_title"]
+            
     return interview_data
 ```
 
@@ -2788,9 +2814,15 @@ function CandidateProfileSetUp() {
     const [education, setEducation] = useState("");
 
     const accountId = sessionStorage.getItem("pendingAccountId");
+    const userName = sessionStorage.getItem("pendingUserName");
+
+    console.log("Signup Data")
+    console.log(accountId)
+    console.log(userName)
 
     const candidateProfile = {
         account_id : accountId,
+        user_name : userName,
         name: candidateName,
         phone: phone,
         summary: summary,
@@ -2886,8 +2918,14 @@ function CandidateSignUp(){
                         sessionStorage.setItem(
                             "pendingAccountId",
                             result.candidate_id
-                        )
-                        navigate("/candidate-profile-setup")
+                        );
+                        
+                        sessionStorage.setItem(
+                            "pendingUserName",
+                            result.user_name
+                        );
+                        
+                        navigate("/candidate-profile-setup");
                     }
                 }}>
                     <label htmlFor="candidate-name" className="candidate-name-label">Name</label>
@@ -2927,6 +2965,7 @@ export default CandidateSignUp
 import { useState, useEffect } from "react";
 import { getMyProfile, logoutUser } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import CandidateInterviewDashboard from "./CandidateInterviewDashboard";
 import "../../styles/candidate_profile.css";
 
 function CandidateProfile() {
@@ -3014,7 +3053,7 @@ function CandidateProfile() {
 
                         <div className="candidate-profile-identity">
                             <h2>{candidateProfile?.name || "Candidate"}</h2>
-                            <p>Candidate account</p>
+                            <strong>{candidateProfile?.user_name}</strong>
                         </div>
                     </div>
 
@@ -3046,6 +3085,9 @@ function CandidateProfile() {
                         </section>
                     </div>
                 </section>
+                <section>
+                    <CandidateInterviewDashboard/>
+                </section>
             </div>
         </main>
     );
@@ -3068,9 +3110,11 @@ function CompanyProfileSetUp() {
     const [industry, setIndustry] = useState("");
 
     const accountId = sessionStorage.getItem("pendingAccountId")
+    const userName = sessionStorage.getItem("pendingUserName")
 
     const companyDetail = {
         account_id : accountId, 
+        user_name : userName,
         company_name: companyName,
         company_description: companyDescription,
         industry: industry,
@@ -3163,9 +3207,14 @@ function CompanySignUp(){
                         sessionStorage.setItem(
                             "pendingAccountId",
                             result.company_id
-                        )
+                        );
 
-                        navigate("/company-profile-setup")
+                        sessionStorage.setItem(
+                            "pendingUserName",
+                            result.user_name
+                        );
+
+                        navigate("/company-profile-setup");
                     }
                     }}>
                     
@@ -3553,11 +3602,11 @@ export async function validateSession() {
     }
 }
 
-export async function getAllInterviewRounds(company_id){
+export async function getAllInterviewRounds(user_id, role){
     try{
         const token = localStorage.getItem("access_token")
         
-        const res = await fetch(`${API}/interview-dashboard/${company_id}`,{
+        const res = await fetch(`${API}/interview-dashboard/${user_id}/${role}`,{
             method : "GET",
             headers : {
                 "Content-Type" : "application/json",
@@ -3565,7 +3614,6 @@ export async function getAllInterviewRounds(company_id){
             },           
         })
         const data = await res.json();
-        console.log(data)
         return data
     }catch(err){
         console.error("Error",err)
@@ -3591,9 +3639,15 @@ function CandidateProfileSetUp() {
     const [education, setEducation] = useState("");
 
     const accountId = sessionStorage.getItem("pendingAccountId");
+    const userName = sessionStorage.getItem("pendingUserName");
+
+    console.log("Signup Data")
+    console.log(accountId)
+    console.log(userName)
 
     const candidateProfile = {
         account_id : accountId,
+        user_name : userName,
         name: candidateName,
         phone: phone,
         summary: summary,
