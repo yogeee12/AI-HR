@@ -13,9 +13,15 @@ function CandidateProfileSetUp() {
     const [education, setEducation] = useState("");
 
     const accountId = sessionStorage.getItem("pendingAccountId");
+    const userName = sessionStorage.getItem("pendingUserName");
+
+    console.log("Signup Data")
+    console.log(accountId)
+    console.log(userName)
 
     const candidateProfile = {
         account_id : accountId,
+        user_name : userName,
         name: candidateName,
         phone: phone,
         summary: summary,

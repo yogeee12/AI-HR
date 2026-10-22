@@ -30,8 +30,14 @@ function CandidateSignUp(){
                         sessionStorage.setItem(
                             "pendingAccountId",
                             result.candidate_id
-                        )
-                        navigate("/candidate-profile-setup")
+                        );
+                        
+                        sessionStorage.setItem(
+                            "pendingUserName",
+                            result.user_name
+                        );
+                        
+                        navigate("/candidate-profile-setup");
                     }
                 }}>
                     <label htmlFor="candidate-name" className="candidate-name-label">Name</label>
