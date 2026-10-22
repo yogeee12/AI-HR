@@ -31,9 +31,14 @@ function CompanySignUp(){
                         sessionStorage.setItem(
                             "pendingAccountId",
                             result.company_id
-                        )
+                        );
 
-                        navigate("/company-profile-setup")
+                        sessionStorage.setItem(
+                            "pendingUserName",
+                            result.user_name
+                        );
+
+                        navigate("/company-profile-setup");
                     }
                     }}>
                     
