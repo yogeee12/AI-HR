@@ -64,10 +64,13 @@ def home():
 @app.post("/company-signup")
 def receive_company_detail(companyDetail : dict):    
     result = accounts_collections.insert_one(companyDetail)
+    user_name = companyDetail.get("user_name")
+
     return {
         "success" : True,
         "message" : "Company Detail Received",
-        "company_id" : str(result.inserted_id)
+        "company_id" : str(result.inserted_id),
+        "user_name" : user_name
     }
     
 # get company profile detail and save in db
@@ -80,7 +83,7 @@ def receive_company_profile(companyProfile : dict):
         )
     
     result = companies_collections.insert_one(companyProfile)
-    
+
     return {
         "success" : True,
         "message" : "Company Profile Received",
@@ -92,11 +95,13 @@ def receive_company_profile(companyProfile : dict):
 @app.post("/candidate-signup")
 def receive_candidate(candidate : dict):
     result = accounts_collections.insert_one(candidate)
-    
+    user_name = candidate.get("user_name")
+
     return {
         "success" : True,
         "message" : "Candidate recevied",
-        "candidate_id" : str(result.inserted_id)
+        "candidate_id" : str(result.inserted_id),
+        "user_name" : user_name
     }
     
 # get candidate profile detail and save in db
@@ -109,11 +114,11 @@ def receive_candidate_profile(candidateProfile : dict):
         )
     
     result = candidates_collections.insert_one(candidateProfile)
-    
+    print(candidateProfile)
     return {
         "success" : True,
         "message" : "Candidate Profile Received",
-        "candidate_id" : str(result.inserted_id)
+        "candidate_id" : str(result.inserted_id),
     } 
         
 # Question Answer APIs
@@ -414,30 +419,51 @@ def get_my_profile(account: dict = Depends(get_current_account)):
     
     return profile
 
-@app.get("/interview-dashboard/{company_id}")
-def get_all_interview(company_id : str):
+@app.get("/interview-dashboard/{user_id}/{role}")
+def get_all_interview(user_id : str,
+                      role : str):
 
-    interview_data = list(interview_collections.find({
-        "company_id" : company_id
-    }))
+    if role == "company":
+        interview_data = list(interview_collections.find({
+            "company_id" : user_id
+        }))
+        
+        for data in interview_data:
+            data["_id"] = str(data["_id"])
+            candidate_data = candidates_collections.find_one({
+                "account_id" : data["candidate_id"]
+            })
+            
+            job_data = job_collection.find_one({
+                "_id" : ObjectId(data["job_id"])
+            })
+            
+            account_detail = accounts_collections.find_one({
+                "_id" : ObjectId(candidate_data["account_id"])
+            })
+            
+            data["candidate_name"] = candidate_data["name"]
+            data["candidate_email"] = account_detail["email"]
+            data["user_name"] = account_detail["user_name"] 
+            data["for_post"] = job_data["job_title"]
+        
+    elif role == "candidate":
+        interview_data = list(interview_collections.find({
+            "candidate_id" : user_id
+        }))
 
-    for data in interview_data:
-        data["_id"] = str(data["_id"])
-        candidate_data = candidates_collections.find_one({
-            "account_id" : data["candidate_id"]
-        })
-        
-        job_data = job_collection.find_one({
-            "_id" : ObjectId(data["job_id"])
-        })
-        
-        account_detail = accounts_collections.find_one({
-            "_id" : ObjectId(candidate_data["account_id"])
-        })
-        
-        data["candidate_name"] = candidate_data["name"]
-        data["candidate_email"] = account_detail["email"]
-        data["user_name"] = account_detail["user_name"] 
-        data["for_post"] = job_data["job_title"]
-
+        for data in interview_data:
+            data["_id"] = str(data["_id"])            
+            company_data = companies_collections.find_one({
+                "account_id" : data["company_id"]
+            })
+            
+            job_data = job_collection.find_one({
+                "_id" : ObjectId(data["job_id"])
+            })
+            
+            data["company_name"] = company_data["company_name"]
+            data["industry"] = company_data["industry"]
+            data["job_title"] = job_data["job_title"]
+            
     return interview_data
