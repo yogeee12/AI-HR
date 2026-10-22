@@ -1,0 +1,398 @@
+/* ===== Candidate Interview Dashboard ===== */
+
+.candidate-dashboard {
+    min-height: 100vh;
+    padding: 32px;
+    background: #f6f8fc;
+    color: #172033;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+/* ===== Dashboard Header ===== */
+
+.candidate-dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 30px 32px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e7eaf2;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ffffff 0%, #eef3ff 100%);
+    box-shadow: 0 5px 20px rgba(28, 45, 90, 0.04);
+}
+
+.candidate-dashboard-header h1 {
+    margin: 0 0 10px;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 750;
+    letter-spacing: -1px;
+    color: #172554;
+}
+
+.candidate-dashboard-header .company-subtitle {
+    margin: 0;
+    color: #68748a;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.dashboard-header-icon {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 22px;
+    background: #e0e9ff;
+    color: #4169e1;
+    font-size: 38px;
+}
+
+/* ===== Statistics Cards ===== */
+
+.candidate-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.candidate-stat-card {
+    position: relative;
+    padding: 25px;
+    border: 1px solid #e7eaf2;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(28, 45, 90, 0.035);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.candidate-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 24px rgba(28, 45, 90, 0.08);
+}
+
+.candidate-stat-card span {
+    display: block;
+    margin-bottom: 15px;
+    color: #68748a;
+    font-size: 14px;
+    font-weight: 550;
+}
+
+.candidate-stat-card strong {
+    display: block;
+    color: #172554;
+    font-size: 32px;
+    font-weight: 750;
+    line-height: 1.2;
+}
+
+/* ===== Interview Table Section ===== */
+
+.candidate-interview-section {
+    overflow: hidden;
+    border: 1px solid #e7eaf2;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 5px 20px rgba(28, 45, 90, 0.035);
+}
+
+.candidate-table-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 26px 28px;
+    border-bottom: 1px solid #edf0f6;
+}
+
+.candidate-table-heading h2 {
+    margin: 0 0 7px;
+    color: #172554;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.candidate-table-heading p {
+    margin: 0;
+    color: #7b8498;
+    font-size: 14px;
+}
+
+.interview-count {
+    flex-shrink: 0;
+    padding: 8px 13px;
+    border: 1px solid #dce5ff;
+    border-radius: 999px;
+    background: #f0f4ff;
+    color: #3b5ccc;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+/* ===== Table Wrapper ===== */
+
+.candidate-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.candidate-interview-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.candidate-interview-table thead {
+    background: #f8faff;
+}
+
+.candidate-interview-table th {
+    padding: 16px 20px;
+    color: #68748a;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.65px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e9edf5;
+}
+
+.candidate-interview-table td {
+    padding: 19px 20px;
+    border-bottom: 1px solid #edf0f6;
+    color: #4b5568;
+    font-size: 13px;
+}
+
+.candidate-interview-table tbody tr {
+    transition: background 0.18s ease;
+}
+
+.candidate-interview-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.candidate-interview-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.candidate-interview-table td strong {
+    color: #24304a;
+    font-weight: 700;
+}
+
+/* ===== Company Name and Avatar ===== */
+
+.candidate-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 155px;
+}
+
+.candidate-avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e0e9ff, #d9e2ff);
+    color: #3658bf;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.candidate-cell strong {
+    display: block;
+    color: #27334d;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+/* ===== Status and Result Badges ===== */
+
+.interview-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #f0f2f6;
+    color: #596579;
+    font-size: 11px;
+    font-weight: 750;
+    text-transform: capitalize;
+}
+
+/* Interview progress */
+
+.interview-status.applied {
+    background: #edf3ff;
+    color: #345cc5;
+}
+
+.interview-status.in-progress,
+.interview-status.in_progress {
+    background: #fff4dc;
+    color: #996300;
+}
+
+.interview-status.completed {
+    background: #dcfce7;
+    color: #167344;
+}
+
+/* Final result */
+
+.interview-status.pass {
+    background: #dcfce7;
+    color: #167344;
+}
+
+.interview-status.fail {
+    background: #fee8e8;
+    color: #bd3333;
+}
+
+/* ===== Loading, Error, and Empty States ===== */
+
+.dashboard-message {
+    padding: 45px 20px;
+    color: #68748a;
+    font-size: 14px;
+    text-align: center;
+}
+
+.dashboard-error {
+    color: #c53030;
+}
+
+.dashboard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 65px 24px;
+    text-align: center;
+}
+
+.empty-icon {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    margin-bottom: 18px;
+    border-radius: 20px;
+    background: #eef3ff;
+    color: #496bd0;
+    font-size: 34px;
+}
+
+.dashboard-empty h3 {
+    margin: 0 0 10px;
+    color: #27334d;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.dashboard-empty p {
+    max-width: 360px;
+    margin: 0;
+    color: #7b8498;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* ===== Responsive Layout ===== */
+
+@media (max-width: 900px) {
+    .candidate-dashboard {
+        padding: 24px;
+    }
+
+    .candidate-stats {
+        gap: 15px;
+    }
+
+    .candidate-stat-card {
+        padding: 21px;
+    }
+
+    .candidate-table-heading {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .candidate-dashboard {
+        padding: 15px;
+    }
+
+    .candidate-dashboard-header {
+        padding: 24px 20px;
+        border-radius: 15px;
+    }
+
+    .candidate-dashboard-header h1 {
+        max-width: 230px;
+        font-size: 25px;
+    }
+
+    .candidate-dashboard-header .company-subtitle {
+        max-width: 220px;
+        font-size: 13px;
+    }
+
+    .dashboard-header-icon {
+        right: 15px;
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        font-size: 25px;
+    }
+
+    .candidate-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .candidate-stat-card {
+        padding: 19px 21px;
+    }
+
+    .candidate-stat-card span {
+        margin-bottom: 9px;
+    }
+
+    .candidate-stat-card strong {
+        font-size: 28px;
+    }
+
+    .candidate-table-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .candidate-table-heading h2 {
+        font-size: 19px;
+    }
+
+    .candidate-interview-table th,
+    .candidate-interview-table td {
+        padding: 15px;
+    }
+
+    .candidate-interview-section {
+        border-radius: 14px;
+    }
+}
