@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { getMyProfile, logoutUser } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import CandidateInterviewDashboard from "./CandidateInterviewDashboard";
 import "../../styles/candidate_profile.css";
 
 function CandidateProfile() {
@@ -89,7 +90,7 @@ function CandidateProfile() {
 
                         <div className="candidate-profile-identity">
                             <h2>{candidateProfile?.name || "Candidate"}</h2>
-                            <p>Candidate account</p>
+                            <strong>{candidateProfile?.user_name}</strong>
                         </div>
                     </div>
 
@@ -120,6 +121,9 @@ function CandidateProfile() {
                             )}
                         </section>
                     </div>
+                </section>
+                <section>
+                    <CandidateInterviewDashboard/>
                 </section>
             </div>
         </main>
