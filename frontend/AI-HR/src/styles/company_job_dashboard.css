@@ -201,6 +201,15 @@
     color: #9b6500;
 }
 
+.interview-status.pass{
+    background: #e4f8ec;
+    color: #16834a;
+}
+.interview-status.fail{
+    background: #ffd4d4;
+    color: #831616;
+}
+
 .interview-status.applied {
     background: #e9efff;
     color: #3b5fc4;
