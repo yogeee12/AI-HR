@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { getAllInterviewRounds } from "../../services/api";
 import "../../styles/company_job_dashboard.css";
@@ -11,6 +10,7 @@ function CompanyJobDashboard() {
     const storedUser = localStorage.getItem("current_user");
     const user = storedUser ? JSON.parse(storedUser) : null;
     const user_id = user?.id ? String(user.id) : "";
+    const user_role = user?.role ? String(user.role) : ""
 
     useEffect(() => {
         async function fetchInterview() {
@@ -21,7 +21,9 @@ function CompanyJobDashboard() {
             }
 
             try {
-                const data = await getAllInterviewRounds(user_id);
+                const data = await getAllInterviewRounds(user_id, user_role);
+                console.log("Data: ")
+                console.log(data)
                 setAllInterviews(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Error fetching interviews:", err);
@@ -32,7 +34,7 @@ function CompanyJobDashboard() {
         }
 
         fetchInterview();
-    }, [user_id]);
+    }, [user_id, user_role]);
 
     const completedCount = allInterviews.filter(
         (interview) => interview.status === "completed"
@@ -114,6 +116,7 @@ function CompanyJobDashboard() {
                                     <th>Job position</th>
                                     <th>Status</th>
                                     <th>Score</th>
+                                    <th>Result</th>
                                     <th>Correct answers</th>
                                 </tr>
                             </thead>
@@ -157,6 +160,16 @@ function CompanyJobDashboard() {
                                                     ? interview.total_score ?? 0
                                                     : "—"}
                                             </strong>
+                                        </td>
+
+                                        <td>
+                                            <span className={`interview-status ${interview.result === "Pass" ? 'pass' : 'fail'}`}>
+                                                { 
+                                                    interview.status === "completed"
+                                                    ? interview.result
+                                                    : "—"
+                                                }
+                                            </span>
                                         </td>
 
                                         <td>
