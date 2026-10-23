@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
 import { getAllInterviewRounds } from "../../services/api"
 import "../../styles/candidate_interview.css"
+import InterviewReviewPopup from "./InterviewReviewPopup";
 
 function CandidateInterviewDashboard(){
     const [allInterview, setAllInterview] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [selectedInterview , setSelectedInterview] = useState(null)
     
     const storedUser = localStorage.getItem("current_user");
     const user = storedUser ? JSON.parse(storedUser) : null;
@@ -110,8 +112,26 @@ function CandidateInterviewDashboard(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {allInterview.map((interview) => (
-                                    <tr key={interview.id}>
+                                {allInterview.map((interview => {
+                                    const isCompleted = 
+                                        interview.status?.toLowerCase() === "completed"
+
+                                    return (
+
+                                       <tr 
+                                            key={interview.id}
+                                            onClick={() => {
+                                                if (isCompleted){
+                                                    setSelectedInterview(interview)
+                                                }
+                                            }}
+                                            className={isCompleted ? "clickable-interview-row" : ""}
+                                            title={
+                                                isCompleted
+                                                    ? "Click to review interview"
+                                                    : "Complete the interview to review results"
+                                            }
+                                       >
                                         <td>
                                             <div className="candidate-cell">
                                                 <div className="candidate-avatar">
@@ -164,12 +184,19 @@ function CandidateInterviewDashboard(){
                                                 : "—"}
                                         </td>
                                     </tr>
-                                ))}
+                                    )
+                                }))}
                             </tbody>
                         </table>
                     </div>                    
                 )}
             </section>
+            {selectedInterview && (
+                <InterviewReviewPopup
+                    interview={selectedInterview}
+                    onClose={() => setSelectedInterview(null)}
+                />
+            )}
         </main>
     )
 }
