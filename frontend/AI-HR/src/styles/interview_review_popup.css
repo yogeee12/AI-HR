@@ -1,0 +1,155 @@
+
+.review-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.review-modal {
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--background, white);
+    color: var(--foreground, #171717);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.review-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.review-header h2 {
+    margin: 0 0 6px;
+    text-align: left;
+}
+
+.review-header p {
+    margin: 0;
+    color: #777;
+}
+
+.review-close {
+    font-size: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.review-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.review-summary > div {
+    background: rgba(127, 127, 127, 0.1);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-summary span,
+.review-answer-label {
+    color: #777;
+    font-size: 13px;
+}
+
+.review-summary strong {
+    font-size: 22px;
+}
+
+.review-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+}
+
+.review-question-card {
+    border: 1px solid rgba(127, 127, 127, 0.25);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.review-question-card h3 {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 0 18px;
+}
+
+.review-answer-label {
+    margin: 14px 0 5px;
+}
+
+.review-user-answer,
+.review-correct-answer {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.review-correct-answer {
+    color: #15803d;
+}
+
+.review-question-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(127, 127, 127, 0.2);
+}
+
+.review-correct {
+    color: #15803d;
+    font-weight: 600;
+}
+
+.review-incorrect {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.clickable-interview-row {
+    cursor: pointer;
+}
+
+.clickable-interview-row:hover {
+    background: rgba(127, 127, 127, 0.08);
+}
+
+@media (max-width: 600px) {
+    .review-overlay {
+        padding: 8px;
+    }
+
+    .review-modal {
+        padding: 16px;
+        max-height: 95vh;
+    }
+
+    .review-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .review-question-card {
+        padding: 14px;
+    }
+}
