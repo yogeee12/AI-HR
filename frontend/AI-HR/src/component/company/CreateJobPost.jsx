@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { handelSubmit } from "../../services/api";
 import "../../styles/creat_job_post.css"
 
@@ -9,6 +9,9 @@ function CreateJobPost({onClose}){
     const [requiredSkills , setRequiredSkills] = useState("");
     const [experience , setExperience] = useState("");
     const [location , setLocation] = useState("");
+    const [addQuestion, setAddQuestion] = useState(false);
+    const [questionType , setQuestionType] = useState("Text");
+    const [question, setQuestions] = useState([]);
 
     const jobDetails = {
         job_title : jobTitle,
@@ -60,6 +63,46 @@ function CreateJobPost({onClose}){
                     <label htmlFor="job-location">Location</label>
                     <input type="text" name="job-location" className="job-location-input" onChange={(e) => setLocation(e.target.value)}/>
 
+                    <div className="add-questions">
+                            { addQuestion && 
+                            questionType === "Text" ? ( 
+                                <div className="user-question">
+                                    <label htmlFor="text-question">Write Question</label>
+                                    <textarea name="text-question" className="text-question"></textarea>
+                                </div>
+                            ):(
+                             questionType === "MCQ" && 
+                                <div className="user-question">
+                                    <label htmlFor="text-question">Write Question</label>
+                                    <textarea name="text-question" className="text-question"></textarea>
+                                    
+                                    {[1,2,3,4].map((num) => (
+                                        <React.Fragment key={num}>
+                                            <label htmlFor={`option-${num}`}>Option {num}</label>
+                                            <input 
+                                                type="text" 
+                                                placeholder={`Option ${num}`}
+                                                name={`option-${num}`}
+                                                className="mcq-option"/>
+                                        </React.Fragment>
+                                        ))}
+                                </div>
+                            )
+                            }
+
+                            <select name="question-type" className="question-type" 
+                                onChange={(e) => setQuestionType(e.target.value)}>
+                                <option value="Text">Text</option>
+                                <option value="MCQ">MCQ</option>
+                            </select>
+
+                        <button 
+                            type="button" 
+                            onClick={() => setAddQuestion(true)}
+                            className="add-question">
+                                Add Question +
+                        </button>
+                    </div>
                     <div className="job-modal-actions">
                         <button
                             type="button"
