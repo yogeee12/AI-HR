@@ -198,7 +198,8 @@ def start_interview(
     questions = result["get_questions"]
     correct_answers = result["get_answers"]
     
-
+                
+                
     interview_collections.update_one(
         {"_id" : ObjectId(interview_id)},
         {
@@ -208,15 +209,16 @@ def start_interview(
             }
         })
     
-    question_update(
+    question = question_update(
         interview_id=interview_id, 
         questions=questions,
-        answer=correct_answers
+        answer=correct_answers,
+        job=job
         )
-    
+            
     return {
         "success" : True,
-        "questions" : questions 
+        "questions" : question 
     }
 
 # Job APIs
@@ -230,7 +232,7 @@ def get_job_details(
             status_code = 403,
             detail = "Only companies can post jobs"
         )
-        
+    
     company = companies_collections.find_one({
         "account_id" : account["account_id"]
     })
