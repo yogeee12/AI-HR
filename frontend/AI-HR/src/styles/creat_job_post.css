@@ -1,5 +1,7 @@
 
-/* Background overlay */
+/* ================================
+   MODAL OVERLAY
+================================ */
 .job-modal-overlay {
     position: fixed;
     inset: 0;
@@ -12,42 +14,69 @@
     padding: 20px;
     box-sizing: border-box;
 
-    background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(3px);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
 }
 
-/* Popup container */
+/* ================================
+   POPUP CONTAINER
+================================ */
 .job-model {
     width: 100%;
-    max-width: 600px;
-    max-height: 90vh;
+    max-width: 680px;
+    max-height: 92vh;
     overflow-y: auto;
 
     padding: 30px;
     box-sizing: border-box;
 
     background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    color: #172033;
 
-    animation: job-modal-appear 0.2s ease-out;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+
+    animation: job-modal-appear 0.22s ease-out;
 }
 
-/* Popup header */
+/* Custom scrollbar */
+.job-model::-webkit-scrollbar {
+    width: 7px;
+}
+
+.job-model::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.job-model::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ================================
+   MODAL HEADER
+================================ */
 .job-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: center;
-    margin-bottom: 22px;
+    gap: 15px;
+
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .job-modal-header h2 {
     margin: 0;
+
     color: #172033;
     font-size: 26px;
     font-weight: 750;
-    text-align: center;
+    letter-spacing: -0.5px;
 }
 
 /* Close button */
@@ -55,80 +84,96 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     padding: 0;
 
     border: none;
-    border-radius: 7px;
+    border-radius: 9px;
+
     background: #f3f4f6;
     color: #4b5563;
 
     font-size: 27px;
     line-height: 1;
+
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .job-model_close:hover {
-    background: #e5e7eb;
-    color: #111827;
+    background: #fee2e2;
+    color: #dc2626;
 }
 
-/* Form layout */
+/* ================================
+   FORM LAYOUT
+================================ */
 .job-model form {
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 10px;
 }
 
 /* Labels */
 .job-model form label {
-    margin-top: 8px;
+    display: block;
+
+    margin: 7px 0 2px;
+    padding: 0;
+
     color: #374151;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 650;
     text-align: left;
-    font-weight: 700;
-    margin: 5px 0px 0px 8px ;
-    font-size: 16px;
 }
 
-/* Text inputs and textarea */
+/* Inputs, textareas and selects */
 .job-model form input,
-.job-model form textarea {
+.job-model form textarea,
+.job-model form select {
+    display: block;
+
     width: 100%;
-    padding: 12px 14px;
+    min-width: 0;
     box-sizing: border-box;
 
+    padding: 12px 14px;
+
     border: 1px solid #d1d5db;
-    border-radius: 7px;
+    border-radius: 8px;
     outline: none;
 
     background: #ffffff;
     color: #111827;
+
     font-family: inherit;
     font-size: 14px;
 
-    transition: border-color 0.2s ease,
-                box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 /* Input height */
-.job-model form input {
-    height: 44px;
+.job-model form input,
+.job-model form select {
+    min-height: 44px;
 }
 
-/* Description field */
+/* Textareas */
 .job-model form textarea {
-    min-height: 100px;
+    min-height: 95px;
     resize: vertical;
+    line-height: 1.6;
 }
 
-/* Focus effect */
+/* Focus states */
 .job-model form input:focus,
-.job-model form textarea:focus {
+.job-model form textarea:focus,
+.job-model form select:focus {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
@@ -139,29 +184,203 @@
     color: #9ca3af;
 }
 
-/* Bottom action buttons */
+/* ================================
+   CUSTOM QUESTIONS SECTION
+================================ */
+.add-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    margin-top: 24px;
+    padding-top: 22px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Each individual question card */
+.user-question {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    min-width: 0;
+    padding: 20px;
+
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    transition: border-color 0.2s ease;
+}
+
+.user-question:focus-within {
+    border-color: #bfdbfe;
+}
+
+/* Question heading */
+.question-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.question-heading h3 {
+    margin: 0;
+
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+/* Remove question button */
+.question-heading button {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border: 1px solid #fecaca;
+    border-radius: 7px;
+
+    background: #fff1f2;
+    color: #dc2626;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.question-heading button:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+/* Question type selector */
+.user-question select {
+    cursor: pointer;
+}
+
+/* ================================
+   MCQ OPTIONS
+================================ */
+.mcq-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin-top: 10px;
+    padding-top: 16px;
+
+    border-top: 1px dashed #cbd5e1;
+}
+
+/* Individual option wrapper */
+.mcq-options > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Option labels */
+.mcq-options > div label {
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Option inputs */
+.mcq-options > div input {
+    min-height: 42px;
+    background: #ffffff;
+}
+
+/* Correct answer label */
+.mcq-options > label {
+    margin-top: 10px;
+    color: #166534;
+}
+
+/* Correct answer selector */
+.mcq-options > select {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #166534;
+    font-weight: 600;
+}
+
+.mcq-options > select:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+/* ================================
+   ADD QUESTION BUTTON
+================================ */
+.add-question {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 16px;
+
+    border: 1px dashed #93c5fd;
+    border-radius: 9px;
+
+    background: #eff6ff;
+    color: #1d4ed8;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-question:hover {
+    border-color: #2563eb;
+    background: #dbeafe;
+}
+
+/* ================================
+   BOTTOM ACTION BUTTONS
+================================ */
 .job-modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
 
-    margin-top: 22px;
-    padding-top: 18px;
+    margin-top: 24px;
+    padding-top: 20px;
+
     border-top: 1px solid #e5e7eb;
 }
 
 .job-modal-actions button {
-    min-height: 42px;
-    padding: 0 20px;
+    min-height: 44px;
+    padding: 0 22px;
 
-    border-radius: 7px;
+    border-radius: 8px;
+
     font-family: inherit;
     font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    font-weight: 650;
 
-    transition: background 0.2s ease,
-                border-color 0.2s ease;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 /* Cancel */
@@ -172,6 +391,7 @@
 }
 
 .job-cancel-btn:hover {
+    border-color: #9ca3af;
     background: #f3f4f6;
 }
 
@@ -185,13 +405,24 @@
 .job-submit-btn:hover {
     border-color: #1d4ed8;
     background: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-/* Popup animation */
+.job-modal-actions button:focus-visible,
+.add-question:focus-visible,
+.question-heading button:focus-visible,
+.job-model_close:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.35);
+    outline-offset: 2px;
+}
+
+/* ================================
+   MODAL ANIMATION
+================================ */
 @keyframes job-modal-appear {
     from {
         opacity: 0;
-        transform: translateY(10px) scale(0.98);
+        transform: translateY(12px) scale(0.985);
     }
 
     to {
@@ -200,15 +431,31 @@
     }
 }
 
-/* Mobile responsiveness */
-@media (max-width: 500px) {
+/* ================================
+   MOBILE RESPONSIVENESS
+================================ */
+@media (max-width: 600px) {
+    .job-modal-overlay {
+        padding: 10px;
+        align-items: center;
+    }
+
     .job-model {
-        padding: 22px 18px;
-        max-height: 92vh;
+        max-height: 94vh;
+        padding: 22px 16px;
+        border-radius: 12px;
     }
 
     .job-modal-header h2 {
         font-size: 23px;
+    }
+
+    .user-question {
+        padding: 14px;
+    }
+
+    .question-heading h3 {
+        font-size: 15px;
     }
 
     .job-modal-actions {
@@ -218,5 +465,17 @@
     .job-modal-actions button {
         flex: 1;
         padding: 0 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .job-model {
+        animation: none;
+    }
+
+    .job-model *,
+    .job-model *::before,
+    .job-model *::after {
+        transition: none !important;
     }
 }
