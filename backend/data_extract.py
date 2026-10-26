@@ -6,6 +6,7 @@ def get_questions(data):
         option = ques["options"] 
         result.append({
             "question_id" : ques["question_id"],
+            "type" : "MCQ",
             "question" : ques["question"],
             "option_1" : option[0],
             "option_2" : option[1],
@@ -29,6 +30,7 @@ def get_answers(data):
                 "2" : option[2],
                 "3" : option[3]
             },
+            
             "correct_option" : option[int(ques["correct_option"])]
         },)
 
