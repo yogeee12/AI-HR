@@ -16,6 +16,7 @@ function InterviewPopup({job, interviewId, onClose}){
             const data = await startInterview(interviewId)
             
             setQuestions(data);
+            console.log(data)
         }catch(error){
             setError(error.message);
         }finally{
@@ -29,7 +30,6 @@ function InterviewPopup({job, interviewId, onClose}){
         answers : userAnswers,
 
     }
-        console.log("Answer to send :", payload)
     
 
     return(
@@ -92,7 +92,9 @@ function InterviewPopup({job, interviewId, onClose}){
                                 <h3>
                                     {index + 1}. {question.question}
                                 </h3>
+                                {question?.type
 
+                                }
                                 {[1, 2, 3, 4].map((optionNumber) => {
                                     const optionValue = `option_${optionNumber}`;
 
