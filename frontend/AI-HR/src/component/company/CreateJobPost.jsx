@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { handelSubmit } from "../../services/api";
 import "../../styles/creat_job_post.css"
 
@@ -9,9 +9,52 @@ function CreateJobPost({onClose}){
     const [requiredSkills , setRequiredSkills] = useState("");
     const [experience , setExperience] = useState("");
     const [location , setLocation] = useState("");
-    const [addQuestion, setAddQuestion] = useState(false);
-    const [questionType , setQuestionType] = useState("Text");
-    const [question, setQuestions] = useState([]);
+    
+    const [questions, setQuestions] = useState([]);
+
+    function addNewQuestion() {
+        setQuestions(prev => [
+            ...prev,
+            {
+                id: Date.now(),
+                type: "Text",
+                question: "",
+                options: ["", "", "", ""],
+                correct_option: 0
+            }
+        ]);
+    }
+
+    function updateQuestion(questionId, field, value) {
+        setQuestions(prev =>
+            prev.map(q =>
+                q.id === questionId
+                    ? { ...q, [field]: value }
+                    : q
+            )
+        );
+    }
+
+    function updateOption(questionId, optionIndex, value) {
+        setQuestions(prev =>
+            prev.map(q =>
+                q.id === questionId
+                    ? {
+                        ...q,
+                        options: q.options.map((option, index) =>
+                            index === optionIndex ? value : option
+                        )
+                    }
+                    : q
+            )
+        );
+    }
+
+    function removeQuestion(questionId) {
+        setQuestions(prev =>
+            prev.filter(q => q.id !== questionId)
+        );
+    }
 
     const jobDetails = {
         job_title : jobTitle,
@@ -19,6 +62,7 @@ function CreateJobPost({onClose}){
         required_skills : requiredSkills,
         min_experience : experience,
         location : location,
+        custom_question : questions,
     }
 
     return(
@@ -64,45 +108,115 @@ function CreateJobPost({onClose}){
                     <input type="text" name="job-location" className="job-location-input" onChange={(e) => setLocation(e.target.value)}/>
 
                     <div className="add-questions">
-                            { addQuestion && 
-                            questionType === "Text" ? ( 
-                                <div className="user-question">
-                                    <label htmlFor="text-question">Write Question</label>
-                                    <textarea name="text-question" className="text-question"></textarea>
-                                </div>
-                            ):(
-                             questionType === "MCQ" && 
-                                <div className="user-question">
-                                    <label htmlFor="text-question">Write Question</label>
-                                    <textarea name="text-question" className="text-question"></textarea>
-                                    
-                                    {[1,2,3,4].map((num) => (
-                                        <React.Fragment key={num}>
-                                            <label htmlFor={`option-${num}`}>Option {num}</label>
-                                            <input 
-                                                type="text" 
-                                                placeholder={`Option ${num}`}
-                                                name={`option-${num}`}
-                                                className="mcq-option"/>
-                                        </React.Fragment>
+
+                        {questions.map((q, index) => (
+                            <div className="user-question" key={q.id}>
+
+                                <div className="question-heading">
+                                    <h3>Question {index + 1}</h3>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => removeQuestion(q.id)}
+                                    >
+                                        Remove
+                                    </button>
+                                </div> 
+
+                                <label htmlFor={`question-${q.id}`}>
+                                    Write Question
+                                </label>
+
+                                <textarea
+                                    id={`question-${q.id}`}
+                                    value={q.question}
+                                    placeholder="Enter your question..."
+                                    onChange={e =>
+                                        updateQuestion(q.id, "question", e.target.value)
+                                    }
+                                    required
+                                />
+
+                                <label htmlFor={`type-${q.id}`}>
+                                    Question Type
+                                </label>
+
+                                <select
+                                    id={`type-${q.id}`}
+                                    value={q.type}
+                                    onChange={e =>
+                                        updateQuestion(q.id, "type", e.target.value)
+                                    }
+                                >
+                                    <option value="Text">Text</option>
+                                    <option value="MCQ">MCQ</option>
+                                </select>
+
+                                {q.type === "MCQ" && (
+                                    <div className="mcq-options">
+
+                                        {q.options.map((option, optionIndex) => (
+                                            <div key={optionIndex}>
+                                                <label>
+                                                    Option {optionIndex + 1}
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    value={option}
+                                                    placeholder={`Option ${optionIndex + 1}`}
+                                                    onChange={e =>
+                                                        updateOption(
+                                                            q.id,
+                                                            optionIndex,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
                                         ))}
-                                </div>
-                            )
-                            }
 
-                            <select name="question-type" className="question-type" 
-                                onChange={(e) => setQuestionType(e.target.value)}>
-                                <option value="Text">Text</option>
-                                <option value="MCQ">MCQ</option>
-                            </select>
+                                        <label htmlFor={`correct-${q.id}`}>
+                                            Correct Answer
+                                        </label>
 
-                        <button 
-                            type="button" 
-                            onClick={() => setAddQuestion(true)}
-                            className="add-question">
-                                Add Question +
+                                        <select
+                                            id={`correct-${q.id}`}
+                                            value={q.correct_option}
+                                            onChange={e =>
+                                                updateQuestion(
+                                                    q.id,
+                                                    "correct_option",
+                                                    Number(e.target.value)
+                                                )
+                                            }
+                                        >
+                                            {q.options.map((option, optionIndex) => (
+                                                <option
+                                                    key={optionIndex}
+                                                    value={optionIndex}
+                                                >
+                                                    Option {optionIndex + 1}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                            </div>
+                        ))}
+
+                        <button
+                            type="button"
+                            onClick={addNewQuestion}
+                            className="add-question"
+                        >
+                            Add Question +
                         </button>
-                    </div>
+
+                   </div>
+
                     <div className="job-modal-actions">
                         <button
                             type="button"
@@ -111,7 +225,7 @@ function CreateJobPost({onClose}){
                         >
                             Cancel
                         </button>
-                         <button
+                        <button
                             type="submit"
                             className="job-submit-btn"
                         >
